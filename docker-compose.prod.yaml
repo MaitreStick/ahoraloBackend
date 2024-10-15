@@ -2,8 +2,8 @@ version: '3'
 
 services:
   ahoraloapp:
-    depends_on:
-      - db
+    # depends_on:
+    #   - db
     build: 
       context: .
       dockerfile: Dockerfile
@@ -13,11 +13,12 @@ services:
     ports:
       - "${PORT}:${PORT}"
     environment:
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_USERNAME: ${DB_USERNAME}
-      DB_PASSWORD: ${DB_PASSWORD}
-      DB_NAME: ${DB_NAME}
+      # DB_HOST: ${BD_HOST}
+      # DB_PORT: 6543
+      # DB_USERNAME: ${DB_USERNAME}
+      # DB_PASSWORD: ${DB_PASSWORD}
+      # DB_NAME: ${DB_NAME}
+      DB_LINK: ${DB_LINK}
       PORT: ${PORT}
       DEFAULT_LIMIT: ${DEFAULT_LIMIT}
       JWT_SECRET: ${JWT_SECRET}
@@ -29,15 +30,15 @@ services:
     # volumes:
     #   - ./:/var/www/ahoralo
 
-  db:
-    image: postgres:14.3
-    restart: always
-    ports:
-      - "5433:5432"
-    environment:
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
-      POSTGRES_USER: ${DB_USERNAME}
-    container_name: ahoralodb
-    volumes:
-      - ./postgres:/var/lib/postgresql/data
+  # db:
+  #   image: postgres:14.3
+  #   restart: always
+  #   ports:
+  #     - "5433:5432"
+  #   environment:
+  #     POSTGRES_PASSWORD: ${DB_PASSWORD}
+  #     POSTGRES_DB: ${DB_NAME}
+  #     POSTGRES_USER: ${DB_USERNAME}
+  #   container_name: ahoralodb
+  #   volumes:
+  #     - ./postgres:/var/lib/postgresql/data

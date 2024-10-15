@@ -22,7 +22,7 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('PriceTracker RESTFUL API')
     .setDescription('PriceTracker endpoints')
-    .setVersion('1.0').addServer('http://localhost:3000/').addBearerAuth(
+    .setVersion('1.0').addServer('http://localhost:8080/').addBearerAuth(
       {
         type: 'http',
         scheme: 'bearer',

@@ -26,6 +26,8 @@ RUN yarn install --prod
 
 COPY --from=builder /app/dist ./dist
 
+COPY .env.template ./.env
+
 # # Copiar el directorio y su contenido
 # RUN mkdir -p ./pokedex
 
@@ -37,6 +39,6 @@ COPY --from=builder /app/dist ./dist
 # RUN chown -R pokeuser:pokeuser ./pokedex
 # USER pokeuser
 
-# EXPOSE 3000
+EXPOSE 8080
 
 CMD [ "node","dist/main" ]

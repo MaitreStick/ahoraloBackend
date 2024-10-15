@@ -19,12 +19,12 @@ import { CompaniesModule } from './companies/companies.module';
 
     TypeOrmModule.forRoot({
       type: 'postgres',
-      // url: process.env.DB_LINK,
-      host: process.env.DB_HOST,
-      port: +process.env.DB_PORT,
-      database: 'postgres',
-      username: process.env.DB_USERNAME,
-      password: process.env.DB_PASSWORD,
+      url: process.env.DB_LINK,
+      // host: process.env.DB_HOST,
+      // port: +process.env.DB_PORT,
+      // database: 'postgres',
+      // username: process.env.DB_USERNAME,
+      // password: process.env.DB_PASSWORD,
       autoLoadEntities: true,
       synchronize: true,
     }),
