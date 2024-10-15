@@ -3,7 +3,7 @@
 </p>
 
 
-# Pricetracker API
+# Ahoralo API
 
 1. Clonar proyecto
 2. ```yarn install```
