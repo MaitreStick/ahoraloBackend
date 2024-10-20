@@ -64,16 +64,34 @@ export class ProdcomcityController {
     return results;
   }
 
+  // @Get('lowest-prices-by-tags')
+  // async getLowestPricesByTags(@Query('tags') tags: string) {
+  //   if (!tags) {
+  //     throw new BadRequestException('Tags query parameter is required');
+  //   }
+
+  //   const tagsArray = tags.split(',').map(tag => tag.trim());
+
+  //   return this.prodcomcityService.findLowestPricesByTags(tagsArray);
+  // }
+
   @Get('lowest-prices-by-tags')
-  async getLowestPricesByTags(@Query('tags') tags: string) {
+  async getLowestPricesByTags(
+    @Query('tags') tags: string,
+    @Query('cityId') cityId: string
+  ) {
     if (!tags) {
       throw new BadRequestException('Tags query parameter is required');
+    }
+    if (!cityId) {
+      throw new BadRequestException('CityId query parameter is required');
     }
 
     const tagsArray = tags.split(',').map(tag => tag.trim());
 
-    return this.prodcomcityService.findLowestPricesByTags(tagsArray);
+    return this.prodcomcityService.findLowestPricesByTags(tagsArray, cityId);
   }
+
 
   @Get('/:comcityId/:productId')
   async findProdcomcity(@Param('comcityId') comcityId: string, @Param('productId') productId: string): Promise<Prodcomcity> {
@@ -110,23 +128,6 @@ export class ProdcomcityController {
     return this.prodcomcityService.findOnePlain(term);
   }
 
-  // @Patch(':id')
-  // @Auth(ValidRoles.superUser, ValidRoles.admin)
-  // updateProdcomcity(
-  //   @Param('id', ParseUUIDPipe) id: string,
-  //   @Body() updateProdcomcityDto: CreateProdcomcityDto,
-  //   @GetUser() user: User,
-  // ): Promise<any> {
-  //   return this.prodcomcityService.updateProdcomcity(id, updateProdcomcityDto, user)
-  //     .then(prodcomcity => ({ prodcomcity }))
-  //     .catch(error => {
-  //       if (error instanceof NotFoundException) {
-  //         throw new NotFoundException(error.message);
-  //       } else {
-  //         throw new BadRequestException('Failed to update prodcomcity');
-  //       }
-  //     });
-  // }
 
   @Patch(':id')
   @Auth(ValidRoles.superUser, ValidRoles.admin)
@@ -146,7 +147,6 @@ export class ProdcomcityController {
       }
     }
   }
-
 
   @Delete(':id')
   @Auth(ValidRoles.superUser, ValidRoles.admin)

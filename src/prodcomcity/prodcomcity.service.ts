@@ -463,7 +463,7 @@ export class ProdcomcityService {
   ): Promise<Prodcomcity[]> {
     try {
       const terms = term.toLowerCase().split(' ');
-  
+
       const query = this.prodcomcityRepository
         .createQueryBuilder('prodcomcity')
         .leftJoinAndSelect('prodcomcity.product', 'product')
@@ -471,7 +471,7 @@ export class ProdcomcityService {
         .leftJoinAndSelect('comcity.company', 'company')
         .leftJoinAndSelect('comcity.city', 'city')
         .leftJoinAndSelect('product.images', 'images');
-  
+
       // Aplicar los filtros por los términos de búsqueda
       if (terms.length > 0) {
         query.where(
@@ -484,27 +484,27 @@ export class ProdcomcityService {
           }),
         );
       }
-  
+
       // Aplicar el filtro por ciudad si se proporciona `cityId`
       if (cityId) {
         query.andWhere('city.id = :cityId', { cityId });
       }
-  
+
       // Aplicar el filtro por empresa si se proporciona `companyId`
       if (companyId) {
         query.andWhere('company.id = :companyId', { companyId });
       }
-  
+
       // Aplicar la paginación
       query.take(limit).skip(page * limit);
-  
+
       // Obtener los resultados de la consulta
       const prodcomcities = await query.getMany();
-  
+
       if (prodcomcities.length === 0) {
         throw new NotFoundException(`No products found for the provided criteria.`);
       }
-  
+
       return prodcomcities;
     } catch (error) {
       this.handleDBException(error);
@@ -520,7 +520,7 @@ export class ProdcomcityService {
   }
 
 
-  async findLowestPricesByTags(tags: string[]): Promise<any[]> {
+  async findLowestPricesByTags(tags: string[], cityId: string): Promise<any[]> {
     const products = await this.findProductsByTags(tags);
     const productIds = products.map(product => product.id);
 
@@ -537,8 +537,10 @@ export class ProdcomcityService {
       .addSelect('product.id', 'productId')
       .innerJoin('pcc.product', 'product')
       .innerJoin('pcc.comcity', 'comcity')
+      .innerJoin('comcity.city', 'city')
       .innerJoin('comcity.company', 'company')
       .where('pcc.productId IN (:...productIds)', { productIds })
+      .andWhere('city.id = :cityId', { cityId }) 
       .groupBy('company.id')
       .addGroupBy('company.name')
       .addGroupBy('product.id')
@@ -553,6 +555,43 @@ export class ProdcomcityService {
       lowestPrice: parseFloat(price.lowestPrice),
     }));
   }
+
+
+
+
+  // async findLowestPricesByTags(tags: string[]): Promise<any[]> {
+  //   const products = await this.findProductsByTags(tags);
+  //   const productIds = products.map(product => product.id);
+
+  //   if (productIds.length === 0) {
+  //     return [];
+  //   }
+
+  //   const prices = await this.prodcomcityRepository
+  //     .createQueryBuilder('pcc')
+  //     .select('company.id', 'companyId')
+  //     .addSelect('company.name', 'companyName')
+  //     .addSelect('MIN(pcc.price)', 'lowestPrice')
+  //     .addSelect('product.title', 'productTitle')
+  //     .addSelect('product.id', 'productId')
+  //     .innerJoin('pcc.product', 'product')
+  //     .innerJoin('pcc.comcity', 'comcity')
+  //     .innerJoin('comcity.company', 'company')
+  //     .where('pcc.productId IN (:...productIds)', { productIds })
+  //     .groupBy('company.id')
+  //     .addGroupBy('company.name')
+  //     .addGroupBy('product.id')
+  //     .addGroupBy('product.title')
+  //     .getRawMany();
+
+  //   return prices.map(price => ({
+  //     companyId: price.companyId,
+  //     companyName: price.companyName,
+  //     productId: price.productId,
+  //     productTitle: price.productTitle,
+  //     lowestPrice: parseFloat(price.lowestPrice),
+  //   }));
+  // }
 
 
 
