@@ -19,10 +19,21 @@ interface SeedCompany {
 }
 
 interface SeedUser {
-    email:    string;
+    email: string;
     fullName: string;
     password: string;
-    roles:    string[];
+    roles: string[];
+}
+
+interface SeedWarehouse {
+    name: string,
+    latitude: number,
+    longitude: number,
+    comcity: {
+        companyName: string,
+        cityName: string,
+        cityDep: string,
+    },
 }
 
 
@@ -31,6 +42,7 @@ interface SeedData {
     products: SeedProduct[];
     cities: SeedCity[];
     companies: SeedCompany[];
+    warehouses: SeedWarehouse[];
 }
 
 
@@ -40,13 +52,13 @@ export const initialData: SeedData = {
         {
             email: "mastijaci@gmail.com",
             fullName: "Maitre Stick Javela Cifuentes",
-            password: bcrypt.hashSync( "Pricetracker123", 10 ),
+            password: bcrypt.hashSync("Pricetracker123", 10),
             roles: ["admin"]
         },
         {
             email: "mastijaci99@gmail.com",
             fullName: "Maitre Stick Javela Cifuentes",
-            password: bcrypt.hashSync( "Pricetracker123", 10 ),
+            password: bcrypt.hashSync("Pricetracker123", 10),
             roles: ["user", "admin", "super-user"]
         }
     ],
@@ -580,5 +592,29 @@ export const initialData: SeedData = {
         { name: "Olímpica" },
         { name: "Carulla" }
     ],
-    products: productsData
+    products: productsData,
+    warehouses: [
+        // Agrega tus almacenes aquí
+        {
+            name: 'Almacén Principal',
+            latitude: 12.345678,
+            longitude: -98.7654321,
+            comcity: {
+                companyName: 'Compañía A',
+                cityName: 'Ciudad X',
+                cityDep: 'Departamento Y',
+            },
+        },
+        {
+            name: 'Almacén Secundario',
+            latitude: 23.456789,
+            longitude: -97.654321,
+            comcity: {
+                companyName: 'Compañía B',
+                cityName: 'Ciudad Z',
+                cityDep: 'Departamento W',
+            },
+        },
+        // ... más almacenes
+    ],
 }

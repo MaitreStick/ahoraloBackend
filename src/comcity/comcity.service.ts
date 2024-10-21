@@ -12,6 +12,7 @@ import { City } from 'src/cities/entities/city.entity';
 import { Company } from 'src/companies/entities/company.entity';
 import { Warehouse } from './entities/warehouse.entity';
 import { CreateWarehouseDto } from './dto/create-warehouse.dto';
+import { UpdateWarehouseDto } from './dto/update-warehouse.dto';
 
 @Injectable()
 export class ComcityService {
@@ -90,6 +91,46 @@ export class ComcityService {
     });
 
     return this.warehouseRepository.save(warehouse);
+  }
+
+  async updateWarehouse(id: string, updateWarehouseDto: UpdateWarehouseDto): Promise<Warehouse> {
+    const warehouse = await this.warehouseRepository.findOne({
+      where: { id },
+      relations: ['comcity'],
+    });
+
+    if (!warehouse) {
+      throw new NotFoundException(`Almacén con ID "${id}" no encontrado.`);
+    }
+
+    if (updateWarehouseDto.comcityId) {
+      const comcity = await this.comcityRepository.findOne({
+        where: { id: updateWarehouseDto.comcityId },
+      });
+
+      if (!comcity) {
+        throw new NotFoundException(`Comcity con ID "${updateWarehouseDto.comcityId}" no encontrado.`);
+      }
+
+      warehouse.comcity = comcity;
+    }
+
+    // Actualizar los campos proporcionados
+    Object.assign(warehouse, updateWarehouseDto);
+
+    return this.warehouseRepository.save(warehouse);
+  }
+
+  async deleteWarehouse(id: string): Promise<void> {
+    const result = await this.warehouseRepository.delete(id);
+
+    if (result.affected === 0) {
+      throw new NotFoundException(`Almacén con ID "${id}" no encontrado.`);
+    }
+  }
+
+  async deleteAllWarehouses(): Promise<void> {
+    await this.warehouseRepository.clear();
   }
 
   async findAll(paginationDto: PaginationDto): Promise<Comcity[]> {

@@ -30,6 +30,7 @@ export class SeedService {
     try {
       await this.prodcomcityService.deleteAllProdComcity();
       await this.comcityService.deleteAllComcity();
+      await this.comcityService.deleteAllWarehouses();
       await this.deleteTables();
       const adminUser = await this.insertUsers();
 
@@ -38,6 +39,7 @@ export class SeedService {
       await this.insertNewCompanies();
       await this.insertNewComCities(adminUser);
       await this.insertNewProdComCities(adminUser);
+      await this.insertNewWarehouses(adminUser);
 
       return 'SEED EXECUTED';
     } catch (error) {
@@ -196,4 +198,47 @@ export class SeedService {
     console.log("ProdComCities seeded successfully with price set to 0");
     return true;
   } 
+
+  private async insertNewWarehouses(user: User) {
+    const warehousesData = initialData.warehouses;
+
+    if (!warehousesData || warehousesData.length === 0) {
+      console.log('No hay almacenes para insertar.');
+      return true;
+    }
+
+    const comcities = await this.comcityService.findAll({ limit: 0, offset: 0 });
+
+    const insertPromises = [];
+
+    for (const warehouseData of warehousesData) {
+      const { name, latitude, longitude, comcity } = warehouseData;
+
+      const targetComcity = comcities.find(
+        (comcityItem) =>
+          comcityItem.company.name === comcity.companyName &&
+          comcityItem.city.name === comcity.cityName &&
+          comcityItem.city.nameDep === comcity.cityDep,
+      );
+
+      if (!targetComcity) {
+        console.log(`Comcity no encontrado para el almacén ${name}`);
+        continue;
+      }
+
+      insertPromises.push(
+        this.comcityService.createWarehouse({
+          name,
+          latitude,
+          longitude,
+          comcityId: targetComcity.id,
+        }),
+      );
+    }
+
+    await Promise.all(insertPromises);
+
+    console.log('Almacenes insertados exitosamente');
+    return true;
+  }
 }

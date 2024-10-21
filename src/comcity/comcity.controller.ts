@@ -2,13 +2,14 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ParseUUIDPipe
 import { ComcityService } from './comcity.service';
 import { CreateComcityDto } from './dto/create-comcity.dto';
 import { UpdateComcityDto } from './dto/update-comcity.dto';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Auth, GetUser } from 'src/auth/decorators';
 import { ValidRoles } from 'src/auth/interfaces';
 import { Comcity } from './entities/comcity.entity';
 import { User } from 'src/auth/entities/user.entity';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { CreateWarehouseDto } from './dto/create-warehouse.dto';
+import { UpdateWarehouseDto } from './dto/update-warehouse.dto';
 
 @ApiTags('Company City')
 @Controller('comcity')
@@ -41,7 +42,7 @@ export class ComcityController {
     }
   }
 
-  
+
   @Get('by-company-and-city')
   async getByCompanyAndCity(
     @Query('companyId') companyId: string,
@@ -52,18 +53,18 @@ export class ComcityController {
     }
     return this.comcityService.findByCompanyIdAndCityId(companyId, cityId);
   }
-  
+
   @Get('by-city/:cityId')
   async getByCityId(@Param('cityId') cityId: string): Promise<Comcity[]> {
     return this.comcityService.findAllByCityId(cityId);
   }
-  
-  
+
+
   @Get('by-company/:companyId')
   async getByCompanyId(@Param('companyId') companyId: string): Promise<Comcity[]> {
     return this.comcityService.findAllByCompanyId(companyId);
   }
-  
+
   @Get(':term')
   findOne(@Param('term') term: string) {
     return this.comcityService.findOnePlain(term);
@@ -97,6 +98,40 @@ export class ComcityController {
           throw new BadRequestException('Failed to update comcity');
         }
       });
+  }
+
+  @ApiOperation({ summary: 'Actualizar un almacén' })
+  @ApiResponse({ status: 200, description: 'Almacén actualizado exitosamente.' })
+  @ApiResponse({ status: 404, description: 'Almacén no encontrado.' })
+  @Patch('warehouses/:id')
+  async updateWarehouse(
+    @Param('id') id: string,
+    @Body() updateWarehouseDto: UpdateWarehouseDto,
+  ) {
+    try {
+      return await this.comcityService.updateWarehouse(id, updateWarehouseDto);
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
+
+
+  @Delete('warehouses/:id')
+  async deleteWarehouse(@Param('id') id: string) {
+    try {
+      return await this.comcityService.deleteWarehouse(id);
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
+
+  @Delete('warehouses')
+  async deleteAllWarehouses() {
+    try {
+      return await this.comcityService.deleteAllWarehouses();
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }
 
   @Delete(':id')
