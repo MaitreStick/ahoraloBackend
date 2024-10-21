@@ -11,6 +11,7 @@ import { isUUID } from 'class-validator';
 import { City } from 'src/cities/entities/city.entity';
 import { Company } from 'src/companies/entities/company.entity';
 import { Warehouse } from './entities/warehouse.entity';
+import { CreateWarehouseDto } from './dto/create-warehouse.dto';
 
 @Injectable()
 export class ComcityService {
@@ -25,6 +26,8 @@ export class ComcityService {
     private readonly cityRepository: Repository<City>,
     @InjectRepository(Company)
     private readonly companyRepository: Repository<Company>,
+    @InjectRepository(Warehouse)
+    private readonly warehouseRepository: Repository<Warehouse>,
     private readonly cityService: CitiesService,
     private readonly companyService: CompaniesService,
     private readonly dataSource: DataSource,
@@ -66,6 +69,27 @@ export class ComcityService {
   } catch (error) {
       this.handleDBException(error);
   }
+  }
+
+  async createWarehouse(createWarehouseDto: CreateWarehouseDto): Promise<Warehouse> {
+    const { name, latitude, longitude, comcityId } = createWarehouseDto;
+
+    const comcity = await this.comcityRepository.findOne({
+      where: { id: comcityId },
+    });
+
+    if (!comcity) {
+      throw new NotFoundException(`Comcity con ID "${comcityId}" no encontrado.`);
+    }
+
+    const warehouse = this.warehouseRepository.create({
+      name,
+      latitude,
+      longitude,
+      comcity,
+    });
+
+    return this.warehouseRepository.save(warehouse);
   }
 
   async findAll(paginationDto: PaginationDto): Promise<Comcity[]> {

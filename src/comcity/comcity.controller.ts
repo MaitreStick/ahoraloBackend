@@ -8,6 +8,7 @@ import { ValidRoles } from 'src/auth/interfaces';
 import { Comcity } from './entities/comcity.entity';
 import { User } from 'src/auth/entities/user.entity';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
+import { CreateWarehouseDto } from './dto/create-warehouse.dto';
 
 @ApiTags('Company City')
 @Controller('comcity')
@@ -29,6 +30,15 @@ export class ComcityController {
   @Get()
   findAll(@Query() paginationDto: PaginationDto) {
     return this.comcityService.findAll(paginationDto);
+  }
+
+  @Post('warehouses')
+  async createWarehouse(@Body() createWarehouseDto: CreateWarehouseDto) {
+    try {
+      return await this.comcityService.createWarehouse(createWarehouseDto);
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }
 
   
