@@ -64,33 +64,23 @@ export class ProdcomcityController {
     return results;
   }
 
-  // @Get('lowest-prices-by-tags')
-  // async getLowestPricesByTags(@Query('tags') tags: string) {
-  //   if (!tags) {
-  //     throw new BadRequestException('Tags query parameter is required');
-  //   }
 
-  //   const tagsArray = tags.split(',').map(tag => tag.trim());
-
-  //   return this.prodcomcityService.findLowestPricesByTags(tagsArray);
-  // }
-
-  @Get('lowest-prices-by-tags')
+  @Post('lowest-prices-by-tags')
   async getLowestPricesByTags(
-    @Query('tags') tags: string,
-    @Query('cityId') cityId: string
+    @Body() body: { tags: string[]; cityId: string }
   ) {
-    if (!tags) {
-      throw new BadRequestException('Tags query parameter is required');
+    const { tags, cityId } = body;
+
+    if (!tags || !Array.isArray(tags) || tags.length === 0) {
+      throw new BadRequestException('El campo "tags" es requerido y debe ser un arreglo no vacío.');
     }
     if (!cityId) {
-      throw new BadRequestException('CityId query parameter is required');
+      throw new BadRequestException('El campo "cityId" es requerido.');
     }
 
-    const tagsArray = tags.split(',').map(tag => tag.trim());
-
-    return this.prodcomcityService.findLowestPricesByTags(tagsArray, cityId);
+    return this.prodcomcityService.findLowestPricesByTags(tags, cityId);
   }
+
 
 
   @Get('/:comcityId/:productId')
