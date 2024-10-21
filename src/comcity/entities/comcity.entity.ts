@@ -1,11 +1,12 @@
-import { Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { City } from '../../cities/entities/city.entity';
-import { Company} from '../../companies/entities/company.entity';
+import { Company } from '../../companies/entities/company.entity';
 import { User } from 'src/auth/entities/user.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { Warehouse } from './warehouse.entity';
 
 
-@Entity({ name: 'comcity'})
+@Entity({ name: 'comcity' })
 export class Comcity {
 
     @ApiProperty({
@@ -36,9 +37,12 @@ export class Comcity {
 
     @ManyToOne(
         () => User,
-        ( user ) => user.comCity,
+        (user) => user.comCity,
         { eager: true }
     )
     user: User
+
+    @OneToMany(() => Warehouse, (warehouse) => warehouse.comcity)
+    warehouses: Warehouse[];
 
 }

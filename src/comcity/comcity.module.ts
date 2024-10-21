@@ -6,12 +6,13 @@ import { AuthModule } from 'src/auth/auth.module';
 import { Comcity } from './entities/comcity.entity';
 import { CitiesModule } from 'src/cities/cities.module';
 import { CompaniesModule } from 'src/companies/companies.module';
+import { Warehouse } from './entities/warehouse.entity';
 
 @Module({
   controllers: [ComcityController],
   providers: [ComcityService],
   imports: [
-    TypeOrmModule.forFeature([ Comcity ]),
+    TypeOrmModule.forFeature([ Comcity, Warehouse ]),
     AuthModule,
     CitiesModule,
     CompaniesModule

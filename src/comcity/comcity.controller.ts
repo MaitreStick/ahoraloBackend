@@ -59,6 +59,19 @@ export class ComcityController {
     return this.comcityService.findOnePlain(term);
   }
 
+  @Post('nearest-warehouses')
+  async getNearestWarehouses(
+    @Body() body: { comcityId: string; userLatitude: number; userLongitude: number }
+  ) {
+    const { comcityId, userLatitude, userLongitude } = body;
+
+    if (!comcityId || userLatitude === undefined || userLongitude === undefined) {
+      throw new BadRequestException('comcityId, userLatitude, and userLongitude are required.');
+    }
+
+    return this.comcityService.findNearestWarehouses(comcityId, userLatitude, userLongitude);
+  }
+
   @Patch(':id')
   @Auth(ValidRoles.superUser, ValidRoles.admin)
   updateComcity(

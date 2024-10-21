@@ -10,6 +10,7 @@ import { User } from 'src/auth/entities/user.entity';
 import { isUUID } from 'class-validator';
 import { City } from 'src/cities/entities/city.entity';
 import { Company } from 'src/companies/entities/company.entity';
+import { Warehouse } from './entities/warehouse.entity';
 
 @Injectable()
 export class ComcityService {
@@ -201,6 +202,64 @@ export class ComcityService {
       this.handleDBException(error);
     }
   }
+
+  async findNearestWarehouses(comcityId: string, userLatitude: number, userLongitude: number) {
+    // Obtener los almacenes asociados al comcity dado
+    const warehouses = await this.dataSource
+      .getRepository(Warehouse)
+      .createQueryBuilder('warehouse')
+      .innerJoin('warehouse.comcity', 'comcity')
+      .where('comcity.id = :comcityId', { comcityId })
+      .getMany();
+
+    if (!warehouses || warehouses.length === 0) {
+      return [];
+    }
+
+    // Calcular la distancia de cada almacén a la ubicación del usuario
+    const warehousesWithDistance = warehouses.map((warehouse) => {
+      const distance = this.calculateDistance(
+        userLatitude,
+        userLongitude,
+        warehouse.latitude,
+        warehouse.longitude
+      );
+      return {
+        id: warehouse.id,
+        name: warehouse.name,
+        latitude: warehouse.latitude,
+        longitude: warehouse.longitude,
+        distance,
+      };
+    });
+
+    // Ordenar los almacenes por distancia ascendente
+    warehousesWithDistance.sort((a, b) => a.distance - b.distance);
+
+    return warehousesWithDistance;
+  }
+
+  // Método para calcular la distancia entre dos puntos (Haversine formula)
+  calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number) {
+    const toRadians = (degrees: number) => (degrees * Math.PI) / 180;
+
+    const earthRadiusKm = 6371;
+
+    const dLat = toRadians(lat2 - lat1);
+    const dLon = toRadians(lon2 - lon1);
+
+    const lat1Rad = toRadians(lat1);
+    const lat2Rad = toRadians(lat2);
+
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1Rad) * Math.cos(lat2Rad);
+
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    return earthRadiusKm * c * 1000; // Devuelve la distancia en metros
+  }
+
 
   private handleDBException(error: any) {
     if (error.code === '23505')
