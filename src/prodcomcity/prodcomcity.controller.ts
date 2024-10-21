@@ -81,6 +81,23 @@ export class ProdcomcityController {
     return this.prodcomcityService.findLowestPricesByTags(tags, cityId);
   }
 
+  @Post('lowest-prices-by-codes')
+  async getLowestPricesByCodes(
+    @Body() body: { codes: number[]; cityId: string }
+  ) {
+    const { codes, cityId } = body;
+
+    if (!codes || !Array.isArray(codes) || codes.length === 0) {
+      throw new BadRequestException('El campo "codes" es requerido y debe ser un arreglo no vacío.');
+    }
+    if (!cityId) {
+      throw new BadRequestException('El campo "cityId" es requerido.');
+    }
+
+    return this.prodcomcityService.findLowestPricesByCodes(codes, cityId);
+  }
+
+
 
 
   @Get('/:comcityId/:productId')

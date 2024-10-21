@@ -540,7 +540,7 @@ export class ProdcomcityService {
       .innerJoin('comcity.city', 'city')
       .innerJoin('comcity.company', 'company')
       .where('pcc.productId IN (:...productIds)', { productIds })
-      .andWhere('city.id = :cityId', { cityId }) 
+      .andWhere('city.id = :cityId', { cityId })
       .groupBy('company.id')
       .addGroupBy('company.name')
       .addGroupBy('product.id')
@@ -555,6 +555,40 @@ export class ProdcomcityService {
       lowestPrice: parseFloat(price.lowestPrice),
     }));
   }
+
+  async findLowestPricesByCodes(codes: number[], cityId: string): Promise<any[]> {
+    if (codes.length === 0) {
+      return [];
+    }
+
+    const prices = await this.prodcomcityRepository
+      .createQueryBuilder('pcc')
+      .select('company.id', 'companyId')
+      .addSelect('company.name', 'companyName')
+      .addSelect('MIN(pcc.price)', 'lowestPrice')
+      .addSelect('product.title', 'productTitle')
+      .addSelect('product.code', 'productCode')
+      .innerJoin('pcc.product', 'product')
+      .innerJoin('pcc.comcity', 'comcity')
+      .innerJoin('comcity.city', 'city')
+      .innerJoin('comcity.company', 'company')
+      .where('product.code IN (:...codes)', { codes })
+      .andWhere('city.id = :cityId', { cityId })
+      .groupBy('company.id')
+      .addGroupBy('company.name')
+      .addGroupBy('product.code')
+      .addGroupBy('product.title')
+      .getRawMany();
+
+    return prices.map(price => ({
+      companyId: price.companyId,
+      companyName: price.companyName,
+      productCode: price.productCode,
+      productTitle: price.productTitle,
+      lowestPrice: parseFloat(price.lowestPrice),
+    }));
+  }
+
 
 
 
