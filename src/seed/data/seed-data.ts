@@ -594,27 +594,55 @@ export const initialData: SeedData = {
     ],
     products: productsData,
     warehouses: [
-        // Agrega tus almacenes aquí
         {
-            name: 'Almacén Principal',
-            latitude: 12.345678,
-            longitude: -98.7654321,
+            name: 'Éxito Neiva ( San Pedro )',
+            latitude: 2.9496895843555504,
+            longitude: -75.2890542651417,
             comcity: {
-                companyName: 'Compañía A',
-                cityName: 'Ciudad X',
-                cityDep: 'Departamento Y',
+                companyName: 'Éxito',
+                cityName: 'Neiva',
+                cityDep: 'Huila',
             },
         },
         {
-            name: 'Almacén Secundario',
-            latitude: 23.456789,
-            longitude: -97.654321,
+            name: 'Éxito Neiva Centro',
+            latitude: 2.9263938632996576,
+            longitude: -75.29117046089401,
             comcity: {
-                companyName: 'Compañía B',
-                cityName: 'Ciudad Z',
-                cityDep: 'Departamento W',
+                companyName: 'Éxito',
+                cityName: 'Neiva',
+                cityDep: 'Huila',
             },
         },
-        // ... más almacenes
+        {
+            name: 'Exito Unicentro Neiva',
+            latitude: 2.9098017962655525, 
+            longitude: -75.27961953562334,
+            comcity: {
+                companyName: 'Éxito',
+                cityName: 'Neiva',
+                cityDep: 'Huila',
+            },
+        },
+        {
+            name: 'Metro Neiva',
+            latitude: 2.9382636143167935,  
+            longitude: -75.29353395008972,
+            comcity: {
+                companyName: 'Metro',
+                cityName: 'Neiva',
+                cityDep: 'Huila',
+            },
+        },
+        {
+            name: 'Metro Santa Lucia',
+            latitude: 2.9340860477174115,   
+            longitude: -75.24850523456041,
+            comcity: {
+                companyName: 'Metro',
+                cityName: 'Neiva',
+                cityDep: 'Huila',
+            },
+        },
     ],
 }
