@@ -268,13 +268,30 @@ export class ComcityService {
     }
   }
 
-  async findByCompanyIds(companyIds: string[]): Promise<Warehouse[]> {
-    return this.warehouseRepository
+  async findByCompanyIds(companyIds: string[]): Promise<any[]> {
+    const warehouses = await this.warehouseRepository
       .createQueryBuilder('warehouse')
-      .innerJoinAndSelect('warehouse.comcity', 'comcity')
-      .innerJoinAndSelect('comcity.company', 'company')
+      .innerJoin('warehouse.comcity', 'comcity')
+      .innerJoin('comcity.company', 'company')
+      .select([
+        'warehouse.id',
+        'warehouse.name',
+        'warehouse.latitude',
+        'warehouse.longitude',
+        'company.id',
+        'company.name',
+      ])
       .where('company.id IN (:...companyIds)', { companyIds })
-      .getMany();
+      .getRawMany();
+
+    return warehouses.map((warehouse) => ({
+      id: warehouse.warehouse_id,
+      name: warehouse.warehouse_name,
+      latitude: parseFloat(warehouse.warehouse_latitude),
+      longitude: parseFloat(warehouse.warehouse_longitude),
+      companyId: warehouse.company_id,
+      companyName: warehouse.company_name,
+    }));
   }
 
   async findNearestWarehouses(comcityId: string, userLatitude: number, userLongitude: number) {

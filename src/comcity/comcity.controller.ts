@@ -70,6 +70,12 @@ export class ComcityController {
     return this.comcityService.findOnePlain(term);
   }
 
+  @Post('warehouses/by-company-ids')
+  async getWarehousesByCompanyIds(@Body() body: { companyIds: string[] }) {
+    const { companyIds } = body;
+    return this.comcityService.findByCompanyIds(companyIds);
+  }
+  
   @Post('nearest-warehouses')
   async getNearestWarehouses(
     @Body() body: { comcityId: string; userLatitude: number; userLongitude: number }
@@ -83,11 +89,6 @@ export class ComcityController {
     return this.comcityService.findNearestWarehouses(comcityId, userLatitude, userLongitude);
   }
 
-  @Post('warehouses/by-company-ids')
-  async getWarehousesByCompanyIds(@Body() body: { companyIds: string[] }) {
-    const { companyIds } = body;
-    return this.comcityService.findByCompanyIds(companyIds);
-  }
 
   @Patch(':id')
   @Auth(ValidRoles.superUser, ValidRoles.admin)
