@@ -269,6 +269,9 @@ export class ComcityService {
   }
 
   async findByCompanyIds(companyIds: string[]): Promise<any[]> {
+    if (!companyIds || companyIds.length === 0) {
+      return [];
+    }
     const warehouses = await this.warehouseRepository
       .createQueryBuilder('warehouse')
       .innerJoin('warehouse.comcity', 'comcity')
