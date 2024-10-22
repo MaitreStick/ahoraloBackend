@@ -83,6 +83,12 @@ export class ComcityController {
     return this.comcityService.findNearestWarehouses(comcityId, userLatitude, userLongitude);
   }
 
+  @Post('by-company-ids')
+  async getWarehousesByCompanyIds(@Body() body: { companyIds: string[] }) {
+    const { companyIds } = body;
+    return this.comcityService.findByCompanyIds(companyIds);
+  }
+
   @Patch(':id')
   @Auth(ValidRoles.superUser, ValidRoles.admin)
   updateComcity(

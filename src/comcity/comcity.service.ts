@@ -33,7 +33,7 @@ export class ComcityService {
     private readonly companyService: CompaniesService,
     private readonly dataSource: DataSource,
 
-  ) {}
+  ) { }
 
 
   async create(createComcityDto: CreateComcityDto, user: User) {
@@ -43,33 +43,33 @@ export class ComcityService {
       const cityEntity = await this.cityService.findOne(city);
       const companyEntity = await this.companyService.findOne(company);
       if (!cityEntity) {
-          throw new BadRequestException('Product not found');
+        throw new BadRequestException('Product not found');
       } else if (!companyEntity) {
-          throw new BadRequestException('Company not found');
+        throw new BadRequestException('Company not found');
       } else if (cityEntity && companyEntity) {
-          const comcity = await this.comcityRepository.findOne({
-              where: {
-                  city: cityEntity,
-                  company: companyEntity
-              }
-          });
-
-          if (comcity) {
-              throw new BadRequestException('Company already linked to city');
+        const comcity = await this.comcityRepository.findOne({
+          where: {
+            city: cityEntity,
+            company: companyEntity
           }
+        });
+
+        if (comcity) {
+          throw new BadRequestException('Company already linked to city');
+        }
       }
 
       const comcity = this.comcityRepository.create({
-          city: cityEntity,
-          company: companyEntity,
-          user
+        city: cityEntity,
+        company: companyEntity,
+        user
       });
 
       await this.comcityRepository.save(comcity);
       return comcity;
-  } catch (error) {
+    } catch (error) {
       this.handleDBException(error);
-  }
+    }
   }
 
   async createWarehouse(createWarehouseDto: CreateWarehouseDto): Promise<Warehouse> {
@@ -137,14 +137,14 @@ export class ComcityService {
     const { limit = 10, offset = 0, search = '' } = paginationDto;
 
     const query = this.comcityRepository.createQueryBuilder('comcity')
-        .leftJoinAndSelect('comcity.city', 'city')
-        .leftJoinAndSelect('comcity.company', 'company')
-        .leftJoinAndSelect('comcity.user', 'user')
-        .skip(offset)
-        .take(limit);
+      .leftJoinAndSelect('comcity.city', 'city')
+      .leftJoinAndSelect('comcity.company', 'company')
+      .leftJoinAndSelect('comcity.user', 'user')
+      .skip(offset)
+      .take(limit);
 
     if (search) {
-        query.where('city.name ILIKE :search', { search: `%${search}%` });
+      query.where('city.name ILIKE :search', { search: `%${search}%` });
     }
 
     const comcities = await query.getMany();
@@ -154,22 +154,22 @@ export class ComcityService {
 
   async findOne(term: string) {
     let comCity: Comcity;
-    if( isUUID(term) ) {
-      comCity = await this.comcityRepository.findOne({ 
+    if (isUUID(term)) {
+      comCity = await this.comcityRepository.findOne({
         where: { id: term },
-        relations: ['city', 'company', 'user']  
+        relations: ['city', 'company', 'user']
       });
-    } 
+    }
 
-    
+
     if (!comCity)
       throw new NotFoundException(`comCity with ${term} not found`);
-    
+
     return comCity;
   }
 
   async findOnePlain(term: string) {
-    const comcity = await this.findOne(term); 
+    const comcity = await this.findOne(term);
     return comcity;
   }
 
@@ -228,11 +228,11 @@ export class ComcityService {
       },
       relations: ['city', 'company'],
     });
-  
+
     if (!comcity) {
       throw new NotFoundException(`Comcity with company ID '${companyId}' and city ID '${cityId}' not found`);
     }
-  
+
     return comcity;
   }
 
@@ -259,13 +259,22 @@ export class ComcityService {
 
     try {
       return await query
-      .delete()
-      .where({})
-      .execute();
+        .delete()
+        .where({})
+        .execute();
 
     } catch (error) {
       this.handleDBException(error);
     }
+  }
+
+  async findByCompanyIds(companyIds: string[]): Promise<Warehouse[]> {
+    return this.warehouseRepository
+      .createQueryBuilder('warehouse')
+      .innerJoinAndSelect('warehouse.comcity', 'comcity')
+      .innerJoinAndSelect('comcity.company', 'company')
+      .where('company.id IN (:...companyIds)', { companyIds })
+      .getMany();
   }
 
   async findNearestWarehouses(comcityId: string, userLatitude: number, userLongitude: number) {
@@ -329,11 +338,11 @@ export class ComcityService {
   private handleDBException(error: any) {
     if (error.code === '23505')
       throw new BadRequestException(error.detail);
-      
+
     this.logger.error(error);
 
     throw new InternalServerErrorException('Unexpected error, please check the logs');
-    
+
   }
 
 }
