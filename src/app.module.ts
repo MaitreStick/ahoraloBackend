@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductsModule } from './products/products.module';
@@ -12,6 +12,7 @@ import { ProdcomcityModule } from './prodcomcity/prodcomcity.module';
 import { ComcityModule } from './comcity/comcity.module';
 import { CitiesModule } from './cities/cities.module';
 import { CompaniesModule } from './companies/companies.module';
+import { AuditLogModule } from './audit-log/audit-log.module';
 
 @Module({
   imports: [
@@ -49,7 +50,9 @@ import { CompaniesModule } from './companies/companies.module';
     CitiesModule,
 
     CompaniesModule,
+
+    AuditLogModule,
+
   ],
 })
 export class AppModule {}
- 
