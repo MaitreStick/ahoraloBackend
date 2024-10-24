@@ -36,6 +36,7 @@
     "class-validator": "^0.14.1",
     "cloudinary": "^2.5.0",
     "google-auth-library": "^9.11.0",
+    "json2csv": "^6.0.0-alpha.2",
     "passport": "^0.7.0",
     "passport-google-id-token": "^0.4.7",
     "passport-jwt": "^4.0.1",
