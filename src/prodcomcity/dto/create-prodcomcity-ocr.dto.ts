@@ -6,7 +6,8 @@ import { IsDateString, IsNumber, IsOptional, IsPositive, IsString, MinLength } f
 export class CreateProdcomcityOcrDto {
 
     @ApiProperty({
-        description: 'The id of the comcity which is associated with the company and city',
+        description: 'The UUID of the comcity associated with the company and city',
+        example: '1b965650-51c7-42e8-9642-a25ac46c0a4e',
         nullable: false,
         minLength: 1,
     })
@@ -15,7 +16,8 @@ export class CreateProdcomcityOcrDto {
     comcity: string;
 
     @ApiProperty({
-        description: 'The id of the product',
+        description: 'The UUID of the product',
+        example: '2c965650-51c7-42e8-9642-a25ac46c0a4e',
         nullable: false,
         minLength: 1,
     })
@@ -25,7 +27,7 @@ export class CreateProdcomcityOcrDto {
 
     @ApiProperty({
         description: 'The date associated with the event',
-        example: '2024-06-05', 
+        example: '2024-06-05',
         type: String,
         format: 'date',
     })
@@ -34,6 +36,7 @@ export class CreateProdcomcityOcrDto {
 
     @ApiProperty({
         description: 'The price of the product',
+        example: 10000,
         nullable: false,
         type: Number,
         minimum: 0,

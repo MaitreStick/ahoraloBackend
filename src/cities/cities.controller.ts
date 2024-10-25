@@ -4,7 +4,7 @@ import { CreateCityDto } from './dto/create-city.dto';
 import { UpdateCityDto } from './dto/update-city.dto';
 import { Auth } from 'src/auth/decorators';
 import { ValidRoles } from 'src/auth/interfaces';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { City } from './entities/city.entity';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 
@@ -15,6 +15,7 @@ export class CitiesController {
 
   @Post()
   @Auth(ValidRoles.superUser, ValidRoles.admin)
+  @ApiOperation({ summary: 'Create a new city' })
   @ApiResponse({ status: 201, description: 'city created', type: City})
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiResponse({ status: 403, description: 'Forbidden. Token Related' })
@@ -23,12 +24,15 @@ export class CitiesController {
   }
 
   @Get()
+  @ApiOperation({ summary: 'Get all companies with pagination' })
+  @ApiResponse({ status: 200, description: 'Returns a list of cities', type: [City] })
   findAll(@Query() paginationDto: PaginationDto){
     return this.citiesService.findAll( paginationDto );
   }
 
   
   @Get('search')
+  @ApiOperation({ summary: 'Search companies by name' })
   @ApiResponse({ status: 200, description: 'Returns cities matching the search criteria', type: [City] })
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiResponse({ status: 404, description: 'Not found' })
@@ -40,12 +44,12 @@ export class CitiesController {
   ) {
     if (!name) {
       return this.citiesService.findAll({ limit, offset });
-      // throw new BadRequestException('Name must be provided');
     }
     return this.citiesService.findByName(name, department, offset, limit);
   }
   
   @Get(':id')
+  @ApiOperation({ summary: 'Get a company by ID' })
   @ApiResponse({ status: 200, description: 'Returns the city by ID', type: City })
   @ApiResponse({ status: 404, description: 'City not found' })
   findOneById(@Param('id', ParseUUIDPipe) id: string) {
@@ -54,6 +58,10 @@ export class CitiesController {
 
   @Patch(':id')
   @Auth(ValidRoles.superUser, ValidRoles.admin)
+  @ApiOperation({ summary: 'Update a company by ID' })
+  @ApiResponse({ status: 200, description: 'City updated successfully', type: City })
+  @ApiResponse({ status: 400, description: 'Bad request' })
+  @ApiResponse({ status: 404, description: 'City not found' })
   updateCity(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateCityDto: CreateCityDto,
@@ -71,6 +79,9 @@ export class CitiesController {
 
   @Delete(':id')
   @Auth(ValidRoles.superUser, ValidRoles.admin)
+  @ApiOperation({ summary: 'Delete a company by ID' })
+  @ApiResponse({ status: 200, description: 'City deleted successfully' })
+  @ApiResponse({ status: 404, description: 'City not found' })
   remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.citiesService.remove(id);
   }

@@ -23,7 +23,7 @@ export class PaginationDto {
     offset?: number;
 
     @ApiProperty({
-        description: 'Search query for filtering cities',
+        description: 'Search query for filtering results',
         required: false,
     })
     @IsOptional()

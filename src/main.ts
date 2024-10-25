@@ -33,8 +33,8 @@ async function bootstrap() {
   );
 
   const config = new DocumentBuilder()
-    .setTitle('PriceTracker RESTFUL API')
-    .setDescription('PriceTracker endpoints')
+    .setTitle('Ahoralo RESTFUL API')
+    .setDescription('Ahoralo endpoints')
     .setVersion('1.0').addServer('http://localhost:8080/').addBearerAuth(
       {
         type: 'http',

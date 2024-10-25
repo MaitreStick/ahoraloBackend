@@ -1,21 +1,27 @@
 import { Controller, Post, Body, UploadedFile, UseInterceptors, BadRequestException, Get, Res, Param } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Response } from 'express';
 import { diskStorage } from 'multer';
 import { FilesService } from './files.service';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { fileFilter, fileNamer } from './helpers';
+import { FileUploadDto } from './dto/FileUpload.dto';
 
 @ApiTags('Files - Get and Upload')
 @Controller('files')
 export class FilesController {
     constructor(
         private readonly filesService: FilesService,
-        private readonly configService: ConfigService,
     ) { }
 
     @Post('upload')
+    @ApiOperation({ summary: 'Upload a product image' })
+    @ApiConsumes('multipart/form-data')
+    @ApiBody({
+        description: 'File upload',
+        type: FileUploadDto,
+    })
+    @ApiResponse({ status: 201, description: 'File uploaded successfully' })
+    @ApiResponse({ status: 400, description: 'No file uploaded or file type not supported' })
     @UseInterceptors(FileInterceptor('file', { fileFilter }))
     async uploadProductImage(
         @UploadedFile() file: Express.Multer.File,
@@ -27,10 +33,18 @@ export class FilesController {
     }
 
     @Post('uploadOcrImage')
+    @ApiOperation({ summary: 'Upload an image for OCR processing' })
+    @ApiConsumes('multipart/form-data')
+    @ApiBody({
+        description: 'Upload a file for OCR',
+        type: FileUploadDto,
+    })
+    @ApiResponse({ status: 201, description: 'OCR processing successful' })
+    @ApiResponse({ status: 400, description: 'No file uploaded or error during processing' })
     @UseInterceptors(FileInterceptor('file', {
         storage: diskStorage({
-            destination: './static/ocr-images', 
-            filename: fileNamer, 
+            destination: './static/ocr-images',
+            filename: fileNamer,
         }),
         fileFilter: fileFilter,
     }))
@@ -44,17 +58,17 @@ export class FilesController {
 
         try {
             const ocrResults = await this.filesService.processImage(file.path, comcity);
-        
+
             await this.filesService.deleteFile(file.path);
-        
+
             return ocrResults;
-          } catch (error) {
+        } catch (error) {
             console.error('Error processing image:', error);
-        
+
             await this.filesService.deleteFile(file.path);
-        
+
             throw new BadRequestException('Error processing image');
-          }
+        }
     }
 
 }

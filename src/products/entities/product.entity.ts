@@ -61,6 +61,10 @@ export class Product {
     )
     images?: ProductImage[];
 
+    @ApiProperty({
+        description: 'User associated with this product',
+        type: () => User,
+    })
     @ManyToOne(
         () => User,
         (user) => user.product,

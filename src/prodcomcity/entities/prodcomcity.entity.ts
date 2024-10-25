@@ -52,6 +52,10 @@ export class Prodcomcity {
     @Column('timestamptz', { default: () => 'CURRENT_TIMESTAMP' })
     date: Date;
 
+    @ApiProperty({
+        description: 'User associated with this Prodcomcity entry',
+        type: () => User,
+      })
     @ManyToOne(
         () => User,
         ( user ) => user.prodComCity,

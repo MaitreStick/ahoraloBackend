@@ -1,7 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ParseUUIDPipe, Res, HttpException, HttpStatus, NotFoundException, BadRequestException } from '@nestjs/common';
 import { ComcityService } from './comcity.service';
 import { CreateComcityDto } from './dto/create-comcity.dto';
-import { UpdateComcityDto } from './dto/update-comcity.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Auth, GetUser } from 'src/auth/decorators';
 import { ValidRoles } from 'src/auth/interfaces';
@@ -18,9 +17,10 @@ export class ComcityController {
 
   @Post()
   @Auth(ValidRoles.superUser, ValidRoles.admin)
+  @ApiOperation({ summary: 'Create a new city-company relationship' })
   @ApiResponse({ status: 201, description: 'City with company created', type: Comcity })
   @ApiResponse({ status: 400, description: 'Bad request' })
-  @ApiResponse({ status: 403, description: 'Forbidden. Token Related' })
+  @ApiResponse({ status: 403, description: 'Forbidden. Token related' })
   create(
     @Body() createComcityDto: CreateComcityDto,
     @GetUser() user: User,
@@ -29,11 +29,16 @@ export class ComcityController {
   }
 
   @Get()
+  @ApiOperation({ summary: 'Get all city-company relationships' })
+  @ApiResponse({ status: 200, description: 'List of all city-company relationships', type: [Comcity] })
   findAll(@Query() paginationDto: PaginationDto) {
     return this.comcityService.findAll(paginationDto);
   }
 
   @Post('warehouses')
+  @ApiOperation({ summary: 'Create a new warehouse' })
+  @ApiResponse({ status: 201, description: 'Warehouse created successfully' })
+  @ApiResponse({ status: 400, description: 'Bad request' })
   async createWarehouse(@Body() createWarehouseDto: CreateWarehouseDto) {
     try {
       return await this.comcityService.createWarehouse(createWarehouseDto);
@@ -44,6 +49,9 @@ export class ComcityController {
 
 
   @Get('by-company-and-city')
+  @ApiOperation({ summary: 'Get city-company relationship by company ID and city ID' })
+  @ApiResponse({ status: 200, description: 'City-company relationship found', type: Comcity })
+  @ApiResponse({ status: 400, description: 'Bad request' })
   async getByCompanyAndCity(
     @Query('companyId') companyId: string,
     @Query('cityId') cityId: string,
@@ -55,28 +63,41 @@ export class ComcityController {
   }
 
   @Get('by-city/:cityId')
+  @ApiOperation({ summary: 'Get all city-company relationships by city ID' })
+  @ApiResponse({ status: 200, description: 'List of city-company relationships', type: [Comcity] })
   async getByCityId(@Param('cityId') cityId: string): Promise<Comcity[]> {
     return this.comcityService.findAllByCityId(cityId);
   }
 
 
   @Get('by-company/:companyId')
+  @ApiOperation({ summary: 'Get all city-company relationships by company ID' })
+  @ApiResponse({ status: 200, description: 'List of city-company relationships', type: [Comcity] })
   async getByCompanyId(@Param('companyId') companyId: string): Promise<Comcity[]> {
     return this.comcityService.findAllByCompanyId(companyId);
   }
 
   @Get(':term')
+  @ApiOperation({ summary: 'Find a city-company relationship by ID or name' })
+  @ApiResponse({ status: 200, description: 'City-company relationship found', type: Comcity })
+  @ApiResponse({ status: 404, description: 'City-company relationship not found' })
   findOne(@Param('term') term: string) {
     return this.comcityService.findOnePlain(term);
   }
 
   @Post('warehouses/by-company-ids')
+  @ApiOperation({ summary: 'Get warehouses by company IDs' })
+  @ApiResponse({ status: 200, description: 'List of warehouses found' })
+  @ApiResponse({ status: 400, description: 'Bad request' })
   async getWarehousesByCompanyIds(@Body() body: { companyIds: string[] }) {
     const { companyIds } = body;
     return this.comcityService.findByCompanyIds(companyIds);
   }
   
   @Post('nearest-warehouses')
+  @ApiOperation({ summary: 'Get nearest warehouses based on user location' })
+  @ApiResponse({ status: 200, description: 'List of nearest warehouses' })
+  @ApiResponse({ status: 400, description: 'Bad request: Required parameters missing' })
   async getNearestWarehouses(
     @Body() body: { comcityId: string; userLatitude: number; userLongitude: number }
   ) {
@@ -92,6 +113,9 @@ export class ComcityController {
 
   @Patch(':id')
   @Auth(ValidRoles.superUser, ValidRoles.admin)
+  @ApiOperation({ summary: 'Update a city-company relationship' })
+  @ApiResponse({ status: 200, description: 'City-company relationship updated', type: Comcity })
+  @ApiResponse({ status: 404, description: 'City-company relationship not found' })
   updateComcity(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateComcityDto: CreateComcityDto,
@@ -107,10 +131,10 @@ export class ComcityController {
       });
   }
 
+  @Patch('warehouses/:id')
   @ApiOperation({ summary: 'Actualizar un almacén' })
   @ApiResponse({ status: 200, description: 'Almacén actualizado exitosamente.' })
   @ApiResponse({ status: 404, description: 'Almacén no encontrado.' })
-  @Patch('warehouses/:id')
   async updateWarehouse(
     @Param('id') id: string,
     @Body() updateWarehouseDto: UpdateWarehouseDto,
@@ -124,6 +148,9 @@ export class ComcityController {
 
 
   @Delete('warehouses/:id')
+  @ApiOperation({ summary: 'Delete a warehouse' })
+  @ApiResponse({ status: 200, description: 'Warehouse deleted successfully' })
+  @ApiResponse({ status: 404, description: 'Warehouse not found' })
   async deleteWarehouse(@Param('id') id: string) {
     try {
       return await this.comcityService.deleteWarehouse(id);
@@ -133,6 +160,9 @@ export class ComcityController {
   }
 
   @Delete('warehouses')
+  @ApiOperation({ summary: 'Delete all warehouses' })
+  @ApiResponse({ status: 200, description: 'All warehouses deleted successfully' })
+  @ApiResponse({ status: 400, description: 'Bad request' })
   async deleteAllWarehouses() {
     try {
       return await this.comcityService.deleteAllWarehouses();
@@ -142,6 +172,9 @@ export class ComcityController {
   }
 
   @Delete(':id')
+  @ApiOperation({ summary: 'Delete a city-company relationship' })
+  @ApiResponse({ status: 200, description: 'City-company relationship deleted successfully' })
+  @ApiResponse({ status: 404, description: 'City-company relationship not found' })
   @Auth(ValidRoles.superUser, ValidRoles.admin)
   remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.comcityService.remove(id);

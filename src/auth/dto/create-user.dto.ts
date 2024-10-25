@@ -4,7 +4,7 @@ import { IsEmail, IsString, Matches, MaxLength, MinLength } from 'class-validato
 
 export class CreateUserDto {
     @ApiProperty({
-        example: "janedoe@gmail.com",
+        example: 'janedoe@gmail.com',
         nullable: false,
         description: 'The email of the user (unique)',
     })
@@ -13,7 +13,7 @@ export class CreateUserDto {
     email: string;
 
     @ApiProperty({
-        example: "Jane123",
+        example: 'Jane123',
         nullable: false,
         description: 'The password of the user',
     })
@@ -27,7 +27,7 @@ export class CreateUserDto {
     password: string;
 
     @ApiProperty({
-        example: "Jane Doe",
+        example: 'Jane Doe',
         nullable: false,
         description: 'The full name of the user',
     })

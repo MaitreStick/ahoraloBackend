@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ParseUUIDPipe
 import { ProdcomcityService } from './prodcomcity.service';
 import { CreateProdcomcityDto } from './dto/create-prodcomcity.dto';
 import { UpdateProdcomcityDto } from './dto/update-prodcomcity.dto';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Auth, GetUser } from 'src/auth/decorators';
 import { ValidRoles } from 'src/auth/interfaces';
 import { Prodcomcity } from './entities/prodcomcity.entity';
@@ -16,9 +16,10 @@ export class ProdcomcityController {
 
   @Post()
   @Auth(ValidRoles.superUser, ValidRoles.admin)
+  @ApiOperation({ summary: 'Create a new Prodcomcity entry' })
   @ApiResponse({ status: 201, description: 'Product with city and company created', type: Prodcomcity })
   @ApiResponse({ status: 400, description: 'Bad request' })
-  @ApiResponse({ status: 403, description: 'Forbidden. Token Related' })
+  @ApiResponse({ status: 403, description: 'Forbidden. Token related' })
   create(
     @Body() createProdcomcityDto: CreateProdcomcityDto,
     @GetUser() user: User,
@@ -27,11 +28,15 @@ export class ProdcomcityController {
   }
 
   @Get()
+  @ApiOperation({ summary: 'Get all Prodcomcity entries with pagination' })
+  @ApiResponse({ status: 200, description: 'List of Prodcomcity entries', type: [Prodcomcity] })
   findAll(@Query() paginationDto: PaginationDto) {
     return this.prodcomcityService.findAll(paginationDto);
   }
 
   @Get('/by-city-and-company/:cityId/:companyId')
+  @ApiOperation({ summary: 'Get Prodcomcity entries by city and company' })
+  @ApiResponse({ status: 200, description: 'List of Prodcomcity entries', type: [Prodcomcity] })
   async findAllByCityAndCompany(
     @Query('cityId') cityId?: string,
     @Query('companyId') companyId?: string,
@@ -43,6 +48,7 @@ export class ProdcomcityController {
 
 
   @Get('/by-company/:companyId')
+  @ApiOperation({ summary: 'Get Prodcomcity entries by company ID' })
   @ApiResponse({ status: 200, description: 'Products by company', type: [Prodcomcity] })
   @ApiResponse({ status: 404, description: 'Not found' })
   async getByCompany(@Param('companyId') companyId: string) {
@@ -54,6 +60,7 @@ export class ProdcomcityController {
   }
 
   @Get('/by-city/:cityId')
+  @ApiOperation({ summary: 'Get Prodcomcity entries by city ID' })
   @ApiResponse({ status: 200, description: 'Products by city', type: [Prodcomcity] })
   @ApiResponse({ status: 404, description: 'Not found' })
   async getByCity(@Param('cityId') cityId: string) {
@@ -66,6 +73,8 @@ export class ProdcomcityController {
 
 
   @Post('lowest-prices-by-tags')
+  @ApiOperation({ summary: 'Get lowest product prices by tags' })
+  @ApiResponse({ status: 200, description: 'List of lowest product prices' })
   async getLowestPricesByTags(
     @Body() body: { tags: string[]; cityId: string }
   ) {
@@ -82,6 +91,8 @@ export class ProdcomcityController {
   }
 
   @Post('lowest-prices-by-codes')
+  @ApiOperation({ summary: 'Get lowest product prices by codes' })
+  @ApiResponse({ status: 200, description: 'List of lowest product prices by codes' })
   async getLowestPricesByCodes(
     @Body() body: { codes: number[]; cityId: string }
   ) {
@@ -101,6 +112,9 @@ export class ProdcomcityController {
 
 
   @Get('/:comcityId/:productId')
+  @ApiOperation({ summary: 'Find a Prodcomcity entry by comcity ID and product ID' })
+  @ApiResponse({ status: 200, description: 'Prodcomcity entry found', type: Prodcomcity })
+  @ApiResponse({ status: 404, description: 'Prodcomcity not found' })
   async findProdcomcity(@Param('comcityId') comcityId: string, @Param('productId') productId: string): Promise<Prodcomcity> {
     const prodcomcity = await this.prodcomcityService.findProdcomcityByComcityAndProduct(comcityId, productId);
     if (!prodcomcity) {
@@ -110,6 +124,8 @@ export class ProdcomcityController {
   }
 
   @Get('search')
+  @ApiOperation({ summary: 'Search Prodcomcity entries by term' })
+  @ApiResponse({ status: 200, description: 'List of Prodcomcity entries matching the search criteria', type: [Prodcomcity] })
   async searchProdcomcities(
     @Query('term') term: string,
     @Query('cityId') cityId?: string,
@@ -131,6 +147,9 @@ export class ProdcomcityController {
 
 
   @Get(':term')
+  @ApiOperation({ summary: 'Find a Prodcomcity entry by term' })
+  @ApiResponse({ status: 200, description: 'Prodcomcity entry found', type: Prodcomcity })
+  @ApiResponse({ status: 404, description: 'Prodcomcity not found' })
   findOne(@Param('term') term: string) {
     return this.prodcomcityService.findOnePlain(term);
   }
@@ -138,6 +157,9 @@ export class ProdcomcityController {
 
   @Patch(':id')
   @Auth(ValidRoles.superUser, ValidRoles.admin)
+  @ApiOperation({ summary: 'Update a Prodcomcity entry' })
+  @ApiResponse({ status: 200, description: 'Prodcomcity updated successfully', type: Prodcomcity })
+  @ApiResponse({ status: 404, description: 'Prodcomcity not found' })
   async updateProdcomcity(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateProdcomcityDto: UpdateProdcomcityDto,
@@ -157,6 +179,9 @@ export class ProdcomcityController {
 
   @Delete(':id')
   @Auth(ValidRoles.superUser, ValidRoles.admin)
+  @ApiOperation({ summary: 'Delete a Prodcomcity entry' })
+  @ApiResponse({ status: 200, description: 'Prodcomcity deleted successfully' })
+  @ApiResponse({ status: 404, description: 'Prodcomcity not found' })
   remove(
     @Param('id', ParseUUIDPipe) id: string,
   ) {

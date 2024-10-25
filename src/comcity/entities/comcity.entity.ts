@@ -35,6 +35,10 @@ export class Comcity {
     @JoinColumn()
     company: Company;
 
+    @ApiProperty({
+        description: 'User associated with the comcity',
+        type: () => User,
+    })
     @ManyToOne(
         () => User,
         (user) => user.comCity,
@@ -42,6 +46,10 @@ export class Comcity {
     )
     user: User
 
+    @ApiProperty({
+        description: 'List of warehouses associated with the comcity',
+        type: () => [Warehouse],
+    })
     @OneToMany(() => Warehouse, (warehouse) => warehouse.comcity)
     warehouses: Warehouse[];
 
