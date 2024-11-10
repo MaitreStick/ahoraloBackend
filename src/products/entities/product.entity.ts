@@ -73,29 +73,23 @@ export class Product {
     user: User
 
 
-    @BeforeInsert()
-    @BeforeUpdate()
-    normalizeData() {
-        if (!this.slug) {
-            this.slug = this.title;
-        }
-        this.slug = this.slug
-            .toLowerCase()
-            .replace(/\s+/g, '_')
-            .replace(/'/g, '');
-        if (this.tags) {
-            this.tags = this.tags.map((tag) =>
-                tag
-                    .toLowerCase()
-                    .trim()
-                    .replace(/[^a-z0-9áéíóúñü\s]/gi, '')
-            );
-        } else {
-            this.tags = this.title
-                .toLowerCase()
-                .split(/\s+/)
-                .map((word) => word.replace(/[^a-z0-9áéíóúñü]/gi, ''))
-                .filter((word) => word.length > 0);
-        }
-    }
+    // @BeforeInsert()
+    // @BeforeUpdate()
+    // normalizeData() {
+    //     // Generar slug
+    //     if (!this.slug) {
+    //         this.slug = this.title;
+    //     }
+    //     this.slug = this.slug
+    //         .toLowerCase()
+    //         .replace(/\s+/g, '_')
+    //         .replace(/'/g, '');
+
+    //     // Generar tags a partir del título
+    //     this.tags = this.title
+    //         .toLowerCase()
+    //         .split(/\s+/)
+    //         .map((word) => word.replace(/[^a-z0-9áéíóúñü]/gi, ''))
+    //         .filter((word) => word.length > 0);
+    // }
 }

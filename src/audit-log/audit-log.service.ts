@@ -13,7 +13,6 @@ export class AuditLogService {
   ) {}
 
   async createLog(action: string, user: User, oldValue: any, newValue: any, ipAddress: string): Promise<void> {
-    console.log('Iniciando registro de auditoría');
     try {
       const log = this.auditLogRepository.create({
         action,
@@ -24,7 +23,6 @@ export class AuditLogService {
       });
 
       await this.auditLogRepository.save(log);
-      console.log('Registro de auditoría guardado con éxito');
     } catch (error) {
       console.error('Error al guardar en la tabla de auditoría:', error);
     }

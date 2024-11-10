@@ -57,10 +57,8 @@ export class AuditLogInterceptor implements NestInterceptor {
           // Usar el valor retornado por el controlador como oldValue para DELETE
           const finalOldValue = method === 'DELETE' ? response || oldValue : oldValue;
 
-          console.log('Acción registrada:', action, 'Usuario:', user.id);
 
           await this.auditLogService.createLog(action, user, finalOldValue, newValue, ipAddress);
-          console.log('Registro de auditoría completado');
         }
       }),
     );
