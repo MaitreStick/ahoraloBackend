@@ -26,5 +26,5 @@ docker-compose -f docker-compose.prod.yaml --env-file .env.prod up --build -d
 
 7. Ejecutar SEED 
 ```
-http://localhost:3000/api/seed
+http://localhost:8080/api/seed
 ```
