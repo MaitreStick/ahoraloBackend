@@ -86,10 +86,12 @@ export class Product {
             .replace(/'/g, '');
 
         // Generar tags a partir del título
-        // this.tags = this.title
-        //     .toLowerCase()
-        //     .split(/\s+/)
-        //     .map((word) => word.replace(/[^a-z0-9áéíóúñü]/gi, ''))
-        //     .filter((word) => word.length > 0);
+        this.tags = this.title
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, '')
+            .split(' ')
+            .map(tag => tag.replace(/[^a-z0-9]/g, ''))
+            .filter(tag => tag.length > 0);
     }
 }

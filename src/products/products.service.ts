@@ -27,26 +27,10 @@ export class ProductsService {
 
   async create(createProductDto: CreateProductDto, user: User) {
     try {
-      const { images = [], title, ...productDetails } = createProductDto;
-
-      const generatedTags = title
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, '') 
-        .split(' ')
-        .map(tag => tag.replace(/[^a-z0-9]/g, ''))
-        .filter(tag => tag.length > 0);
-
-      // const slug = title
-      //   .toLowerCase()
-      //   .replace(/\s+/g, '_')
-      //   .replace(/'/g, '');
+      const { images = [], ...productDetails } = createProductDto;
 
       const product = this.productRepository.create({
         ...productDetails,
-        title,
-        // slug,
-        tags: generatedTags,
         images: images.map((image) => ({ url: image })),
         user,
       });
