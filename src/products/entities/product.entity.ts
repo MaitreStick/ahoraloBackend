@@ -76,22 +76,27 @@ export class Product {
     @BeforeInsert()
     @BeforeUpdate()
     normalizeData() {
-        // Generar slug
+        // Generar slug si no existe
         if (!this.slug) {
             this.slug = this.title;
         }
         this.slug = this.slug
             .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, '')
             .replace(/\s+/g, '_')
             .replace(/'/g, '');
 
-        // Generar tags a partir del título
-        this.tags = this.title
-            .toLowerCase()
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, '')
-            .split(' ')
-            .map(tag => tag.replace(/[^a-z0-9]/g, ''))
-            .filter(tag => tag.length > 0);
+        // Solo generar tags si no están definidos
+        if (!this.tags || this.tags.length === 0) {
+            this.tags = this.title
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, '')
+                .split(' ')
+                .map(tag => tag.replace(/[^a-z0-9]/g, ''))
+                .filter(tag => tag.length > 0);
+        }
     }
+
 }
