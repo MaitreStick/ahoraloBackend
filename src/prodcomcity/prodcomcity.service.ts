@@ -110,8 +110,11 @@ export class ProdcomcityService {
           user,
           images: productDto.images?.map((imageUrl) => ({ url: imageUrl })),
         });
-        await this.productRepository.save(product);
       }
+
+      product.normalizeData();
+
+      await this.productRepository.save(product);
 
       // Create Prodcomcity
       const prodcomcity = this.prodcomcityRepository.create({
@@ -121,6 +124,7 @@ export class ProdcomcityService {
         price,
         user,
       });
+
 
       await this.prodcomcityRepository.save(prodcomcity);
 
@@ -307,6 +311,8 @@ export class ProdcomcityService {
         );
       }
 
+      product.normalizeData();
+
       // Guardar el producto actualizado
       await manager.save(product);
 
@@ -325,38 +331,6 @@ export class ProdcomcityService {
       return prodcomcity;
     });
   }
-
-  // async remove(id: string, user: User): Promise<void> {
-  //   return this.executeInTransaction(user.id.toString(), async (manager) => {
-  //     const prodcomcity = await manager.findOne(Prodcomcity, { where: { id } });
-
-  // if (!prodcomcity) {
-  //   throw new NotFoundException(`Prodcomcity with ID '${id}' not found`);
-  // }
-
-  //     await manager.remove(prodcomcity);
-  //   });
-  // }
-
-
-
-  // async findAllByCompanyName(companyName: string): Promise<Prodcomcity[]> {
-  //   const comcities = await this.comcityService.findAllByCompanyName(companyName);
-  //   const comcityIds = comcities.map(cc => cc.id);
-
-  //   if (comcityIds.length === 0) {
-  //     return []; 
-  //   }
-
-  //   return this.prodcomcityRepository.find({
-  //     where: {
-  //       comcity: {
-  //         id: In(comcityIds),
-  //       },
-  //     },
-  //     relations: ['product', 'comcity', 'user', 'comcity.city', 'comcity.company'],
-  //   });
-  // }
 
   async findAllByCityId(cityId: string): Promise<Prodcomcity[]> {
     const products = await this.prodcomcityRepository.find({
