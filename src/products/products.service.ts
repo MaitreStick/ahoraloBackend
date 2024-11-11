@@ -37,15 +37,15 @@ export class ProductsService {
         .map(tag => tag.replace(/[^a-z0-9]/g, ''))
         .filter(tag => tag.length > 0);
 
-      const slug = title
-        .toLowerCase()
-        .replace(/\s+/g, '_')
-        .replace(/'/g, '');
+      // const slug = title
+      //   .toLowerCase()
+      //   .replace(/\s+/g, '_')
+      //   .replace(/'/g, '');
 
       const product = this.productRepository.create({
         ...productDetails,
         title,
-        slug,
+        // slug,
         tags: generatedTags,
         images: images.map((image) => ({ url: image })),
         user,
