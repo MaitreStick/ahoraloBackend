@@ -34,7 +34,7 @@ export class ProductsService {
         images: images.map((image) => ({ url: image })),
         user,
       });
-
+      product.normalizeData();
       await this.productRepository.save(product);
 
       return { ...product, images: product.images.map((img) => img.url) };
@@ -133,7 +133,7 @@ export class ProductsService {
       }
 
       product.user = user;
-
+      product.normalizeData();
       await queryRunner.manager.save(product);
       await queryRunner.commitTransaction();
       await queryRunner.release();
