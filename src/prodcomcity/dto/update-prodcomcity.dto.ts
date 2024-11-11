@@ -28,6 +28,14 @@ export class ProductUpdateDto {
   code: number;
 
   @ApiProperty({
+    example: '["manzana","verde"]',
+    description: 'Keywords for the product',
+  })
+  @IsOptional()
+  @IsString({ each: true })
+  tags: string[];
+
+  @ApiProperty({
     description: 'Array of image URLs',
     example: ['https://example.com/image1.jpg', 'https://example.com/image2.jpg'],
     required: false,

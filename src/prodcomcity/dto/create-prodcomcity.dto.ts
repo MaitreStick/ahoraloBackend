@@ -1,4 +1,4 @@
-import { IsArray, IsNotEmpty, IsOptional, IsString, ValidateNested } from 'class-validator';
+import { IsArray, isNotEmpty, IsNotEmpty, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -61,7 +61,16 @@ class ProductDto {
   })
   @IsNotEmpty()
   code: string;
-  
+
+  @ApiProperty({
+    example: '["manzana","verde"]',
+    description: 'Keywords for the product',
+  })
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  tags: string[];
+
   @ApiProperty({
     description: 'Array of image URLs',
     example: ['https://example.com/image1.jpg', 'https://example.com/image2.jpg'],
