@@ -69,13 +69,19 @@ export class FilesService {
   }
 
   private async correctRotation(imageBuffer: Buffer): Promise<Buffer> {
-    const metadata = await sharp(imageBuffer).metadata();
-    const { orientation } = metadata;
-
-    if (orientation === 1) return imageBuffer;
-
-    return sharp(imageBuffer).rotate().toBuffer();
+    try {
+      const metadata = await sharp(imageBuffer).metadata();
+      const { orientation } = metadata;
+  
+      if (!orientation || orientation === 1) return imageBuffer;
+  
+      return sharp(imageBuffer).rotate().toBuffer();
+    } catch (error) {
+      console.error('Error in correctRotation:', error);
+      return imageBuffer;
+    }
   }
+  
 
   private async convertToBase64(imageBuffer: Buffer): Promise<string> {
     const base64 = imageBuffer.toString('base64');
@@ -85,10 +91,8 @@ export class FilesService {
 
   async processImage(filePath: string, comcityId: string): Promise<{ company: string, products: any[], text: string }> {
     try {
-      // Leemos la imagen desde el sistema de archivos
       const imageBuffer = await fsPromises.readFile(filePath);
 
-      // Procesamos la imagen
       await this.resizeSmallImage(imageBuffer);
 
       let correctedImageBuffer = await this.correctRotation(imageBuffer);
@@ -133,7 +137,6 @@ export class FilesService {
         }
       }
 
-      // Retornar resultados
       return {
         company: this.getCompanyFromCodes(products.map(p => p.code)),
         products: products.map(p => ({ code: p.code, price: p.price })),
@@ -146,7 +149,6 @@ export class FilesService {
     }
   }
 
-  // Método para eliminar el archivo
   async deleteFile(filePath: string): Promise<void> {
     try {
       await fsPromises.unlink(filePath);
