@@ -1,0 +1,2476 @@
+<svg version="1.1" baseProfile="full" width="20457.0" height="1245.0" viewBox="0 0 20457 1245" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events">
+<desc >#.interface: fill=lightblue
+#.enumeration: fill=lightgreen
+#.type: fill=lightgray
+
+[AppModule||]
+[AuditLogController|-auditLogService: AuditLogService|+getAuditLogs(): Promise&lt;AuditLog\[\]&gt;;+exportAuditLogs(): Promise&lt;Response&lt;any, Record&lt;string, any&gt;&gt;&gt;]
+[AuditLogModule||]
+[AuditLogService|-auditLogRepository: Repository&lt;AuditLog&gt;|+createLog(): Promise&lt;void&gt;;+findAuditLogs(): Promise&lt;AuditLog\[\]&gt;;+toCSV(): any]
+[AuditLogInterceptor|-auditLogService: AuditLogService;-prodcomcityRepository: Repository&lt;Prodcomcity&gt;;-cityRepository: Repository&lt;City&gt;;-companyRepository: Repository&lt;Company&gt;|+intercept(): Promise&lt;Observable&lt;any&gt;&gt;;-getActionFromMethod(): string;-getRealIp(): string]
+[NestInterceptor&lt;T,R&gt;]&lt;:--[AuditLogInterceptor]
+[AuthController|-authService: AuthService|+createUser(): Promise&lt;{ token: string; id: string; email: string; password: string; fullName: string; isActive: boolean; roles: string\[\]; product: Product; prodComCity: Prodcomcity; comCity: Comcity; }&gt;;+loginUser(): Promise&lt;{ token: string; id: string; email: string; password: string; fullName: string; isActive: boolean; roles: string\[\]; product: Product; prodComCity: Prodcomcity; comCity: Comcity; }&gt;;+checkAuthStatus(): Promise&lt;{ token: string; id: string; email: string; password: string; fullName: string; isActive: boolean; roles: string\[\]; product: Product; prodComCity: Prodcomcity; comCity: Comcity; }&gt;;+googleLogin(): Promise&lt;{ token: string; id: string; email: string; password: string; fullName: string; isActive: boolean; roles: string\[\]; product: Product; prodComCity: Prodcomcity; comCity: Comcity; }&gt;]
+[AuthModule||]
+[AuthService|-userRepository: Repository&lt;User&gt;;-jwtService: JwtService;-dataSource: DataSource|+create(): Promise&lt;{ token: string; id: string; email: string; password: string; fullName: string; isActive: boolean; roles: string\[\]; product: Product; prodComCity: Prodcomcity; comCity: Comcity; }&gt;;+login(): Promise&lt;{ token: string; id: string; email: string; password: string; fullName: string; isActive: boolean; roles: string\[\]; product: Product; prodComCity: Prodcomcity; comCity: Comcity; }&gt;;+checkAuthStatus(): Promise&lt;{ token: string; id: string; email: string; password: string; fullName: string; isActive: boolean; roles: string\[\]; product: Product; prodComCity: Prodcomcity; comCity: Comcity; }&gt;;+signInGoogle(): Promise&lt;{ token: string; id: string; email: string; password: string; fullName: string; isActive: boolean; roles: string\[\]; product: Product; prodComCity: Prodcomcity; comCity: Comcity; }&gt;;-getJwtToken(): string;-handleDBErrors(): never]
+[CitiesController|-citiesService: CitiesService|+create(): Promise&lt;City&gt;;+findAll(): Promise&lt;City\[\]&gt;;+find(): Promise&lt;City\[\]&gt;;+findOneById(): Promise&lt;City&gt;;+updateCity(): Promise&lt;any&gt;;+remove(): Promise&lt;void&gt;]
+[CitiesModule||]
+[CitiesService|-logger: Logger;-cityRepository: Repository&lt;City&gt;;-dataSource: DataSource|+create(): Promise&lt;City&gt;;+findAll(): Promise&lt;City\[\]&gt;;+findOne(): Promise&lt;City&gt;;+findByName(): Promise&lt;City\[\]&gt;;+findOnePlain(): Promise&lt;City&gt;;+findOneById(): Promise&lt;City&gt;;+updateCity(): Promise&lt;City&gt;;+remove(): Promise&lt;void&gt;;+deleteAllCities(): Promise&lt;DeleteResult&gt;;-handleDBException(): void]
+[ComcityController|-comcityService: ComcityService|+create(): Promise&lt;Comcity&gt;;+findAll(): Promise&lt;Comcity\[\]&gt;;+createWarehouse(): Promise&lt;Warehouse&gt;;+getByCompanyAndCity(): Promise&lt;Comcity&gt;;+getByCityId(): Promise&lt;Comcity\[\]&gt;;+getByCompanyId(): Promise&lt;Comcity\[\]&gt;;+findOne(): Promise&lt;Comcity&gt;;+getWarehousesByCompanyIds(): Promise&lt;any\[\]&gt;;+getNearestWarehouses(): Promise&lt;{ id: string; name: string; latitude: number; longitude: number; distance: number; }\[\]&gt;;+updateComcity(): Promise&lt;any&gt;;+updateWarehouse(): Promise&lt;Warehouse&gt;;+deleteWarehouse(): Promise&lt;void&gt;;+deleteAllWarehouses(): Promise&lt;void&gt;;+remove(): Promise&lt;void&gt;]
+[ComcityModule||]
+[ComcityService|-logger: Logger;-comcityRepository: Repository&lt;Comcity&gt;;-cityRepository: Repository&lt;City&gt;;-companyRepository: Repository&lt;Company&gt;;-warehouseRepository: Repository&lt;Warehouse&gt;;-cityService: CitiesService;-companyService: CompaniesService;-dataSource: DataSource|+create(): Promise&lt;Comcity&gt;;+createWarehouse(): Promise&lt;Warehouse&gt;;+updateWarehouse(): Promise&lt;Warehouse&gt;;+deleteWarehouse(): Promise&lt;void&gt;;+deleteAllWarehouses(): Promise&lt;void&gt;;+findAll(): Promise&lt;Comcity\[\]&gt;;+findOne(): Promise&lt;Comcity&gt;;+findOnePlain(): Promise&lt;Comcity&gt;;+findOneById(): Promise&lt;Comcity&gt;;+updateComcity(): Promise&lt;Comcity&gt;;+remove(): Promise&lt;void&gt;;+findByCompanyIdAndCityId(): Promise&lt;Comcity&gt;;+findAllByCompanyId(): Promise&lt;Comcity\[\]&gt;;+findAllByCityId(): Promise&lt;Comcity\[\]&gt;;+deleteAllComcity(): Promise&lt;DeleteResult&gt;;+findByCompanyIds(): Promise&lt;any\[\]&gt;;+findNearestWarehouses(): Promise&lt;{ id: string; name: string; latitude: number; longitude: number; distance: number; }\[\]&gt;;+calculateDistance(): number;-handleDBException(): void]
+[CommonModule||]
+[CompaniesController|-companiesService: CompaniesService|+create(): Promise&lt;Company&gt;;+findAll(): Promise&lt;Company\[\]&gt;;+find(): Promise&lt;Company\[\]&gt;;+findOneById(): Promise&lt;Company&gt;;+updateCompany(): Promise&lt;any&gt;;+remove(): Promise&lt;void&gt;]
+[CompaniesModule||]
+[CompaniesService|-logger: Logger;-companyRepository: Repository&lt;Company&gt;;-dataSource: DataSource|+create(): Promise&lt;Company&gt;;+findAll(): Promise&lt;Company\[\]&gt;;+findByName(): Promise&lt;Company\[\]&gt;;+findOne(): Promise&lt;Company&gt;;+findOnePlain(): Promise&lt;Company&gt;;+updateCompany(): Promise&lt;Company&gt;;+remove(): Promise&lt;void&gt;;+deleteAllCompanies(): Promise&lt;DeleteResult&gt;;-handleDBException(): void]
+[FilesController|-filesService: FilesService|+uploadProductImage(): Promise&lt;string \| UploadApiResponse&gt;;+uploadFile(): Promise&lt;{ company: string; products: { code: string; price: string; }\[\]; text: string; }&gt;]
+[FilesModule||]
+[FilesService|-productCodes: any;-prodcomcityService: ProdcomcityService;-productsService: ProductsService|+uploadImage(): Promise&lt;string \| PromiseLike&lt;string \| UploadApiResponse&gt;&gt;;-resizeSmallImage(): Promise&lt;Buffer&gt;;-preprocessImage(): Promise&lt;Buffer&gt;;-correctRotation(): Promise&lt;Buffer&gt;;-convertToBase64(): Promise&lt;string&gt;;+processImage(): Promise&lt;{ company: string; products: any\[\]; text: string; }&gt;;+deleteFile(): Promise&lt;void&gt;;-extractProductsFromText(): { code: string; price: string; }\[\];-isValidPrice(): boolean;-adjustPrice(): string;-isValidCode(): boolean;-getCompanyFromCodes(): string]
+[ProdcomcityController|-prodcomcityService: ProdcomcityService|+create(): Promise&lt;Prodcomcity&gt;;+findAll(): Promise&lt;Prodcomcity\[\]&gt;;+findAllByCityAndCompany(): Promise&lt;Prodcomcity\[\]&gt;;+getByCompany(): Promise&lt;Prodcomcity\[\]&gt;;+getByCity(): Promise&lt;Prodcomcity\[\]&gt;;+getLowestPricesByTags(): Promise&lt;any\[\]&gt;;+getLowestPricesByCodes(): Promise&lt;any\[\]&gt;;+findProdcomcity(): Promise&lt;Prodcomcity&gt;;+searchProdcomcities(): Promise&lt;Prodcomcity\[\]&gt;;+findOne(): Promise&lt;Prodcomcity&gt;;+updateProdcomcity(): Promise&lt;any&gt;;+remove(): Promise&lt;void&gt;]
+[ProdcomcityModule||]
+[ProdcomcityService|-logger: Logger;-prodcomcityRepository: Repository&lt;Prodcomcity&gt;;-comcityRepository: Repository&lt;Comcity&gt;;-productRepository: Repository&lt;Product&gt;;-cityRepository: Repository&lt;City&gt;;-companyRepository: Repository&lt;Company&gt;;-productService: ProductsService;-comcityService: ComcityService;-dataSource: DataSource|+createSeed(): Promise&lt;Prodcomcity&gt;;+create(): Promise&lt;Prodcomcity&gt;;+findAll(): Promise&lt;Prodcomcity\[\]&gt;;+findOne(): Promise&lt;Prodcomcity&gt;;+findOnePlain(): Promise&lt;Prodcomcity&gt;;+findOneById(): Promise&lt;Prodcomcity&gt;;+findProdcomcityByComcityAndProduct(): Promise&lt;Prodcomcity&gt;;-executeInTransaction(): Promise&lt;T&gt;;+updateProdcomcityOcr(): Promise&lt;Prodcomcity&gt;;+remove(): Promise&lt;void&gt;;+updateProdcomcity(): Promise&lt;Prodcomcity&gt;;+findAllByCityId(): Promise&lt;Prodcomcity\[\]&gt;;+findAllByCompanyId(): Promise&lt;Prodcomcity\[\]&gt;;+findAllByCityAndCompanyId(): Promise&lt;Prodcomcity\[\]&gt;;+findProdcomcitiesBySearch(): Promise&lt;Prodcomcity\[\]&gt;;+findProductsByTags(): Promise&lt;Product\[\]&gt;;+findLowestPricesByTags(): Promise&lt;any\[\]&gt;;+findLowestPricesByCodes(): Promise&lt;any\[\]&gt;;+deleteAllProdComcity(): Promise&lt;DeleteResult&gt;;-handleDBException(): void]
+[ProductsController|-productsService: ProductsService|+create(): Promise&lt;{ images: string\[\]; id: string; title: string; slug: string; tags: string\[\]; code: number; user: User; }&gt;;+findAll(): Promise&lt;{ images: string\[\]; id: string; title: string; slug: string; tags: string\[\]; code: number; user: User; }\[\]&gt;;+findOne(): Promise&lt;{ images: string\[\]; id: string; title: string; slug: string; tags: string\[\]; code: number; user: User; }&gt;;+findCheapest(): Promise&lt;{ images: string\[\]; id: string; title: string; slug: string; tags: string\[\]; code: number; user: User; }\[\]&gt;;+findProductByCode(): Promise&lt;{ images: string\[\]; id: string; title: string; slug: string; tags: string\[\]; code: number; user: User; }&gt;;+update(): Promise&lt;{ images: string\[\]; id: string; title: string; slug: string; tags: string\[\]; code: number; user: User; }&gt;;+remove(): Promise&lt;void&gt;]
+[ProductsModule||]
+[ProductsService|-logger: Logger;-productRepository: Repository&lt;Product&gt;;-productImageRepository: Repository&lt;ProductImage&gt;;-dataSource: DataSource|+create(): Promise&lt;{ images: string\[\]; id: string; title: string; slug: string; tags: string\[\]; code: number; user: User; }&gt;;+findAll(): Promise&lt;{ images: string\[\]; id: string; title: string; slug: string; tags: string\[\]; code: number; user: User; }\[\]&gt;;+findOne(): Promise&lt;Product&gt;;+findOnePlain(): Promise&lt;{ images: string\[\]; id: string; title: string; slug: string; tags: string\[\]; code: number; user: User; }&gt;;+findProductsByCode(): Promise&lt;{ images: string\[\]; id: string; title: string; slug: string; tags: string\[\]; code: number; user: User; }&gt;;+update(): Promise&lt;{ images: string\[\]; id: string; title: string; slug: string; tags: string\[\]; code: number; user: User; }&gt;;+remove(): Promise&lt;void&gt;;-handleDBException(): void;+deleteAllProducts(): Promise&lt;DeleteResult&gt;;+findProductsByTag(): Promise&lt;{ images: string\[\]; id: string; title: string; slug: string; tags: string\[\]; code: number; user: User; }\[\]&gt;]
+[SeedController|-seedService: SeedService|+executeSeed(): Promise&lt;string&gt;]
+[SeedModule||]
+[SeedService|-productsService: ProductsService;-citiesService: CitiesService;-companiesService: CompaniesService;-comcityService: ComcityService;-prodcomcityService: ProdcomcityService;-userRepository: Repository&lt;User&gt;|+runSeed(): Promise&lt;string&gt;;-deleteTables(): Promise&lt;void&gt;;-insertUsers(): Promise&lt;SeedUser &amp; User&gt;;-insertNewProducts(): Promise&lt;boolean&gt;;-insertNewCities(): Promise&lt;boolean&gt;;-insertNewCompanies(): Promise&lt;boolean&gt;;+insertNewComCities(): Promise&lt;boolean&gt;;-insertNewProdComCities(): Promise&lt;boolean&gt;;-insertNewWarehouses(): Promise&lt;boolean&gt;]
+[CreateAuditLogDto||]
+[UpdateAuditLogDto||]
+[AuditLog|+id: string;+action: string;+user_id: string;+old_value: Record&lt;string, any&gt;;+new_value: Record&lt;string, any&gt;;+ip_address: string;+created_at: Date|]
+[CreateUserDto|+email: string;+password: string;+fullName: string|]
+[AuthGoogleLoginDto|+token: string;+email: string;+name: string|]
+[LoginUserDto|+email: string;+password: string|]
+[User|+id: string;+email: string;+password: string;+fullName: string;+isActive: boolean;+roles: string\[\];+product: Product;+prodComCity: Prodcomcity;+comCity: Comcity|+checkFieldsBeforeInsert(): void;+checkFieldsBeforeUpdate(): void]
+[UserRoleGuard|-reflector: Reflector|+canActivate(): boolean \| Promise&lt;boolean&gt; \| Observable&lt;boolean&gt;]
+[CanActivate]&lt;:--[UserRoleGuard]
+[DatabaseSessionInterceptor|-dataSource: DataSource|+intercept(): Observable&lt;any&gt;]
+[NestInterceptor&lt;T,R&gt;]&lt;:--[DatabaseSessionInterceptor]
+[&lt;interface&gt;JwtPayload|+id: string|]
+[ResponseRegisterUserAndCheckStatus|+email: string;+fullname: string;+id: string;+IsActive: boolean;+roles: string\[\];+token: string|]
+[ResponseLoginUser|+id: string;+email: string;+password: string;+token: string|]
+[&lt;enumeration&gt;ValidRoles|admin;superUser;user]
+[JwtStrategy|-userRepository: Repository&lt;User&gt;|+validate(): Promise&lt;User&gt;]
+[Strategy]&lt;:-[JwtStrategy]
+[CreateCityDto|+name: string;+nameDep: string|]
+[UpdateCityDto||]
+[City|+id: string;+name: string;+nameDep: string|]
+[CreateComcityDto|+city: string;+company: string|]
+[CreateWarehouseDto|+name: string;+latitude: number;+longitude: number;+comcityId: string|]
+[UpdateComcityDto||]
+[UpdateWarehouseDto|+name?: string;+latitude?: number;+longitude?: number;+comcityId?: string|]
+[Comcity|+id: string;+city: City;+company: Company;+user: User;+warehouses: Warehouse\[\]|]
+[Warehouse|+id: string;+name: string;+latitude: number;+longitude: number;+comcity: Comcity|]
+[PaginationDto|+limit?: number;+offset?: number;+search?: string|]
+[CreateCompanyDto|+name: string|]
+[UpdateCompanyDto||]
+[Company|+id: string;+name: string|]
+[FileUploadDto|+file: any|]
+[CreateProdcomcityOcrDto|+comcity: string;+product: string;+date: Date;+price?: number|]
+[CityDto|+name: string;+nameDep: string|]
+[CompanyDto|+name: string|]
+[ComcityDto|+city: CityDto;+company: CompanyDto|]
+[ProductDto|+title: string;+code: string;+tags: string\[\];+images?: string\[\]|]
+[CreateProdcomcityDto|+product: ProductDto;+comcity: ComcityDto;+date: Date;+price: number|]
+[UpdateProdcomcityOcrDto||]
+[ProductUpdateDto|+id: string;+title: string;+code: number;+tags: string\[\];+images?: string\[\]|]
+[UpdateProdcomcityDto|+comcity: string;+product: ProductUpdateDto;+date: Date;+price?: number|]
+[Prodcomcity|+id: string;+comcity: Comcity;+product?: Product;+price: number;+date: Date;+user: User|]
+[CreateProductDto|+title: string;+slug?: string;+tags?: string\[\];+images?: string\[\];+code: number|]
+[UpdateProductDto||]
+[ProductImage|+id: number;+url: string;+product: Product|]
+[Product|+id: string;+title: string;+slug: string;+tags: string\[\];+code: number;+images?: ProductImage\[\];+user: User|+normalizeData(): void]
+[&lt;interface&gt;SeedProduct|+images: string\[\];+slug: string;+tags: string\[\];+title: string;+code: number|]
+[&lt;interface&gt;SeedCity|+name: string;+nameDep: string|]
+[&lt;interface&gt;SeedCompany|+name: string|]
+[&lt;interface&gt;SeedUser|+email: string;+fullName: string;+password: string;+roles: string\[\]|]
+[&lt;interface&gt;SeedWarehouse|+name: string;+latitude: number;+longitude: number;+comcity: { companyName: string; cityName: string; cityDep: string; }|]
+[&lt;interface&gt;SeedData|+users: SeedUser\[\];+products: SeedProduct\[\];+cities: SeedCity\[\];+companies: SeedCompany\[\];+warehouses: SeedWarehouse\[\]|]</desc>
+<g stroke-width="1.0" text-align="left" font="12pt Helvetica, Arial, sans-serif" font-size="12pt" font-family="Helvetica" font-weight="normal" font-style="normal">
+<g font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" stroke-width="3.0" stroke-linejoin="round" stroke-linecap="round" stroke="#33322E">
+<g stroke="transparent" fill="transparent">
+<rect x="0.0" y="0.0" height="1245.0" width="20457.0" stroke="none"></rect>
+</g>
+<g transform="translate(8, 8)" fill="#33322E">
+<g transform="translate(20, 20)" fill="#eee8d5" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal">
+<g stroke-dasharray="6 6">
+<path d="M1411.9 514.0 L1234.5 991 L1234.5 1011 L1234.5 1011.0 " fill="none"></path>
+</g>
+<path d="M1416.9 515.9 L1411.9 514.0 L1406.9 512.1 L1416.5 501.5 Z"></path>
+<g stroke-dasharray="6 6">
+<path d="M12002.5 514.8 L12002.5 991 L12002.5 1052 L12002.5 1052.0 " fill="none"></path>
+</g>
+<path d="M12007.8 514.8 L12002.5 514.8 L11997.2 514.8 L12002.5 501.5 Z"></path>
+<g stroke-dasharray="6 6">
+<path d="M1528.3 496.1 L6489 991 L6489 1052 L6489.0 1052.0 " fill="none"></path>
+</g>
+<path d="M1528.8 490.7 L1528.3 496.1 L1527.7 501.4 L1515.0 494.7 Z"></path>
+<path d="M13012.0 514.8 L13012 991 L13012 1052 L13012.0 1052.0 " fill="none"></path>
+<path d="M13017.3 514.8 L13012.0 514.8 L13006.7 514.8 L13012.0 501.5 Z"></path>
+<g data-name="AppModule">
+<g fill="#eee8d5" stroke="#33322E" data-name="AppModule">
+<rect x="0.0" y="461.5" height="48.0" width="105.0" data-name="AppModule"></rect>
+<path d="M0.0 493.5 L105.0 493.5" fill="none" data-name="AppModule"></path>
+<path d="M0.0 501.5 L105.0 501.5" fill="none" data-name="AppModule"></path>
+</g>
+<g transform="translate(0, 461.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="AppModule" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="AppModule" data-compartment="0">
+<a id="src/app.module.ts.AppModule" xlink:href="src/app.module.ts"><text x="44.5" y="14.1" stroke="none" text-anchor="middle" data-name="AppModule" data-compartment="0">AppModule</text></a>
+
+</g>
+</g>
+<g transform="translate(0, 493.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AppModule" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="AppModule" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(0, 501.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AppModule" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="AppModule" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="AuditLogController">
+<g fill="#eee8d5" stroke="#33322E" data-name="AuditLogController">
+<rect x="145.0" y="429.5" height="112.0" width="560.0" data-name="AuditLogController"></rect>
+<path d="M145.0 461.5 L705.0 461.5" fill="none" data-name="AuditLogController"></path>
+<path d="M145.0 493.5 L705.0 493.5" fill="none" data-name="AuditLogController"></path>
+</g>
+<g transform="translate(145, 429.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="AuditLogController" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="AuditLogController" data-compartment="0">
+<a id="src/audit-log/audit-log.controller.ts.AuditLogController" xlink:href="src/audit-log/audit-log.controller.ts"><text x="272.0" y="14.1" stroke="none" text-anchor="middle" data-name="AuditLogController" data-compartment="0">AuditLogController</text></a>
+
+</g>
+</g>
+<g transform="translate(145, 461.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AuditLogController" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="AuditLogController" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="AuditLogController" data-compartment="1">-auditLogService: AuditLogService</text>
+
+</g>
+</g>
+<g transform="translate(145, 493.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AuditLogController" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="AuditLogController" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="AuditLogController" data-compartment="2">+getAuditLogs(): Promise&lt;AuditLog[]&gt;</text>
+<text x="0.0" y="30.3" stroke="none" data-name="AuditLogController" data-compartment="2">+exportAuditLogs(): Promise&lt;Response&lt;any, Record&lt;string, any&gt;&gt;&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="AuditLogModule">
+<g fill="#eee8d5" stroke="#33322E" data-name="AuditLogModule">
+<rect x="745.0" y="461.5" height="48.0" width="144.0" data-name="AuditLogModule"></rect>
+<path d="M745.0 493.5 L889.0 493.5" fill="none" data-name="AuditLogModule"></path>
+<path d="M745.0 501.5 L889.0 501.5" fill="none" data-name="AuditLogModule"></path>
+</g>
+<g transform="translate(745, 461.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="AuditLogModule" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="AuditLogModule" data-compartment="0">
+<a id="src/audit-log/audit-log.module.ts.AuditLogModule" xlink:href="src/audit-log/audit-log.module.ts"><text x="64.0" y="14.1" stroke="none" text-anchor="middle" data-name="AuditLogModule" data-compartment="0">AuditLogModule</text></a>
+
+</g>
+</g>
+<g transform="translate(745, 493.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AuditLogModule" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="AuditLogModule" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(745, 501.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AuditLogModule" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="AuditLogModule" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="AuditLogService">
+<g fill="#eee8d5" stroke="#33322E" data-name="AuditLogService">
+<rect x="929.0" y="421.0" height="129.0" width="361.0" data-name="AuditLogService"></rect>
+<path d="M929.0 453.0 L1290.0 453.0" fill="none" data-name="AuditLogService"></path>
+<path d="M929.0 485.0 L1290.0 485.0" fill="none" data-name="AuditLogService"></path>
+</g>
+<g transform="translate(929, 421)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="AuditLogService" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="AuditLogService" data-compartment="0">
+<a id="src/audit-log/audit-log.service.ts.AuditLogService" xlink:href="src/audit-log/audit-log.service.ts"><text x="172.5" y="14.1" stroke="none" text-anchor="middle" data-name="AuditLogService" data-compartment="0">AuditLogService</text></a>
+
+</g>
+</g>
+<g transform="translate(929, 453)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AuditLogService" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="AuditLogService" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="AuditLogService" data-compartment="1">-auditLogRepository: Repository&lt;AuditLog&gt;</text>
+
+</g>
+</g>
+<g transform="translate(929, 485)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AuditLogService" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="AuditLogService" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="AuditLogService" data-compartment="2">+createLog(): Promise&lt;void&gt;</text>
+<text x="0.0" y="30.3" stroke="none" data-name="AuditLogService" data-compartment="2">+findAuditLogs(): Promise&lt;AuditLog[]&gt;</text>
+<text x="0.0" y="46.5" stroke="none" data-name="AuditLogService" data-compartment="2">+toCSV(): any</text>
+
+</g>
+</g>
+</g>
+<g data-name="AuditLogInterceptor">
+<g fill="#eee8d5" stroke="#33322E" data-name="AuditLogInterceptor">
+<rect x="1027.0" y="1011.0" height="178.0" width="415.0" data-name="AuditLogInterceptor"></rect>
+<path d="M1027.0 1043.0 L1442.0 1043.0" fill="none" data-name="AuditLogInterceptor"></path>
+<path d="M1027.0 1124.0 L1442.0 1124.0" fill="none" data-name="AuditLogInterceptor"></path>
+</g>
+<g transform="translate(1027, 1011)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="AuditLogInterceptor" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="AuditLogInterceptor" data-compartment="0">
+<a id="src/audit-log/audit.interceptor.ts.AuditLogInterceptor" xlink:href="src/audit-log/audit.interceptor.ts"><text x="199.5" y="14.1" stroke="none" text-anchor="middle" data-name="AuditLogInterceptor" data-compartment="0">AuditLogInterceptor</text></a>
+
+</g>
+</g>
+<g transform="translate(1027, 1043)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AuditLogInterceptor" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="AuditLogInterceptor" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="AuditLogInterceptor" data-compartment="1">-auditLogService: AuditLogService</text>
+<text x="0.0" y="30.3" stroke="none" data-name="AuditLogInterceptor" data-compartment="1">-prodcomcityRepository: Repository&lt;Prodcomcity&gt;</text>
+<text x="0.0" y="46.5" stroke="none" data-name="AuditLogInterceptor" data-compartment="1">-cityRepository: Repository&lt;City&gt;</text>
+<text x="0.0" y="62.7" stroke="none" data-name="AuditLogInterceptor" data-compartment="1">-companyRepository: Repository&lt;Company&gt;</text>
+
+</g>
+</g>
+<g transform="translate(1027, 1124)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AuditLogInterceptor" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="AuditLogInterceptor" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="AuditLogInterceptor" data-compartment="2">+intercept(): Promise&lt;Observable&lt;any&gt;&gt;</text>
+<text x="0.0" y="30.3" stroke="none" data-name="AuditLogInterceptor" data-compartment="2">-getActionFromMethod(): string</text>
+<text x="0.0" y="46.5" stroke="none" data-name="AuditLogInterceptor" data-compartment="2">-getRealIp(): string</text>
+
+</g>
+</g>
+</g>
+<g data-name="NestInterceptor&lt;T,R&gt;">
+<g fill="#eee8d5" stroke="#33322E" data-name="NestInterceptor&lt;T,R&gt;">
+<rect x="1330.0" y="469.5" height="32.0" width="185.0" data-name="NestInterceptor&lt;T,R&gt;"></rect>
+</g>
+<g transform="translate(1330, 469.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="NestInterceptor&lt;T,R&gt;" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="NestInterceptor&lt;T,R&gt;" data-compartment="0">
+<text x="84.5" y="14.1" stroke="none" text-anchor="middle" data-name="NestInterceptor&lt;T,R&gt;" data-compartment="0">NestInterceptor&lt;T,R&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="AuthController">
+<g fill="#eee8d5" stroke="#33322E" data-name="AuthController">
+<rect x="1555.0" y="89.0" height="793.0" width="364.0" data-name="AuthController"></rect>
+<path d="M1555.0 121.0 L1919.0 121.0" fill="none" data-name="AuthController"></path>
+<path d="M1555.0 153.0 L1919.0 153.0" fill="none" data-name="AuthController"></path>
+</g>
+<g transform="translate(1555, 89)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="AuthController" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="AuthController" data-compartment="0">
+<a id="src/auth/auth.controller.ts.AuthController" xlink:href="src/auth/auth.controller.ts"><text x="174.0" y="14.1" stroke="none" text-anchor="middle" data-name="AuthController" data-compartment="0">AuthController</text></a>
+
+</g>
+</g>
+<g transform="translate(1555, 121)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AuthController" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="AuthController" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="AuthController" data-compartment="1">-authService: AuthService</text>
+
+</g>
+</g>
+<g transform="translate(1555, 153)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AuthController" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="AuthController" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="AuthController" data-compartment="2">+createUser(): Promise&lt;{ token: string</text>
+<text x="0.0" y="30.3" stroke="none" data-name="AuthController" data-compartment="2">id: string</text>
+<text x="0.0" y="46.5" stroke="none" data-name="AuthController" data-compartment="2">email: string</text>
+<text x="0.0" y="62.7" stroke="none" data-name="AuthController" data-compartment="2">password: string</text>
+<text x="0.0" y="78.9" stroke="none" data-name="AuthController" data-compartment="2">fullName: string</text>
+<text x="0.0" y="95.1" stroke="none" data-name="AuthController" data-compartment="2">isActive: boolean</text>
+<text x="0.0" y="111.3" stroke="none" data-name="AuthController" data-compartment="2">roles: string[]</text>
+<text x="0.0" y="127.5" stroke="none" data-name="AuthController" data-compartment="2">product: Product</text>
+<text x="0.0" y="143.7" stroke="none" data-name="AuthController" data-compartment="2">prodComCity: Prodcomcity</text>
+<text x="0.0" y="159.9" stroke="none" data-name="AuthController" data-compartment="2">comCity: Comcity</text>
+<text x="0.0" y="176.1" stroke="none" data-name="AuthController" data-compartment="2">}&gt;</text>
+<text x="0.0" y="192.3" stroke="none" data-name="AuthController" data-compartment="2">+loginUser(): Promise&lt;{ token: string</text>
+<text x="0.0" y="208.5" stroke="none" data-name="AuthController" data-compartment="2">id: string</text>
+<text x="0.0" y="224.7" stroke="none" data-name="AuthController" data-compartment="2">email: string</text>
+<text x="0.0" y="240.9" stroke="none" data-name="AuthController" data-compartment="2">password: string</text>
+<text x="0.0" y="257.1" stroke="none" data-name="AuthController" data-compartment="2">fullName: string</text>
+<text x="0.0" y="273.3" stroke="none" data-name="AuthController" data-compartment="2">isActive: boolean</text>
+<text x="0.0" y="289.5" stroke="none" data-name="AuthController" data-compartment="2">roles: string[]</text>
+<text x="0.0" y="305.7" stroke="none" data-name="AuthController" data-compartment="2">product: Product</text>
+<text x="0.0" y="321.9" stroke="none" data-name="AuthController" data-compartment="2">prodComCity: Prodcomcity</text>
+<text x="0.0" y="338.1" stroke="none" data-name="AuthController" data-compartment="2">comCity: Comcity</text>
+<text x="0.0" y="354.3" stroke="none" data-name="AuthController" data-compartment="2">}&gt;</text>
+<text x="0.0" y="370.5" stroke="none" data-name="AuthController" data-compartment="2">+checkAuthStatus(): Promise&lt;{ token: string</text>
+<text x="0.0" y="386.7" stroke="none" data-name="AuthController" data-compartment="2">id: string</text>
+<text x="0.0" y="402.9" stroke="none" data-name="AuthController" data-compartment="2">email: string</text>
+<text x="0.0" y="419.1" stroke="none" data-name="AuthController" data-compartment="2">password: string</text>
+<text x="0.0" y="435.3" stroke="none" data-name="AuthController" data-compartment="2">fullName: string</text>
+<text x="0.0" y="451.5" stroke="none" data-name="AuthController" data-compartment="2">isActive: boolean</text>
+<text x="0.0" y="467.7" stroke="none" data-name="AuthController" data-compartment="2">roles: string[]</text>
+<text x="0.0" y="483.9" stroke="none" data-name="AuthController" data-compartment="2">product: Product</text>
+<text x="0.0" y="500.1" stroke="none" data-name="AuthController" data-compartment="2">prodComCity: Prodcomcity</text>
+<text x="0.0" y="516.3" stroke="none" data-name="AuthController" data-compartment="2">comCity: Comcity</text>
+<text x="0.0" y="532.5" stroke="none" data-name="AuthController" data-compartment="2">}&gt;</text>
+<text x="0.0" y="548.7" stroke="none" data-name="AuthController" data-compartment="2">+googleLogin(): Promise&lt;{ token: string</text>
+<text x="0.0" y="564.9" stroke="none" data-name="AuthController" data-compartment="2">id: string</text>
+<text x="0.0" y="581.1" stroke="none" data-name="AuthController" data-compartment="2">email: string</text>
+<text x="0.0" y="597.3" stroke="none" data-name="AuthController" data-compartment="2">password: string</text>
+<text x="0.0" y="613.5" stroke="none" data-name="AuthController" data-compartment="2">fullName: string</text>
+<text x="0.0" y="629.7" stroke="none" data-name="AuthController" data-compartment="2">isActive: boolean</text>
+<text x="0.0" y="645.9" stroke="none" data-name="AuthController" data-compartment="2">roles: string[]</text>
+<text x="0.0" y="662.1" stroke="none" data-name="AuthController" data-compartment="2">product: Product</text>
+<text x="0.0" y="678.3" stroke="none" data-name="AuthController" data-compartment="2">prodComCity: Prodcomcity</text>
+<text x="0.0" y="694.5" stroke="none" data-name="AuthController" data-compartment="2">comCity: Comcity</text>
+<text x="0.0" y="710.7" stroke="none" data-name="AuthController" data-compartment="2">}&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="AuthModule">
+<g fill="#eee8d5" stroke="#33322E" data-name="AuthModule">
+<rect x="1959.0" y="461.5" height="48.0" width="110.0" data-name="AuthModule"></rect>
+<path d="M1959.0 493.5 L2069.0 493.5" fill="none" data-name="AuthModule"></path>
+<path d="M1959.0 501.5 L2069.0 501.5" fill="none" data-name="AuthModule"></path>
+</g>
+<g transform="translate(1959, 461.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="AuthModule" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="AuthModule" data-compartment="0">
+<a id="src/auth/auth.module.ts.AuthModule" xlink:href="src/auth/auth.module.ts"><text x="47.0" y="14.1" stroke="none" text-anchor="middle" data-name="AuthModule" data-compartment="0">AuthModule</text></a>
+
+</g>
+</g>
+<g transform="translate(1959, 493.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AuthModule" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="AuthModule" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(1959, 501.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AuthModule" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="AuthModule" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="AuthService">
+<g fill="#eee8d5" stroke="#33322E" data-name="AuthService">
+<rect x="2109.0" y="56.5" height="858.0" width="364.0" data-name="AuthService"></rect>
+<path d="M2109.0 88.5 L2473.0 88.5" fill="none" data-name="AuthService"></path>
+<path d="M2109.0 153.5 L2473.0 153.5" fill="none" data-name="AuthService"></path>
+</g>
+<g transform="translate(2109, 56.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="AuthService" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="AuthService" data-compartment="0">
+<a id="src/auth/auth.service.ts.AuthService" xlink:href="src/auth/auth.service.ts"><text x="174.0" y="14.1" stroke="none" text-anchor="middle" data-name="AuthService" data-compartment="0">AuthService</text></a>
+
+</g>
+</g>
+<g transform="translate(2109, 88.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AuthService" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="AuthService" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="AuthService" data-compartment="1">-userRepository: Repository&lt;User&gt;</text>
+<text x="0.0" y="30.3" stroke="none" data-name="AuthService" data-compartment="1">-jwtService: JwtService</text>
+<text x="0.0" y="46.5" stroke="none" data-name="AuthService" data-compartment="1">-dataSource: DataSource</text>
+
+</g>
+</g>
+<g transform="translate(2109, 153.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AuthService" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="AuthService" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="AuthService" data-compartment="2">+create(): Promise&lt;{ token: string</text>
+<text x="0.0" y="30.3" stroke="none" data-name="AuthService" data-compartment="2">id: string</text>
+<text x="0.0" y="46.5" stroke="none" data-name="AuthService" data-compartment="2">email: string</text>
+<text x="0.0" y="62.7" stroke="none" data-name="AuthService" data-compartment="2">password: string</text>
+<text x="0.0" y="78.9" stroke="none" data-name="AuthService" data-compartment="2">fullName: string</text>
+<text x="0.0" y="95.1" stroke="none" data-name="AuthService" data-compartment="2">isActive: boolean</text>
+<text x="0.0" y="111.3" stroke="none" data-name="AuthService" data-compartment="2">roles: string[]</text>
+<text x="0.0" y="127.5" stroke="none" data-name="AuthService" data-compartment="2">product: Product</text>
+<text x="0.0" y="143.7" stroke="none" data-name="AuthService" data-compartment="2">prodComCity: Prodcomcity</text>
+<text x="0.0" y="159.9" stroke="none" data-name="AuthService" data-compartment="2">comCity: Comcity</text>
+<text x="0.0" y="176.1" stroke="none" data-name="AuthService" data-compartment="2">}&gt;</text>
+<text x="0.0" y="192.3" stroke="none" data-name="AuthService" data-compartment="2">+login(): Promise&lt;{ token: string</text>
+<text x="0.0" y="208.5" stroke="none" data-name="AuthService" data-compartment="2">id: string</text>
+<text x="0.0" y="224.7" stroke="none" data-name="AuthService" data-compartment="2">email: string</text>
+<text x="0.0" y="240.9" stroke="none" data-name="AuthService" data-compartment="2">password: string</text>
+<text x="0.0" y="257.1" stroke="none" data-name="AuthService" data-compartment="2">fullName: string</text>
+<text x="0.0" y="273.3" stroke="none" data-name="AuthService" data-compartment="2">isActive: boolean</text>
+<text x="0.0" y="289.5" stroke="none" data-name="AuthService" data-compartment="2">roles: string[]</text>
+<text x="0.0" y="305.7" stroke="none" data-name="AuthService" data-compartment="2">product: Product</text>
+<text x="0.0" y="321.9" stroke="none" data-name="AuthService" data-compartment="2">prodComCity: Prodcomcity</text>
+<text x="0.0" y="338.1" stroke="none" data-name="AuthService" data-compartment="2">comCity: Comcity</text>
+<text x="0.0" y="354.3" stroke="none" data-name="AuthService" data-compartment="2">}&gt;</text>
+<text x="0.0" y="370.5" stroke="none" data-name="AuthService" data-compartment="2">+checkAuthStatus(): Promise&lt;{ token: string</text>
+<text x="0.0" y="386.7" stroke="none" data-name="AuthService" data-compartment="2">id: string</text>
+<text x="0.0" y="402.9" stroke="none" data-name="AuthService" data-compartment="2">email: string</text>
+<text x="0.0" y="419.1" stroke="none" data-name="AuthService" data-compartment="2">password: string</text>
+<text x="0.0" y="435.3" stroke="none" data-name="AuthService" data-compartment="2">fullName: string</text>
+<text x="0.0" y="451.5" stroke="none" data-name="AuthService" data-compartment="2">isActive: boolean</text>
+<text x="0.0" y="467.7" stroke="none" data-name="AuthService" data-compartment="2">roles: string[]</text>
+<text x="0.0" y="483.9" stroke="none" data-name="AuthService" data-compartment="2">product: Product</text>
+<text x="0.0" y="500.1" stroke="none" data-name="AuthService" data-compartment="2">prodComCity: Prodcomcity</text>
+<text x="0.0" y="516.3" stroke="none" data-name="AuthService" data-compartment="2">comCity: Comcity</text>
+<text x="0.0" y="532.5" stroke="none" data-name="AuthService" data-compartment="2">}&gt;</text>
+<text x="0.0" y="548.7" stroke="none" data-name="AuthService" data-compartment="2">+signInGoogle(): Promise&lt;{ token: string</text>
+<text x="0.0" y="564.9" stroke="none" data-name="AuthService" data-compartment="2">id: string</text>
+<text x="0.0" y="581.1" stroke="none" data-name="AuthService" data-compartment="2">email: string</text>
+<text x="0.0" y="597.3" stroke="none" data-name="AuthService" data-compartment="2">password: string</text>
+<text x="0.0" y="613.5" stroke="none" data-name="AuthService" data-compartment="2">fullName: string</text>
+<text x="0.0" y="629.7" stroke="none" data-name="AuthService" data-compartment="2">isActive: boolean</text>
+<text x="0.0" y="645.9" stroke="none" data-name="AuthService" data-compartment="2">roles: string[]</text>
+<text x="0.0" y="662.1" stroke="none" data-name="AuthService" data-compartment="2">product: Product</text>
+<text x="0.0" y="678.3" stroke="none" data-name="AuthService" data-compartment="2">prodComCity: Prodcomcity</text>
+<text x="0.0" y="694.5" stroke="none" data-name="AuthService" data-compartment="2">comCity: Comcity</text>
+<text x="0.0" y="710.7" stroke="none" data-name="AuthService" data-compartment="2">}&gt;</text>
+<text x="0.0" y="726.9" stroke="none" data-name="AuthService" data-compartment="2">-getJwtToken(): string</text>
+<text x="0.0" y="743.1" stroke="none" data-name="AuthService" data-compartment="2">-handleDBErrors(): never</text>
+
+</g>
+</g>
+</g>
+<g data-name="CitiesController">
+<g fill="#eee8d5" stroke="#33322E" data-name="CitiesController">
+<rect x="2513.0" y="397.0" height="177.0" width="259.0" data-name="CitiesController"></rect>
+<path d="M2513.0 429.0 L2772.0 429.0" fill="none" data-name="CitiesController"></path>
+<path d="M2513.0 461.0 L2772.0 461.0" fill="none" data-name="CitiesController"></path>
+</g>
+<g transform="translate(2513, 397)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="CitiesController" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="CitiesController" data-compartment="0">
+<a id="src/cities/cities.controller.ts.CitiesController" xlink:href="src/cities/cities.controller.ts"><text x="121.5" y="14.1" stroke="none" text-anchor="middle" data-name="CitiesController" data-compartment="0">CitiesController</text></a>
+
+</g>
+</g>
+<g transform="translate(2513, 429)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CitiesController" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="CitiesController" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="CitiesController" data-compartment="1">-citiesService: CitiesService</text>
+
+</g>
+</g>
+<g transform="translate(2513, 461)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CitiesController" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="CitiesController" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="CitiesController" data-compartment="2">+create(): Promise&lt;City&gt;</text>
+<text x="0.0" y="30.3" stroke="none" data-name="CitiesController" data-compartment="2">+findAll(): Promise&lt;City[]&gt;</text>
+<text x="0.0" y="46.5" stroke="none" data-name="CitiesController" data-compartment="2">+find(): Promise&lt;City[]&gt;</text>
+<text x="0.0" y="62.7" stroke="none" data-name="CitiesController" data-compartment="2">+findOneById(): Promise&lt;City&gt;</text>
+<text x="0.0" y="78.9" stroke="none" data-name="CitiesController" data-compartment="2">+updateCity(): Promise&lt;any&gt;</text>
+<text x="0.0" y="95.1" stroke="none" data-name="CitiesController" data-compartment="2">+remove(): Promise&lt;void&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="CitiesModule">
+<g fill="#eee8d5" stroke="#33322E" data-name="CitiesModule">
+<rect x="2812.0" y="461.5" height="48.0" width="118.0" data-name="CitiesModule"></rect>
+<path d="M2812.0 493.5 L2930.0 493.5" fill="none" data-name="CitiesModule"></path>
+<path d="M2812.0 501.5 L2930.0 501.5" fill="none" data-name="CitiesModule"></path>
+</g>
+<g transform="translate(2812, 461.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="CitiesModule" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="CitiesModule" data-compartment="0">
+<a id="src/cities/cities.module.ts.CitiesModule" xlink:href="src/cities/cities.module.ts"><text x="51.0" y="14.1" stroke="none" text-anchor="middle" data-name="CitiesModule" data-compartment="0">CitiesModule</text></a>
+
+</g>
+</g>
+<g transform="translate(2812, 493.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CitiesModule" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="CitiesModule" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(2812, 501.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CitiesModule" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="CitiesModule" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="CitiesService">
+<g fill="#eee8d5" stroke="#33322E" data-name="CitiesService">
+<rect x="2970.0" y="348.0" height="275.0" width="345.0" data-name="CitiesService"></rect>
+<path d="M2970.0 380.0 L3315.0 380.0" fill="none" data-name="CitiesService"></path>
+<path d="M2970.0 445.0 L3315.0 445.0" fill="none" data-name="CitiesService"></path>
+</g>
+<g transform="translate(2970, 348)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="CitiesService" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="CitiesService" data-compartment="0">
+<a id="src/cities/cities.service.ts.CitiesService" xlink:href="src/cities/cities.service.ts"><text x="164.5" y="14.1" stroke="none" text-anchor="middle" data-name="CitiesService" data-compartment="0">CitiesService</text></a>
+
+</g>
+</g>
+<g transform="translate(2970, 380)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CitiesService" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="CitiesService" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="CitiesService" data-compartment="1">-logger: Logger</text>
+<text x="0.0" y="30.3" stroke="none" data-name="CitiesService" data-compartment="1">-cityRepository: Repository&lt;City&gt;</text>
+<text x="0.0" y="46.5" stroke="none" data-name="CitiesService" data-compartment="1">-dataSource: DataSource</text>
+
+</g>
+</g>
+<g transform="translate(2970, 445)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CitiesService" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="CitiesService" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="CitiesService" data-compartment="2">+create(): Promise&lt;City&gt;</text>
+<text x="0.0" y="30.3" stroke="none" data-name="CitiesService" data-compartment="2">+findAll(): Promise&lt;City[]&gt;</text>
+<text x="0.0" y="46.5" stroke="none" data-name="CitiesService" data-compartment="2">+findOne(): Promise&lt;City&gt;</text>
+<text x="0.0" y="62.7" stroke="none" data-name="CitiesService" data-compartment="2">+findByName(): Promise&lt;City[]&gt;</text>
+<text x="0.0" y="78.9" stroke="none" data-name="CitiesService" data-compartment="2">+findOnePlain(): Promise&lt;City&gt;</text>
+<text x="0.0" y="95.1" stroke="none" data-name="CitiesService" data-compartment="2">+findOneById(): Promise&lt;City&gt;</text>
+<text x="0.0" y="111.3" stroke="none" data-name="CitiesService" data-compartment="2">+updateCity(): Promise&lt;City&gt;</text>
+<text x="0.0" y="127.5" stroke="none" data-name="CitiesService" data-compartment="2">+remove(): Promise&lt;void&gt;</text>
+<text x="0.0" y="143.7" stroke="none" data-name="CitiesService" data-compartment="2">+deleteAllCities(): Promise&lt;DeleteResult&gt;</text>
+<text x="0.0" y="159.9" stroke="none" data-name="CitiesService" data-compartment="2">-handleDBException(): void</text>
+
+</g>
+</g>
+</g>
+<g data-name="ComcityController">
+<g fill="#eee8d5" stroke="#33322E" data-name="ComcityController">
+<rect x="3355.0" y="291.5" height="388.0" width="415.0" data-name="ComcityController"></rect>
+<path d="M3355.0 323.5 L3770.0 323.5" fill="none" data-name="ComcityController"></path>
+<path d="M3355.0 355.5 L3770.0 355.5" fill="none" data-name="ComcityController"></path>
+</g>
+<g transform="translate(3355, 291.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="ComcityController" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ComcityController" data-compartment="0">
+<a id="src/comcity/comcity.controller.ts.ComcityController" xlink:href="src/comcity/comcity.controller.ts"><text x="199.5" y="14.1" stroke="none" text-anchor="middle" data-name="ComcityController" data-compartment="0">ComcityController</text></a>
+
+</g>
+</g>
+<g transform="translate(3355, 323.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ComcityController" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ComcityController" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="ComcityController" data-compartment="1">-comcityService: ComcityService</text>
+
+</g>
+</g>
+<g transform="translate(3355, 355.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ComcityController" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ComcityController" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="ComcityController" data-compartment="2">+create(): Promise&lt;Comcity&gt;</text>
+<text x="0.0" y="30.3" stroke="none" data-name="ComcityController" data-compartment="2">+findAll(): Promise&lt;Comcity[]&gt;</text>
+<text x="0.0" y="46.5" stroke="none" data-name="ComcityController" data-compartment="2">+createWarehouse(): Promise&lt;Warehouse&gt;</text>
+<text x="0.0" y="62.7" stroke="none" data-name="ComcityController" data-compartment="2">+getByCompanyAndCity(): Promise&lt;Comcity&gt;</text>
+<text x="0.0" y="78.9" stroke="none" data-name="ComcityController" data-compartment="2">+getByCityId(): Promise&lt;Comcity[]&gt;</text>
+<text x="0.0" y="95.1" stroke="none" data-name="ComcityController" data-compartment="2">+getByCompanyId(): Promise&lt;Comcity[]&gt;</text>
+<text x="0.0" y="111.3" stroke="none" data-name="ComcityController" data-compartment="2">+findOne(): Promise&lt;Comcity&gt;</text>
+<text x="0.0" y="127.5" stroke="none" data-name="ComcityController" data-compartment="2">+getWarehousesByCompanyIds(): Promise&lt;any[]&gt;</text>
+<text x="0.0" y="143.7" stroke="none" data-name="ComcityController" data-compartment="2">+getNearestWarehouses(): Promise&lt;{ id: string</text>
+<text x="0.0" y="159.9" stroke="none" data-name="ComcityController" data-compartment="2">name: string</text>
+<text x="0.0" y="176.1" stroke="none" data-name="ComcityController" data-compartment="2">latitude: number</text>
+<text x="0.0" y="192.3" stroke="none" data-name="ComcityController" data-compartment="2">longitude: number</text>
+<text x="0.0" y="208.5" stroke="none" data-name="ComcityController" data-compartment="2">distance: number</text>
+<text x="0.0" y="224.7" stroke="none" data-name="ComcityController" data-compartment="2">}[]&gt;</text>
+<text x="0.0" y="240.9" stroke="none" data-name="ComcityController" data-compartment="2">+updateComcity(): Promise&lt;any&gt;</text>
+<text x="0.0" y="257.1" stroke="none" data-name="ComcityController" data-compartment="2">+updateWarehouse(): Promise&lt;Warehouse&gt;</text>
+<text x="0.0" y="273.3" stroke="none" data-name="ComcityController" data-compartment="2">+deleteWarehouse(): Promise&lt;void&gt;</text>
+<text x="0.0" y="289.5" stroke="none" data-name="ComcityController" data-compartment="2">+deleteAllWarehouses(): Promise&lt;void&gt;</text>
+<text x="0.0" y="305.7" stroke="none" data-name="ComcityController" data-compartment="2">+remove(): Promise&lt;void&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="ComcityModule">
+<g fill="#eee8d5" stroke="#33322E" data-name="ComcityModule">
+<rect x="3810.0" y="461.5" height="48.0" width="137.0" data-name="ComcityModule"></rect>
+<path d="M3810.0 493.5 L3947.0 493.5" fill="none" data-name="ComcityModule"></path>
+<path d="M3810.0 501.5 L3947.0 501.5" fill="none" data-name="ComcityModule"></path>
+</g>
+<g transform="translate(3810, 461.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="ComcityModule" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ComcityModule" data-compartment="0">
+<a id="src/comcity/comcity.module.ts.ComcityModule" xlink:href="src/comcity/comcity.module.ts"><text x="60.5" y="14.1" stroke="none" text-anchor="middle" data-name="ComcityModule" data-compartment="0">ComcityModule</text></a>
+
+</g>
+</g>
+<g transform="translate(3810, 493.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ComcityModule" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="ComcityModule" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(3810, 501.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ComcityModule" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="ComcityModule" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="ComcityService">
+<g fill="#eee8d5" stroke="#33322E" data-name="ComcityService">
+<rect x="3987.0" y="194.0" height="583.0" width="410.0" data-name="ComcityService"></rect>
+<path d="M3987.0 226.0 L4397.0 226.0" fill="none" data-name="ComcityService"></path>
+<path d="M3987.0 372.0 L4397.0 372.0" fill="none" data-name="ComcityService"></path>
+</g>
+<g transform="translate(3987, 194)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="ComcityService" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ComcityService" data-compartment="0">
+<a id="src/comcity/comcity.service.ts.ComcityService" xlink:href="src/comcity/comcity.service.ts"><text x="197.0" y="14.1" stroke="none" text-anchor="middle" data-name="ComcityService" data-compartment="0">ComcityService</text></a>
+
+</g>
+</g>
+<g transform="translate(3987, 226)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ComcityService" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ComcityService" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="ComcityService" data-compartment="1">-logger: Logger</text>
+<text x="0.0" y="30.3" stroke="none" data-name="ComcityService" data-compartment="1">-comcityRepository: Repository&lt;Comcity&gt;</text>
+<text x="0.0" y="46.5" stroke="none" data-name="ComcityService" data-compartment="1">-cityRepository: Repository&lt;City&gt;</text>
+<text x="0.0" y="62.7" stroke="none" data-name="ComcityService" data-compartment="1">-companyRepository: Repository&lt;Company&gt;</text>
+<text x="0.0" y="78.9" stroke="none" data-name="ComcityService" data-compartment="1">-warehouseRepository: Repository&lt;Warehouse&gt;</text>
+<text x="0.0" y="95.1" stroke="none" data-name="ComcityService" data-compartment="1">-cityService: CitiesService</text>
+<text x="0.0" y="111.3" stroke="none" data-name="ComcityService" data-compartment="1">-companyService: CompaniesService</text>
+<text x="0.0" y="127.5" stroke="none" data-name="ComcityService" data-compartment="1">-dataSource: DataSource</text>
+
+</g>
+</g>
+<g transform="translate(3987, 372)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ComcityService" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ComcityService" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="ComcityService" data-compartment="2">+create(): Promise&lt;Comcity&gt;</text>
+<text x="0.0" y="30.3" stroke="none" data-name="ComcityService" data-compartment="2">+createWarehouse(): Promise&lt;Warehouse&gt;</text>
+<text x="0.0" y="46.5" stroke="none" data-name="ComcityService" data-compartment="2">+updateWarehouse(): Promise&lt;Warehouse&gt;</text>
+<text x="0.0" y="62.7" stroke="none" data-name="ComcityService" data-compartment="2">+deleteWarehouse(): Promise&lt;void&gt;</text>
+<text x="0.0" y="78.9" stroke="none" data-name="ComcityService" data-compartment="2">+deleteAllWarehouses(): Promise&lt;void&gt;</text>
+<text x="0.0" y="95.1" stroke="none" data-name="ComcityService" data-compartment="2">+findAll(): Promise&lt;Comcity[]&gt;</text>
+<text x="0.0" y="111.3" stroke="none" data-name="ComcityService" data-compartment="2">+findOne(): Promise&lt;Comcity&gt;</text>
+<text x="0.0" y="127.5" stroke="none" data-name="ComcityService" data-compartment="2">+findOnePlain(): Promise&lt;Comcity&gt;</text>
+<text x="0.0" y="143.7" stroke="none" data-name="ComcityService" data-compartment="2">+findOneById(): Promise&lt;Comcity&gt;</text>
+<text x="0.0" y="159.9" stroke="none" data-name="ComcityService" data-compartment="2">+updateComcity(): Promise&lt;Comcity&gt;</text>
+<text x="0.0" y="176.1" stroke="none" data-name="ComcityService" data-compartment="2">+remove(): Promise&lt;void&gt;</text>
+<text x="0.0" y="192.3" stroke="none" data-name="ComcityService" data-compartment="2">+findByCompanyIdAndCityId(): Promise&lt;Comcity&gt;</text>
+<text x="0.0" y="208.5" stroke="none" data-name="ComcityService" data-compartment="2">+findAllByCompanyId(): Promise&lt;Comcity[]&gt;</text>
+<text x="0.0" y="224.7" stroke="none" data-name="ComcityService" data-compartment="2">+findAllByCityId(): Promise&lt;Comcity[]&gt;</text>
+<text x="0.0" y="240.9" stroke="none" data-name="ComcityService" data-compartment="2">+deleteAllComcity(): Promise&lt;DeleteResult&gt;</text>
+<text x="0.0" y="257.1" stroke="none" data-name="ComcityService" data-compartment="2">+findByCompanyIds(): Promise&lt;any[]&gt;</text>
+<text x="0.0" y="273.3" stroke="none" data-name="ComcityService" data-compartment="2">+findNearestWarehouses(): Promise&lt;{ id: string</text>
+<text x="0.0" y="289.5" stroke="none" data-name="ComcityService" data-compartment="2">name: string</text>
+<text x="0.0" y="305.7" stroke="none" data-name="ComcityService" data-compartment="2">latitude: number</text>
+<text x="0.0" y="321.9" stroke="none" data-name="ComcityService" data-compartment="2">longitude: number</text>
+<text x="0.0" y="338.1" stroke="none" data-name="ComcityService" data-compartment="2">distance: number</text>
+<text x="0.0" y="354.3" stroke="none" data-name="ComcityService" data-compartment="2">}[]&gt;</text>
+<text x="0.0" y="370.5" stroke="none" data-name="ComcityService" data-compartment="2">+calculateDistance(): number</text>
+<text x="0.0" y="386.7" stroke="none" data-name="ComcityService" data-compartment="2">-handleDBException(): void</text>
+
+</g>
+</g>
+</g>
+<g data-name="CommonModule">
+<g fill="#eee8d5" stroke="#33322E" data-name="CommonModule">
+<rect x="4437.0" y="461.5" height="48.0" width="144.0" data-name="CommonModule"></rect>
+<path d="M4437.0 493.5 L4581.0 493.5" fill="none" data-name="CommonModule"></path>
+<path d="M4437.0 501.5 L4581.0 501.5" fill="none" data-name="CommonModule"></path>
+</g>
+<g transform="translate(4437, 461.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="CommonModule" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="CommonModule" data-compartment="0">
+<a id="src/common/common.module.ts.CommonModule" xlink:href="src/common/common.module.ts"><text x="64.0" y="14.1" stroke="none" text-anchor="middle" data-name="CommonModule" data-compartment="0">CommonModule</text></a>
+
+</g>
+</g>
+<g transform="translate(4437, 493.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CommonModule" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="CommonModule" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(4437, 501.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CommonModule" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="CommonModule" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="CompaniesController">
+<g fill="#eee8d5" stroke="#33322E" data-name="CompaniesController">
+<rect x="4621.0" y="397.0" height="177.0" width="325.0" data-name="CompaniesController"></rect>
+<path d="M4621.0 429.0 L4946.0 429.0" fill="none" data-name="CompaniesController"></path>
+<path d="M4621.0 461.0 L4946.0 461.0" fill="none" data-name="CompaniesController"></path>
+</g>
+<g transform="translate(4621, 397)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="CompaniesController" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="CompaniesController" data-compartment="0">
+<a id="src/companies/companies.controller.ts.CompaniesController" xlink:href="src/companies/companies.controller.ts"><text x="154.5" y="14.1" stroke="none" text-anchor="middle" data-name="CompaniesController" data-compartment="0">CompaniesController</text></a>
+
+</g>
+</g>
+<g transform="translate(4621, 429)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CompaniesController" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="CompaniesController" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="CompaniesController" data-compartment="1">-companiesService: CompaniesService</text>
+
+</g>
+</g>
+<g transform="translate(4621, 461)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CompaniesController" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="CompaniesController" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="CompaniesController" data-compartment="2">+create(): Promise&lt;Company&gt;</text>
+<text x="0.0" y="30.3" stroke="none" data-name="CompaniesController" data-compartment="2">+findAll(): Promise&lt;Company[]&gt;</text>
+<text x="0.0" y="46.5" stroke="none" data-name="CompaniesController" data-compartment="2">+find(): Promise&lt;Company[]&gt;</text>
+<text x="0.0" y="62.7" stroke="none" data-name="CompaniesController" data-compartment="2">+findOneById(): Promise&lt;Company&gt;</text>
+<text x="0.0" y="78.9" stroke="none" data-name="CompaniesController" data-compartment="2">+updateCompany(): Promise&lt;any&gt;</text>
+<text x="0.0" y="95.1" stroke="none" data-name="CompaniesController" data-compartment="2">+remove(): Promise&lt;void&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="CompaniesModule">
+<g fill="#eee8d5" stroke="#33322E" data-name="CompaniesModule">
+<rect x="4986.0" y="461.5" height="48.0" width="163.0" data-name="CompaniesModule"></rect>
+<path d="M4986.0 493.5 L5149.0 493.5" fill="none" data-name="CompaniesModule"></path>
+<path d="M4986.0 501.5 L5149.0 501.5" fill="none" data-name="CompaniesModule"></path>
+</g>
+<g transform="translate(4986, 461.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="CompaniesModule" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="CompaniesModule" data-compartment="0">
+<a id="src/companies/companies.module.ts.CompaniesModule" xlink:href="src/companies/companies.module.ts"><text x="73.5" y="14.1" stroke="none" text-anchor="middle" data-name="CompaniesModule" data-compartment="0">CompaniesModule</text></a>
+
+</g>
+</g>
+<g transform="translate(4986, 493.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CompaniesModule" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="CompaniesModule" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(4986, 501.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CompaniesModule" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="CompaniesModule" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="CompaniesService">
+<g fill="#eee8d5" stroke="#33322E" data-name="CompaniesService">
+<rect x="5189.0" y="356.0" height="259.0" width="390.0" data-name="CompaniesService"></rect>
+<path d="M5189.0 388.0 L5579.0 388.0" fill="none" data-name="CompaniesService"></path>
+<path d="M5189.0 453.0 L5579.0 453.0" fill="none" data-name="CompaniesService"></path>
+</g>
+<g transform="translate(5189, 356)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="CompaniesService" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="CompaniesService" data-compartment="0">
+<a id="src/companies/companies.service.ts.CompaniesService" xlink:href="src/companies/companies.service.ts"><text x="187.0" y="14.1" stroke="none" text-anchor="middle" data-name="CompaniesService" data-compartment="0">CompaniesService</text></a>
+
+</g>
+</g>
+<g transform="translate(5189, 388)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CompaniesService" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="CompaniesService" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="CompaniesService" data-compartment="1">-logger: Logger</text>
+<text x="0.0" y="30.3" stroke="none" data-name="CompaniesService" data-compartment="1">-companyRepository: Repository&lt;Company&gt;</text>
+<text x="0.0" y="46.5" stroke="none" data-name="CompaniesService" data-compartment="1">-dataSource: DataSource</text>
+
+</g>
+</g>
+<g transform="translate(5189, 453)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CompaniesService" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="CompaniesService" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="CompaniesService" data-compartment="2">+create(): Promise&lt;Company&gt;</text>
+<text x="0.0" y="30.3" stroke="none" data-name="CompaniesService" data-compartment="2">+findAll(): Promise&lt;Company[]&gt;</text>
+<text x="0.0" y="46.5" stroke="none" data-name="CompaniesService" data-compartment="2">+findByName(): Promise&lt;Company[]&gt;</text>
+<text x="0.0" y="62.7" stroke="none" data-name="CompaniesService" data-compartment="2">+findOne(): Promise&lt;Company&gt;</text>
+<text x="0.0" y="78.9" stroke="none" data-name="CompaniesService" data-compartment="2">+findOnePlain(): Promise&lt;Company&gt;</text>
+<text x="0.0" y="95.1" stroke="none" data-name="CompaniesService" data-compartment="2">+updateCompany(): Promise&lt;Company&gt;</text>
+<text x="0.0" y="111.3" stroke="none" data-name="CompaniesService" data-compartment="2">+remove(): Promise&lt;void&gt;</text>
+<text x="0.0" y="127.5" stroke="none" data-name="CompaniesService" data-compartment="2">+deleteAllCompanies(): Promise&lt;DeleteResult&gt;</text>
+<text x="0.0" y="143.7" stroke="none" data-name="CompaniesService" data-compartment="2">-handleDBException(): void</text>
+
+</g>
+</g>
+</g>
+<g data-name="FilesController">
+<g fill="#eee8d5" stroke="#33322E" data-name="FilesController">
+<rect x="5619.0" y="389.0" height="193.0" width="516.0" data-name="FilesController"></rect>
+<path d="M5619.0 421.0 L6135.0 421.0" fill="none" data-name="FilesController"></path>
+<path d="M5619.0 453.0 L6135.0 453.0" fill="none" data-name="FilesController"></path>
+</g>
+<g transform="translate(5619, 389)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="FilesController" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="FilesController" data-compartment="0">
+<a id="src/files/files.controller.ts.FilesController" xlink:href="src/files/files.controller.ts"><text x="250.0" y="14.1" stroke="none" text-anchor="middle" data-name="FilesController" data-compartment="0">FilesController</text></a>
+
+</g>
+</g>
+<g transform="translate(5619, 421)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="FilesController" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="FilesController" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="FilesController" data-compartment="1">-filesService: FilesService</text>
+
+</g>
+</g>
+<g transform="translate(5619, 453)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="FilesController" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="FilesController" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="FilesController" data-compartment="2">+uploadProductImage(): Promise&lt;string | UploadApiResponse&gt;</text>
+<text x="0.0" y="30.3" stroke="none" data-name="FilesController" data-compartment="2">+uploadFile(): Promise&lt;{ company: string</text>
+<text x="0.0" y="46.5" stroke="none" data-name="FilesController" data-compartment="2">products: { code: string</text>
+<text x="0.0" y="62.7" stroke="none" data-name="FilesController" data-compartment="2">price: string</text>
+<text x="0.0" y="78.9" stroke="none" data-name="FilesController" data-compartment="2">}[]</text>
+<text x="0.0" y="95.1" stroke="none" data-name="FilesController" data-compartment="2">text: string</text>
+<text x="0.0" y="111.3" stroke="none" data-name="FilesController" data-compartment="2">}&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="FilesModule">
+<g fill="#eee8d5" stroke="#33322E" data-name="FilesModule">
+<rect x="6175.0" y="461.5" height="48.0" width="111.0" data-name="FilesModule"></rect>
+<path d="M6175.0 493.5 L6286.0 493.5" fill="none" data-name="FilesModule"></path>
+<path d="M6175.0 501.5 L6286.0 501.5" fill="none" data-name="FilesModule"></path>
+</g>
+<g transform="translate(6175, 461.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="FilesModule" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="FilesModule" data-compartment="0">
+<a id="src/files/files.module.ts.FilesModule" xlink:href="src/files/files.module.ts"><text x="47.5" y="14.1" stroke="none" text-anchor="middle" data-name="FilesModule" data-compartment="0">FilesModule</text></a>
+
+</g>
+</g>
+<g transform="translate(6175, 493.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="FilesModule" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="FilesModule" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(6175, 501.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="FilesModule" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="FilesModule" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="FilesService">
+<g fill="#eee8d5" stroke="#33322E" data-name="FilesService">
+<rect x="6326.0" y="291.5" height="388.0" width="631.0" data-name="FilesService"></rect>
+<path d="M6326.0 323.5 L6957.0 323.5" fill="none" data-name="FilesService"></path>
+<path d="M6326.0 388.5 L6957.0 388.5" fill="none" data-name="FilesService"></path>
+</g>
+<g transform="translate(6326, 291.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="FilesService" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="FilesService" data-compartment="0">
+<a id="src/files/files.service.ts.FilesService" xlink:href="src/files/files.service.ts"><text x="307.5" y="14.1" stroke="none" text-anchor="middle" data-name="FilesService" data-compartment="0">FilesService</text></a>
+
+</g>
+</g>
+<g transform="translate(6326, 323.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="FilesService" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="FilesService" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="FilesService" data-compartment="1">-productCodes: any</text>
+<text x="0.0" y="30.3" stroke="none" data-name="FilesService" data-compartment="1">-prodcomcityService: ProdcomcityService</text>
+<text x="0.0" y="46.5" stroke="none" data-name="FilesService" data-compartment="1">-productsService: ProductsService</text>
+
+</g>
+</g>
+<g transform="translate(6326, 388.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="FilesService" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="FilesService" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="FilesService" data-compartment="2">+uploadImage(): Promise&lt;string | PromiseLike&lt;string | UploadApiResponse&gt;&gt;</text>
+<text x="0.0" y="30.3" stroke="none" data-name="FilesService" data-compartment="2">-resizeSmallImage(): Promise&lt;Buffer&gt;</text>
+<text x="0.0" y="46.5" stroke="none" data-name="FilesService" data-compartment="2">-preprocessImage(): Promise&lt;Buffer&gt;</text>
+<text x="0.0" y="62.7" stroke="none" data-name="FilesService" data-compartment="2">-correctRotation(): Promise&lt;Buffer&gt;</text>
+<text x="0.0" y="78.9" stroke="none" data-name="FilesService" data-compartment="2">-convertToBase64(): Promise&lt;string&gt;</text>
+<text x="0.0" y="95.1" stroke="none" data-name="FilesService" data-compartment="2">+processImage(): Promise&lt;{ company: string</text>
+<text x="0.0" y="111.3" stroke="none" data-name="FilesService" data-compartment="2">products: any[]</text>
+<text x="0.0" y="127.5" stroke="none" data-name="FilesService" data-compartment="2">text: string</text>
+<text x="0.0" y="143.7" stroke="none" data-name="FilesService" data-compartment="2">}&gt;</text>
+<text x="0.0" y="159.9" stroke="none" data-name="FilesService" data-compartment="2">+deleteFile(): Promise&lt;void&gt;</text>
+<text x="0.0" y="176.1" stroke="none" data-name="FilesService" data-compartment="2">-extractProductsFromText(): { code: string</text>
+<text x="0.0" y="192.3" stroke="none" data-name="FilesService" data-compartment="2">price: string</text>
+<text x="0.0" y="208.5" stroke="none" data-name="FilesService" data-compartment="2">}[]</text>
+<text x="0.0" y="224.7" stroke="none" data-name="FilesService" data-compartment="2">-isValidPrice(): boolean</text>
+<text x="0.0" y="240.9" stroke="none" data-name="FilesService" data-compartment="2">-adjustPrice(): string</text>
+<text x="0.0" y="257.1" stroke="none" data-name="FilesService" data-compartment="2">-isValidCode(): boolean</text>
+<text x="0.0" y="273.3" stroke="none" data-name="FilesService" data-compartment="2">-getCompanyFromCodes(): string</text>
+
+</g>
+</g>
+</g>
+<g data-name="ProdcomcityController">
+<g fill="#eee8d5" stroke="#33322E" data-name="ProdcomcityController">
+<rect x="6997.0" y="348.5" height="274.0" width="443.0" data-name="ProdcomcityController"></rect>
+<path d="M6997.0 380.5 L7440.0 380.5" fill="none" data-name="ProdcomcityController"></path>
+<path d="M6997.0 412.5 L7440.0 412.5" fill="none" data-name="ProdcomcityController"></path>
+</g>
+<g transform="translate(6997, 348.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="ProdcomcityController" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ProdcomcityController" data-compartment="0">
+<a id="src/prodcomcity/prodcomcity.controller.ts.ProdcomcityController" xlink:href="src/prodcomcity/prodcomcity.controller.ts"><text x="213.5" y="14.1" stroke="none" text-anchor="middle" data-name="ProdcomcityController" data-compartment="0">ProdcomcityController</text></a>
+
+</g>
+</g>
+<g transform="translate(6997, 380.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ProdcomcityController" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ProdcomcityController" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="ProdcomcityController" data-compartment="1">-prodcomcityService: ProdcomcityService</text>
+
+</g>
+</g>
+<g transform="translate(6997, 412.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ProdcomcityController" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ProdcomcityController" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="ProdcomcityController" data-compartment="2">+create(): Promise&lt;Prodcomcity&gt;</text>
+<text x="0.0" y="30.3" stroke="none" data-name="ProdcomcityController" data-compartment="2">+findAll(): Promise&lt;Prodcomcity[]&gt;</text>
+<text x="0.0" y="46.5" stroke="none" data-name="ProdcomcityController" data-compartment="2">+findAllByCityAndCompany(): Promise&lt;Prodcomcity[]&gt;</text>
+<text x="0.0" y="62.7" stroke="none" data-name="ProdcomcityController" data-compartment="2">+getByCompany(): Promise&lt;Prodcomcity[]&gt;</text>
+<text x="0.0" y="78.9" stroke="none" data-name="ProdcomcityController" data-compartment="2">+getByCity(): Promise&lt;Prodcomcity[]&gt;</text>
+<text x="0.0" y="95.1" stroke="none" data-name="ProdcomcityController" data-compartment="2">+getLowestPricesByTags(): Promise&lt;any[]&gt;</text>
+<text x="0.0" y="111.3" stroke="none" data-name="ProdcomcityController" data-compartment="2">+getLowestPricesByCodes(): Promise&lt;any[]&gt;</text>
+<text x="0.0" y="127.5" stroke="none" data-name="ProdcomcityController" data-compartment="2">+findProdcomcity(): Promise&lt;Prodcomcity&gt;</text>
+<text x="0.0" y="143.7" stroke="none" data-name="ProdcomcityController" data-compartment="2">+searchProdcomcities(): Promise&lt;Prodcomcity[]&gt;</text>
+<text x="0.0" y="159.9" stroke="none" data-name="ProdcomcityController" data-compartment="2">+findOne(): Promise&lt;Prodcomcity&gt;</text>
+<text x="0.0" y="176.1" stroke="none" data-name="ProdcomcityController" data-compartment="2">+updateProdcomcity(): Promise&lt;any&gt;</text>
+<text x="0.0" y="192.3" stroke="none" data-name="ProdcomcityController" data-compartment="2">+remove(): Promise&lt;void&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="ProdcomcityModule">
+<g fill="#eee8d5" stroke="#33322E" data-name="ProdcomcityModule">
+<rect x="7480.0" y="461.5" height="48.0" width="171.0" data-name="ProdcomcityModule"></rect>
+<path d="M7480.0 493.5 L7651.0 493.5" fill="none" data-name="ProdcomcityModule"></path>
+<path d="M7480.0 501.5 L7651.0 501.5" fill="none" data-name="ProdcomcityModule"></path>
+</g>
+<g transform="translate(7480, 461.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="ProdcomcityModule" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ProdcomcityModule" data-compartment="0">
+<a id="src/prodcomcity/prodcomcity.module.ts.ProdcomcityModule" xlink:href="src/prodcomcity/prodcomcity.module.ts"><text x="77.5" y="14.1" stroke="none" text-anchor="middle" data-name="ProdcomcityModule" data-compartment="0">ProdcomcityModule</text></a>
+
+</g>
+</g>
+<g transform="translate(7480, 493.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ProdcomcityModule" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="ProdcomcityModule" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(7480, 501.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ProdcomcityModule" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="ProdcomcityModule" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="ProdcomcityService">
+<g fill="#eee8d5" stroke="#33322E" data-name="ProdcomcityService">
+<rect x="7691.0" y="218.5" height="534.0" width="530.0" data-name="ProdcomcityService"></rect>
+<path d="M7691.0 250.5 L8221.0 250.5" fill="none" data-name="ProdcomcityService"></path>
+<path d="M7691.0 412.5 L8221.0 412.5" fill="none" data-name="ProdcomcityService"></path>
+</g>
+<g transform="translate(7691, 218.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="ProdcomcityService" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ProdcomcityService" data-compartment="0">
+<a id="src/prodcomcity/prodcomcity.service.ts.ProdcomcityService" xlink:href="src/prodcomcity/prodcomcity.service.ts"><text x="257.0" y="14.1" stroke="none" text-anchor="middle" data-name="ProdcomcityService" data-compartment="0">ProdcomcityService</text></a>
+
+</g>
+</g>
+<g transform="translate(7691, 250.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ProdcomcityService" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ProdcomcityService" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="ProdcomcityService" data-compartment="1">-logger: Logger</text>
+<text x="0.0" y="30.3" stroke="none" data-name="ProdcomcityService" data-compartment="1">-prodcomcityRepository: Repository&lt;Prodcomcity&gt;</text>
+<text x="0.0" y="46.5" stroke="none" data-name="ProdcomcityService" data-compartment="1">-comcityRepository: Repository&lt;Comcity&gt;</text>
+<text x="0.0" y="62.7" stroke="none" data-name="ProdcomcityService" data-compartment="1">-productRepository: Repository&lt;Product&gt;</text>
+<text x="0.0" y="78.9" stroke="none" data-name="ProdcomcityService" data-compartment="1">-cityRepository: Repository&lt;City&gt;</text>
+<text x="0.0" y="95.1" stroke="none" data-name="ProdcomcityService" data-compartment="1">-companyRepository: Repository&lt;Company&gt;</text>
+<text x="0.0" y="111.3" stroke="none" data-name="ProdcomcityService" data-compartment="1">-productService: ProductsService</text>
+<text x="0.0" y="127.5" stroke="none" data-name="ProdcomcityService" data-compartment="1">-comcityService: ComcityService</text>
+<text x="0.0" y="143.7" stroke="none" data-name="ProdcomcityService" data-compartment="1">-dataSource: DataSource</text>
+
+</g>
+</g>
+<g transform="translate(7691, 412.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ProdcomcityService" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ProdcomcityService" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="ProdcomcityService" data-compartment="2">+createSeed(): Promise&lt;Prodcomcity&gt;</text>
+<text x="0.0" y="30.3" stroke="none" data-name="ProdcomcityService" data-compartment="2">+create(): Promise&lt;Prodcomcity&gt;</text>
+<text x="0.0" y="46.5" stroke="none" data-name="ProdcomcityService" data-compartment="2">+findAll(): Promise&lt;Prodcomcity[]&gt;</text>
+<text x="0.0" y="62.7" stroke="none" data-name="ProdcomcityService" data-compartment="2">+findOne(): Promise&lt;Prodcomcity&gt;</text>
+<text x="0.0" y="78.9" stroke="none" data-name="ProdcomcityService" data-compartment="2">+findOnePlain(): Promise&lt;Prodcomcity&gt;</text>
+<text x="0.0" y="95.1" stroke="none" data-name="ProdcomcityService" data-compartment="2">+findOneById(): Promise&lt;Prodcomcity&gt;</text>
+<text x="0.0" y="111.3" stroke="none" data-name="ProdcomcityService" data-compartment="2">+findProdcomcityByComcityAndProduct(): Promise&lt;Prodcomcity&gt;</text>
+<text x="0.0" y="127.5" stroke="none" data-name="ProdcomcityService" data-compartment="2">-executeInTransaction(): Promise&lt;T&gt;</text>
+<text x="0.0" y="143.7" stroke="none" data-name="ProdcomcityService" data-compartment="2">+updateProdcomcityOcr(): Promise&lt;Prodcomcity&gt;</text>
+<text x="0.0" y="159.9" stroke="none" data-name="ProdcomcityService" data-compartment="2">+remove(): Promise&lt;void&gt;</text>
+<text x="0.0" y="176.1" stroke="none" data-name="ProdcomcityService" data-compartment="2">+updateProdcomcity(): Promise&lt;Prodcomcity&gt;</text>
+<text x="0.0" y="192.3" stroke="none" data-name="ProdcomcityService" data-compartment="2">+findAllByCityId(): Promise&lt;Prodcomcity[]&gt;</text>
+<text x="0.0" y="208.5" stroke="none" data-name="ProdcomcityService" data-compartment="2">+findAllByCompanyId(): Promise&lt;Prodcomcity[]&gt;</text>
+<text x="0.0" y="224.7" stroke="none" data-name="ProdcomcityService" data-compartment="2">+findAllByCityAndCompanyId(): Promise&lt;Prodcomcity[]&gt;</text>
+<text x="0.0" y="240.9" stroke="none" data-name="ProdcomcityService" data-compartment="2">+findProdcomcitiesBySearch(): Promise&lt;Prodcomcity[]&gt;</text>
+<text x="0.0" y="257.1" stroke="none" data-name="ProdcomcityService" data-compartment="2">+findProductsByTags(): Promise&lt;Product[]&gt;</text>
+<text x="0.0" y="273.3" stroke="none" data-name="ProdcomcityService" data-compartment="2">+findLowestPricesByTags(): Promise&lt;any[]&gt;</text>
+<text x="0.0" y="289.5" stroke="none" data-name="ProdcomcityService" data-compartment="2">+findLowestPricesByCodes(): Promise&lt;any[]&gt;</text>
+<text x="0.0" y="305.7" stroke="none" data-name="ProdcomcityService" data-compartment="2">+deleteAllProdComcity(): Promise&lt;DeleteResult&gt;</text>
+<text x="0.0" y="321.9" stroke="none" data-name="ProdcomcityService" data-compartment="2">-handleDBException(): void</text>
+
+</g>
+</g>
+</g>
+<g data-name="ProductsController">
+<g fill="#eee8d5" stroke="#33322E" data-name="ProductsController">
+<rect x="8261.0" y="48.5" height="874.0" width="406.0" data-name="ProductsController"></rect>
+<path d="M8261.0 80.5 L8667.0 80.5" fill="none" data-name="ProductsController"></path>
+<path d="M8261.0 112.5 L8667.0 112.5" fill="none" data-name="ProductsController"></path>
+</g>
+<g transform="translate(8261, 48.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="ProductsController" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ProductsController" data-compartment="0">
+<a id="src/products/products.controller.ts.ProductsController" xlink:href="src/products/products.controller.ts"><text x="195.0" y="14.1" stroke="none" text-anchor="middle" data-name="ProductsController" data-compartment="0">ProductsController</text></a>
+
+</g>
+</g>
+<g transform="translate(8261, 80.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ProductsController" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ProductsController" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="ProductsController" data-compartment="1">-productsService: ProductsService</text>
+
+</g>
+</g>
+<g transform="translate(8261, 112.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ProductsController" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ProductsController" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="ProductsController" data-compartment="2">+create(): Promise&lt;{ images: string[]</text>
+<text x="0.0" y="30.3" stroke="none" data-name="ProductsController" data-compartment="2">id: string</text>
+<text x="0.0" y="46.5" stroke="none" data-name="ProductsController" data-compartment="2">title: string</text>
+<text x="0.0" y="62.7" stroke="none" data-name="ProductsController" data-compartment="2">slug: string</text>
+<text x="0.0" y="78.9" stroke="none" data-name="ProductsController" data-compartment="2">tags: string[]</text>
+<text x="0.0" y="95.1" stroke="none" data-name="ProductsController" data-compartment="2">code: number</text>
+<text x="0.0" y="111.3" stroke="none" data-name="ProductsController" data-compartment="2">user: User</text>
+<text x="0.0" y="127.5" stroke="none" data-name="ProductsController" data-compartment="2">}&gt;</text>
+<text x="0.0" y="143.7" stroke="none" data-name="ProductsController" data-compartment="2">+findAll(): Promise&lt;{ images: string[]</text>
+<text x="0.0" y="159.9" stroke="none" data-name="ProductsController" data-compartment="2">id: string</text>
+<text x="0.0" y="176.1" stroke="none" data-name="ProductsController" data-compartment="2">title: string</text>
+<text x="0.0" y="192.3" stroke="none" data-name="ProductsController" data-compartment="2">slug: string</text>
+<text x="0.0" y="208.5" stroke="none" data-name="ProductsController" data-compartment="2">tags: string[]</text>
+<text x="0.0" y="224.7" stroke="none" data-name="ProductsController" data-compartment="2">code: number</text>
+<text x="0.0" y="240.9" stroke="none" data-name="ProductsController" data-compartment="2">user: User</text>
+<text x="0.0" y="257.1" stroke="none" data-name="ProductsController" data-compartment="2">}[]&gt;</text>
+<text x="0.0" y="273.3" stroke="none" data-name="ProductsController" data-compartment="2">+findOne(): Promise&lt;{ images: string[]</text>
+<text x="0.0" y="289.5" stroke="none" data-name="ProductsController" data-compartment="2">id: string</text>
+<text x="0.0" y="305.7" stroke="none" data-name="ProductsController" data-compartment="2">title: string</text>
+<text x="0.0" y="321.9" stroke="none" data-name="ProductsController" data-compartment="2">slug: string</text>
+<text x="0.0" y="338.1" stroke="none" data-name="ProductsController" data-compartment="2">tags: string[]</text>
+<text x="0.0" y="354.3" stroke="none" data-name="ProductsController" data-compartment="2">code: number</text>
+<text x="0.0" y="370.5" stroke="none" data-name="ProductsController" data-compartment="2">user: User</text>
+<text x="0.0" y="386.7" stroke="none" data-name="ProductsController" data-compartment="2">}&gt;</text>
+<text x="0.0" y="402.9" stroke="none" data-name="ProductsController" data-compartment="2">+findCheapest(): Promise&lt;{ images: string[]</text>
+<text x="0.0" y="419.1" stroke="none" data-name="ProductsController" data-compartment="2">id: string</text>
+<text x="0.0" y="435.3" stroke="none" data-name="ProductsController" data-compartment="2">title: string</text>
+<text x="0.0" y="451.5" stroke="none" data-name="ProductsController" data-compartment="2">slug: string</text>
+<text x="0.0" y="467.7" stroke="none" data-name="ProductsController" data-compartment="2">tags: string[]</text>
+<text x="0.0" y="483.9" stroke="none" data-name="ProductsController" data-compartment="2">code: number</text>
+<text x="0.0" y="500.1" stroke="none" data-name="ProductsController" data-compartment="2">user: User</text>
+<text x="0.0" y="516.3" stroke="none" data-name="ProductsController" data-compartment="2">}[]&gt;</text>
+<text x="0.0" y="532.5" stroke="none" data-name="ProductsController" data-compartment="2">+findProductByCode(): Promise&lt;{ images: string[]</text>
+<text x="0.0" y="548.7" stroke="none" data-name="ProductsController" data-compartment="2">id: string</text>
+<text x="0.0" y="564.9" stroke="none" data-name="ProductsController" data-compartment="2">title: string</text>
+<text x="0.0" y="581.1" stroke="none" data-name="ProductsController" data-compartment="2">slug: string</text>
+<text x="0.0" y="597.3" stroke="none" data-name="ProductsController" data-compartment="2">tags: string[]</text>
+<text x="0.0" y="613.5" stroke="none" data-name="ProductsController" data-compartment="2">code: number</text>
+<text x="0.0" y="629.7" stroke="none" data-name="ProductsController" data-compartment="2">user: User</text>
+<text x="0.0" y="645.9" stroke="none" data-name="ProductsController" data-compartment="2">}&gt;</text>
+<text x="0.0" y="662.1" stroke="none" data-name="ProductsController" data-compartment="2">+update(): Promise&lt;{ images: string[]</text>
+<text x="0.0" y="678.3" stroke="none" data-name="ProductsController" data-compartment="2">id: string</text>
+<text x="0.0" y="694.5" stroke="none" data-name="ProductsController" data-compartment="2">title: string</text>
+<text x="0.0" y="710.7" stroke="none" data-name="ProductsController" data-compartment="2">slug: string</text>
+<text x="0.0" y="726.9" stroke="none" data-name="ProductsController" data-compartment="2">tags: string[]</text>
+<text x="0.0" y="743.1" stroke="none" data-name="ProductsController" data-compartment="2">code: number</text>
+<text x="0.0" y="759.3" stroke="none" data-name="ProductsController" data-compartment="2">user: User</text>
+<text x="0.0" y="775.5" stroke="none" data-name="ProductsController" data-compartment="2">}&gt;</text>
+<text x="0.0" y="791.7" stroke="none" data-name="ProductsController" data-compartment="2">+remove(): Promise&lt;void&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="ProductsModule">
+<g fill="#eee8d5" stroke="#33322E" data-name="ProductsModule">
+<rect x="8707.0" y="461.5" height="48.0" width="144.0" data-name="ProductsModule"></rect>
+<path d="M8707.0 493.5 L8851.0 493.5" fill="none" data-name="ProductsModule"></path>
+<path d="M8707.0 501.5 L8851.0 501.5" fill="none" data-name="ProductsModule"></path>
+</g>
+<g transform="translate(8707, 461.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="ProductsModule" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ProductsModule" data-compartment="0">
+<a id="src/products/products.module.ts.ProductsModule" xlink:href="src/products/products.module.ts"><text x="64.0" y="14.1" stroke="none" text-anchor="middle" data-name="ProductsModule" data-compartment="0">ProductsModule</text></a>
+
+</g>
+</g>
+<g transform="translate(8707, 493.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ProductsModule" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="ProductsModule" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(8707, 501.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ProductsModule" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="ProductsModule" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="ProductsService">
+<g fill="#eee8d5" stroke="#33322E" data-name="ProductsService">
+<rect x="8891.0" y="0.0" height="971.0" width="441.0" data-name="ProductsService"></rect>
+<path d="M8891.0 32.0 L9332.0 32.0" fill="none" data-name="ProductsService"></path>
+<path d="M8891.0 113.0 L9332.0 113.0" fill="none" data-name="ProductsService"></path>
+</g>
+<g transform="translate(8891, 0)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="ProductsService" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ProductsService" data-compartment="0">
+<a id="src/products/products.service.ts.ProductsService" xlink:href="src/products/products.service.ts"><text x="212.5" y="14.1" stroke="none" text-anchor="middle" data-name="ProductsService" data-compartment="0">ProductsService</text></a>
+
+</g>
+</g>
+<g transform="translate(8891, 32)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ProductsService" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ProductsService" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="ProductsService" data-compartment="1">-logger: Logger</text>
+<text x="0.0" y="30.3" stroke="none" data-name="ProductsService" data-compartment="1">-productRepository: Repository&lt;Product&gt;</text>
+<text x="0.0" y="46.5" stroke="none" data-name="ProductsService" data-compartment="1">-productImageRepository: Repository&lt;ProductImage&gt;</text>
+<text x="0.0" y="62.7" stroke="none" data-name="ProductsService" data-compartment="1">-dataSource: DataSource</text>
+
+</g>
+</g>
+<g transform="translate(8891, 113)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ProductsService" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ProductsService" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="ProductsService" data-compartment="2">+create(): Promise&lt;{ images: string[]</text>
+<text x="0.0" y="30.3" stroke="none" data-name="ProductsService" data-compartment="2">id: string</text>
+<text x="0.0" y="46.5" stroke="none" data-name="ProductsService" data-compartment="2">title: string</text>
+<text x="0.0" y="62.7" stroke="none" data-name="ProductsService" data-compartment="2">slug: string</text>
+<text x="0.0" y="78.9" stroke="none" data-name="ProductsService" data-compartment="2">tags: string[]</text>
+<text x="0.0" y="95.1" stroke="none" data-name="ProductsService" data-compartment="2">code: number</text>
+<text x="0.0" y="111.3" stroke="none" data-name="ProductsService" data-compartment="2">user: User</text>
+<text x="0.0" y="127.5" stroke="none" data-name="ProductsService" data-compartment="2">}&gt;</text>
+<text x="0.0" y="143.7" stroke="none" data-name="ProductsService" data-compartment="2">+findAll(): Promise&lt;{ images: string[]</text>
+<text x="0.0" y="159.9" stroke="none" data-name="ProductsService" data-compartment="2">id: string</text>
+<text x="0.0" y="176.1" stroke="none" data-name="ProductsService" data-compartment="2">title: string</text>
+<text x="0.0" y="192.3" stroke="none" data-name="ProductsService" data-compartment="2">slug: string</text>
+<text x="0.0" y="208.5" stroke="none" data-name="ProductsService" data-compartment="2">tags: string[]</text>
+<text x="0.0" y="224.7" stroke="none" data-name="ProductsService" data-compartment="2">code: number</text>
+<text x="0.0" y="240.9" stroke="none" data-name="ProductsService" data-compartment="2">user: User</text>
+<text x="0.0" y="257.1" stroke="none" data-name="ProductsService" data-compartment="2">}[]&gt;</text>
+<text x="0.0" y="273.3" stroke="none" data-name="ProductsService" data-compartment="2">+findOne(): Promise&lt;Product&gt;</text>
+<text x="0.0" y="289.5" stroke="none" data-name="ProductsService" data-compartment="2">+findOnePlain(): Promise&lt;{ images: string[]</text>
+<text x="0.0" y="305.7" stroke="none" data-name="ProductsService" data-compartment="2">id: string</text>
+<text x="0.0" y="321.9" stroke="none" data-name="ProductsService" data-compartment="2">title: string</text>
+<text x="0.0" y="338.1" stroke="none" data-name="ProductsService" data-compartment="2">slug: string</text>
+<text x="0.0" y="354.3" stroke="none" data-name="ProductsService" data-compartment="2">tags: string[]</text>
+<text x="0.0" y="370.5" stroke="none" data-name="ProductsService" data-compartment="2">code: number</text>
+<text x="0.0" y="386.7" stroke="none" data-name="ProductsService" data-compartment="2">user: User</text>
+<text x="0.0" y="402.9" stroke="none" data-name="ProductsService" data-compartment="2">}&gt;</text>
+<text x="0.0" y="419.1" stroke="none" data-name="ProductsService" data-compartment="2">+findProductsByCode(): Promise&lt;{ images: string[]</text>
+<text x="0.0" y="435.3" stroke="none" data-name="ProductsService" data-compartment="2">id: string</text>
+<text x="0.0" y="451.5" stroke="none" data-name="ProductsService" data-compartment="2">title: string</text>
+<text x="0.0" y="467.7" stroke="none" data-name="ProductsService" data-compartment="2">slug: string</text>
+<text x="0.0" y="483.9" stroke="none" data-name="ProductsService" data-compartment="2">tags: string[]</text>
+<text x="0.0" y="500.1" stroke="none" data-name="ProductsService" data-compartment="2">code: number</text>
+<text x="0.0" y="516.3" stroke="none" data-name="ProductsService" data-compartment="2">user: User</text>
+<text x="0.0" y="532.5" stroke="none" data-name="ProductsService" data-compartment="2">}&gt;</text>
+<text x="0.0" y="548.7" stroke="none" data-name="ProductsService" data-compartment="2">+update(): Promise&lt;{ images: string[]</text>
+<text x="0.0" y="564.9" stroke="none" data-name="ProductsService" data-compartment="2">id: string</text>
+<text x="0.0" y="581.1" stroke="none" data-name="ProductsService" data-compartment="2">title: string</text>
+<text x="0.0" y="597.3" stroke="none" data-name="ProductsService" data-compartment="2">slug: string</text>
+<text x="0.0" y="613.5" stroke="none" data-name="ProductsService" data-compartment="2">tags: string[]</text>
+<text x="0.0" y="629.7" stroke="none" data-name="ProductsService" data-compartment="2">code: number</text>
+<text x="0.0" y="645.9" stroke="none" data-name="ProductsService" data-compartment="2">user: User</text>
+<text x="0.0" y="662.1" stroke="none" data-name="ProductsService" data-compartment="2">}&gt;</text>
+<text x="0.0" y="678.3" stroke="none" data-name="ProductsService" data-compartment="2">+remove(): Promise&lt;void&gt;</text>
+<text x="0.0" y="694.5" stroke="none" data-name="ProductsService" data-compartment="2">-handleDBException(): void</text>
+<text x="0.0" y="710.7" stroke="none" data-name="ProductsService" data-compartment="2">+deleteAllProducts(): Promise&lt;DeleteResult&gt;</text>
+<text x="0.0" y="726.9" stroke="none" data-name="ProductsService" data-compartment="2">+findProductsByTag(): Promise&lt;{ images: string[]</text>
+<text x="0.0" y="743.1" stroke="none" data-name="ProductsService" data-compartment="2">id: string</text>
+<text x="0.0" y="759.3" stroke="none" data-name="ProductsService" data-compartment="2">title: string</text>
+<text x="0.0" y="775.5" stroke="none" data-name="ProductsService" data-compartment="2">slug: string</text>
+<text x="0.0" y="791.7" stroke="none" data-name="ProductsService" data-compartment="2">tags: string[]</text>
+<text x="0.0" y="807.9" stroke="none" data-name="ProductsService" data-compartment="2">code: number</text>
+<text x="0.0" y="824.1" stroke="none" data-name="ProductsService" data-compartment="2">user: User</text>
+<text x="0.0" y="840.3" stroke="none" data-name="ProductsService" data-compartment="2">}[]&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="SeedController">
+<g fill="#eee8d5" stroke="#33322E" data-name="SeedController">
+<rect x="9372.0" y="437.5" height="96.0" width="280.0" data-name="SeedController"></rect>
+<path d="M9372.0 469.5 L9652.0 469.5" fill="none" data-name="SeedController"></path>
+<path d="M9372.0 501.5 L9652.0 501.5" fill="none" data-name="SeedController"></path>
+</g>
+<g transform="translate(9372, 437.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="SeedController" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="SeedController" data-compartment="0">
+<a id="src/seed/seed.controller.ts.SeedController" xlink:href="src/seed/seed.controller.ts"><text x="132.0" y="14.1" stroke="none" text-anchor="middle" data-name="SeedController" data-compartment="0">SeedController</text></a>
+
+</g>
+</g>
+<g transform="translate(9372, 469.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="SeedController" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="SeedController" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="SeedController" data-compartment="1">-seedService: SeedService</text>
+
+</g>
+</g>
+<g transform="translate(9372, 501.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="SeedController" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="SeedController" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="SeedController" data-compartment="2">+executeSeed(): Promise&lt;string&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="SeedModule">
+<g fill="#eee8d5" stroke="#33322E" data-name="SeedModule">
+<rect x="9692.0" y="461.5" height="48.0" width="115.0" data-name="SeedModule"></rect>
+<path d="M9692.0 493.5 L9807.0 493.5" fill="none" data-name="SeedModule"></path>
+<path d="M9692.0 501.5 L9807.0 501.5" fill="none" data-name="SeedModule"></path>
+</g>
+<g transform="translate(9692, 461.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="SeedModule" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="SeedModule" data-compartment="0">
+<a id="src/seed/seed.module.ts.SeedModule" xlink:href="src/seed/seed.module.ts"><text x="49.5" y="14.1" stroke="none" text-anchor="middle" data-name="SeedModule" data-compartment="0">SeedModule</text></a>
+
+</g>
+</g>
+<g transform="translate(9692, 493.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="SeedModule" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="SeedModule" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(9692, 501.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="SeedModule" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="SeedModule" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="SeedService">
+<g fill="#eee8d5" stroke="#33322E" data-name="SeedService">
+<rect x="9847.0" y="332.0" height="307.0" width="387.0" data-name="SeedService"></rect>
+<path d="M9847.0 364.0 L10234.0 364.0" fill="none" data-name="SeedService"></path>
+<path d="M9847.0 477.0 L10234.0 477.0" fill="none" data-name="SeedService"></path>
+</g>
+<g transform="translate(9847, 332)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="SeedService" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="SeedService" data-compartment="0">
+<a id="src/seed/seed.service.ts.SeedService" xlink:href="src/seed/seed.service.ts"><text x="185.5" y="14.1" stroke="none" text-anchor="middle" data-name="SeedService" data-compartment="0">SeedService</text></a>
+
+</g>
+</g>
+<g transform="translate(9847, 364)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="SeedService" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="SeedService" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="SeedService" data-compartment="1">-productsService: ProductsService</text>
+<text x="0.0" y="30.3" stroke="none" data-name="SeedService" data-compartment="1">-citiesService: CitiesService</text>
+<text x="0.0" y="46.5" stroke="none" data-name="SeedService" data-compartment="1">-companiesService: CompaniesService</text>
+<text x="0.0" y="62.7" stroke="none" data-name="SeedService" data-compartment="1">-comcityService: ComcityService</text>
+<text x="0.0" y="78.9" stroke="none" data-name="SeedService" data-compartment="1">-prodcomcityService: ProdcomcityService</text>
+<text x="0.0" y="95.1" stroke="none" data-name="SeedService" data-compartment="1">-userRepository: Repository&lt;User&gt;</text>
+
+</g>
+</g>
+<g transform="translate(9847, 477)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="SeedService" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="SeedService" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="SeedService" data-compartment="2">+runSeed(): Promise&lt;string&gt;</text>
+<text x="0.0" y="30.3" stroke="none" data-name="SeedService" data-compartment="2">-deleteTables(): Promise&lt;void&gt;</text>
+<text x="0.0" y="46.5" stroke="none" data-name="SeedService" data-compartment="2">-insertUsers(): Promise&lt;SeedUser &amp; User&gt;</text>
+<text x="0.0" y="62.7" stroke="none" data-name="SeedService" data-compartment="2">-insertNewProducts(): Promise&lt;boolean&gt;</text>
+<text x="0.0" y="78.9" stroke="none" data-name="SeedService" data-compartment="2">-insertNewCities(): Promise&lt;boolean&gt;</text>
+<text x="0.0" y="95.1" stroke="none" data-name="SeedService" data-compartment="2">-insertNewCompanies(): Promise&lt;boolean&gt;</text>
+<text x="0.0" y="111.3" stroke="none" data-name="SeedService" data-compartment="2">+insertNewComCities(): Promise&lt;boolean&gt;</text>
+<text x="0.0" y="127.5" stroke="none" data-name="SeedService" data-compartment="2">-insertNewProdComCities(): Promise&lt;boolean&gt;</text>
+<text x="0.0" y="143.7" stroke="none" data-name="SeedService" data-compartment="2">-insertNewWarehouses(): Promise&lt;boolean&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="CreateAuditLogDto">
+<g fill="#eee8d5" stroke="#33322E" data-name="CreateAuditLogDto">
+<rect x="10274.0" y="461.5" height="48.0" width="166.0" data-name="CreateAuditLogDto"></rect>
+<path d="M10274.0 493.5 L10440.0 493.5" fill="none" data-name="CreateAuditLogDto"></path>
+<path d="M10274.0 501.5 L10440.0 501.5" fill="none" data-name="CreateAuditLogDto"></path>
+</g>
+<g transform="translate(10274, 461.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="CreateAuditLogDto" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="CreateAuditLogDto" data-compartment="0">
+<a id="src/audit-log/dto/create-audit-log.dto.ts.CreateAuditLogDto" xlink:href="src/audit-log/dto/create-audit-log.dto.ts"><text x="75.0" y="14.1" stroke="none" text-anchor="middle" data-name="CreateAuditLogDto" data-compartment="0">CreateAuditLogDto</text></a>
+
+</g>
+</g>
+<g transform="translate(10274, 493.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CreateAuditLogDto" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="CreateAuditLogDto" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(10274, 501.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CreateAuditLogDto" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="CreateAuditLogDto" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="UpdateAuditLogDto">
+<g fill="#eee8d5" stroke="#33322E" data-name="UpdateAuditLogDto">
+<rect x="10480.0" y="461.5" height="48.0" width="170.0" data-name="UpdateAuditLogDto"></rect>
+<path d="M10480.0 493.5 L10650.0 493.5" fill="none" data-name="UpdateAuditLogDto"></path>
+<path d="M10480.0 501.5 L10650.0 501.5" fill="none" data-name="UpdateAuditLogDto"></path>
+</g>
+<g transform="translate(10480, 461.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="UpdateAuditLogDto" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="UpdateAuditLogDto" data-compartment="0">
+<a id="src/audit-log/dto/update-audit-log.dto.ts.UpdateAuditLogDto" xlink:href="src/audit-log/dto/update-audit-log.dto.ts"><text x="77.0" y="14.1" stroke="none" text-anchor="middle" data-name="UpdateAuditLogDto" data-compartment="0">UpdateAuditLogDto</text></a>
+
+</g>
+</g>
+<g transform="translate(10480, 493.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="UpdateAuditLogDto" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="UpdateAuditLogDto" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(10480, 501.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="UpdateAuditLogDto" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="UpdateAuditLogDto" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="AuditLog">
+<g fill="#eee8d5" stroke="#33322E" data-name="AuditLog">
+<rect x="10690.0" y="401.0" height="169.0" width="281.0" data-name="AuditLog"></rect>
+<path d="M10690.0 433.0 L10971.0 433.0" fill="none" data-name="AuditLog"></path>
+<path d="M10690.0 562.0 L10971.0 562.0" fill="none" data-name="AuditLog"></path>
+</g>
+<g transform="translate(10690, 401)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="AuditLog" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="AuditLog" data-compartment="0">
+<a id="src/audit-log/entities/audit-log.entity.ts.AuditLog" xlink:href="src/audit-log/entities/audit-log.entity.ts"><text x="132.5" y="14.1" stroke="none" text-anchor="middle" data-name="AuditLog" data-compartment="0">AuditLog</text></a>
+
+</g>
+</g>
+<g transform="translate(10690, 433)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AuditLog" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="AuditLog" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="AuditLog" data-compartment="1">+id: string</text>
+<text x="0.0" y="30.3" stroke="none" data-name="AuditLog" data-compartment="1">+action: string</text>
+<text x="0.0" y="46.5" stroke="none" data-name="AuditLog" data-compartment="1">+user_id: string</text>
+<text x="0.0" y="62.7" stroke="none" data-name="AuditLog" data-compartment="1">+old_value: Record&lt;string, any&gt;</text>
+<text x="0.0" y="78.9" stroke="none" data-name="AuditLog" data-compartment="1">+new_value: Record&lt;string, any&gt;</text>
+<text x="0.0" y="95.1" stroke="none" data-name="AuditLog" data-compartment="1">+ip_address: string</text>
+<text x="0.0" y="111.3" stroke="none" data-name="AuditLog" data-compartment="1">+created_at: Date</text>
+
+</g>
+</g>
+<g transform="translate(10690, 562)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AuditLog" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="AuditLog" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="CreateUserDto">
+<g fill="#eee8d5" stroke="#33322E" data-name="CreateUserDto">
+<rect x="11011.0" y="433.0" height="105.0" width="156.0" data-name="CreateUserDto"></rect>
+<path d="M11011.0 465.0 L11167.0 465.0" fill="none" data-name="CreateUserDto"></path>
+<path d="M11011.0 530.0 L11167.0 530.0" fill="none" data-name="CreateUserDto"></path>
+</g>
+<g transform="translate(11011, 433)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="CreateUserDto" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="CreateUserDto" data-compartment="0">
+<a id="src/auth/dto/create-user.dto.ts.CreateUserDto" xlink:href="src/auth/dto/create-user.dto.ts"><text x="70.0" y="14.1" stroke="none" text-anchor="middle" data-name="CreateUserDto" data-compartment="0">CreateUserDto</text></a>
+
+</g>
+</g>
+<g transform="translate(11011, 465)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CreateUserDto" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="CreateUserDto" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="CreateUserDto" data-compartment="1">+email: string</text>
+<text x="0.0" y="30.3" stroke="none" data-name="CreateUserDto" data-compartment="1">+password: string</text>
+<text x="0.0" y="46.5" stroke="none" data-name="CreateUserDto" data-compartment="1">+fullName: string</text>
+
+</g>
+</g>
+<g transform="translate(11011, 530)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CreateUserDto" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="CreateUserDto" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="AuthGoogleLoginDto">
+<g fill="#eee8d5" stroke="#33322E" data-name="AuthGoogleLoginDto">
+<rect x="11207.0" y="433.0" height="105.0" width="180.0" data-name="AuthGoogleLoginDto"></rect>
+<path d="M11207.0 465.0 L11387.0 465.0" fill="none" data-name="AuthGoogleLoginDto"></path>
+<path d="M11207.0 530.0 L11387.0 530.0" fill="none" data-name="AuthGoogleLoginDto"></path>
+</g>
+<g transform="translate(11207, 433)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="AuthGoogleLoginDto" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="AuthGoogleLoginDto" data-compartment="0">
+<a id="src/auth/dto/login-google-user.dto.ts.AuthGoogleLoginDto" xlink:href="src/auth/dto/login-google-user.dto.ts"><text x="82.0" y="14.1" stroke="none" text-anchor="middle" data-name="AuthGoogleLoginDto" data-compartment="0">AuthGoogleLoginDto</text></a>
+
+</g>
+</g>
+<g transform="translate(11207, 465)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AuthGoogleLoginDto" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="AuthGoogleLoginDto" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="AuthGoogleLoginDto" data-compartment="1">+token: string</text>
+<text x="0.0" y="30.3" stroke="none" data-name="AuthGoogleLoginDto" data-compartment="1">+email: string</text>
+<text x="0.0" y="46.5" stroke="none" data-name="AuthGoogleLoginDto" data-compartment="1">+name: string</text>
+
+</g>
+</g>
+<g transform="translate(11207, 530)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="AuthGoogleLoginDto" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="AuthGoogleLoginDto" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="LoginUserDto">
+<g fill="#eee8d5" stroke="#33322E" data-name="LoginUserDto">
+<rect x="11427.0" y="441.5" height="88.0" width="156.0" data-name="LoginUserDto"></rect>
+<path d="M11427.0 473.5 L11583.0 473.5" fill="none" data-name="LoginUserDto"></path>
+<path d="M11427.0 521.5 L11583.0 521.5" fill="none" data-name="LoginUserDto"></path>
+</g>
+<g transform="translate(11427, 441.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="LoginUserDto" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="LoginUserDto" data-compartment="0">
+<a id="src/auth/dto/login-user.dto.ts.LoginUserDto" xlink:href="src/auth/dto/login-user.dto.ts"><text x="70.0" y="14.1" stroke="none" text-anchor="middle" data-name="LoginUserDto" data-compartment="0">LoginUserDto</text></a>
+
+</g>
+</g>
+<g transform="translate(11427, 473.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="LoginUserDto" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="LoginUserDto" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="LoginUserDto" data-compartment="1">+email: string</text>
+<text x="0.0" y="30.3" stroke="none" data-name="LoginUserDto" data-compartment="1">+password: string</text>
+
+</g>
+</g>
+<g transform="translate(11427, 521.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="LoginUserDto" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="LoginUserDto" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="User">
+<g fill="#eee8d5" stroke="#33322E" data-name="User">
+<rect x="11623.0" y="364.5" height="242.0" width="284.0" data-name="User"></rect>
+<path d="M11623.0 396.5 L11907.0 396.5" fill="none" data-name="User"></path>
+<path d="M11623.0 558.5 L11907.0 558.5" fill="none" data-name="User"></path>
+</g>
+<g transform="translate(11623, 364.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="User" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="User" data-compartment="0">
+<a id="src/auth/entities/user.entity.ts.User" xlink:href="src/auth/entities/user.entity.ts"><text x="134.0" y="14.1" stroke="none" text-anchor="middle" data-name="User" data-compartment="0">User</text></a>
+
+</g>
+</g>
+<g transform="translate(11623, 396.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="User" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="User" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="User" data-compartment="1">+id: string</text>
+<text x="0.0" y="30.3" stroke="none" data-name="User" data-compartment="1">+email: string</text>
+<text x="0.0" y="46.5" stroke="none" data-name="User" data-compartment="1">+password: string</text>
+<text x="0.0" y="62.7" stroke="none" data-name="User" data-compartment="1">+fullName: string</text>
+<text x="0.0" y="78.9" stroke="none" data-name="User" data-compartment="1">+isActive: boolean</text>
+<text x="0.0" y="95.1" stroke="none" data-name="User" data-compartment="1">+roles: string[]</text>
+<text x="0.0" y="111.3" stroke="none" data-name="User" data-compartment="1">+product: Product</text>
+<text x="0.0" y="127.5" stroke="none" data-name="User" data-compartment="1">+prodComCity: Prodcomcity</text>
+<text x="0.0" y="143.7" stroke="none" data-name="User" data-compartment="1">+comCity: Comcity</text>
+
+</g>
+</g>
+<g transform="translate(11623, 558.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="User" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="User" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="User" data-compartment="2">+checkFieldsBeforeInsert(): void</text>
+<text x="0.0" y="30.3" stroke="none" data-name="User" data-compartment="2">+checkFieldsBeforeUpdate(): void</text>
+
+</g>
+</g>
+</g>
+<g data-name="UserRoleGuard">
+<g fill="#eee8d5" stroke="#33322E" data-name="UserRoleGuard">
+<rect x="11724.0" y="1052.0" height="96.0" width="557.0" data-name="UserRoleGuard"></rect>
+<path d="M11724.0 1084.0 L12281.0 1084.0" fill="none" data-name="UserRoleGuard"></path>
+<path d="M11724.0 1116.0 L12281.0 1116.0" fill="none" data-name="UserRoleGuard"></path>
+</g>
+<g transform="translate(11724, 1052)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="UserRoleGuard" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="UserRoleGuard" data-compartment="0">
+<a id="src/auth/guards/user-role.guard.ts.UserRoleGuard" xlink:href="src/auth/guards/user-role.guard.ts"><text x="270.5" y="14.1" stroke="none" text-anchor="middle" data-name="UserRoleGuard" data-compartment="0">UserRoleGuard</text></a>
+
+</g>
+</g>
+<g transform="translate(11724, 1084)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="UserRoleGuard" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="UserRoleGuard" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="UserRoleGuard" data-compartment="1">-reflector: Reflector</text>
+
+</g>
+</g>
+<g transform="translate(11724, 1116)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="UserRoleGuard" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="UserRoleGuard" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="UserRoleGuard" data-compartment="2">+canActivate(): boolean | Promise&lt;boolean&gt; | Observable&lt;boolean&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="CanActivate">
+<g fill="#eee8d5" stroke="#33322E" data-name="CanActivate">
+<rect x="11947.0" y="469.5" height="32.0" width="111.0" data-name="CanActivate"></rect>
+</g>
+<g transform="translate(11947, 469.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="CanActivate" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="CanActivate" data-compartment="0">
+<text x="47.5" y="14.1" stroke="none" text-anchor="middle" data-name="CanActivate" data-compartment="0">CanActivate</text>
+
+</g>
+</g>
+</g>
+<g data-name="DatabaseSessionInterceptor">
+<g fill="#eee8d5" stroke="#33322E" data-name="DatabaseSessionInterceptor">
+<rect x="6360.5" y="1052.0" height="96.0" width="257.0" data-name="DatabaseSessionInterceptor"></rect>
+<path d="M6360.5 1084.0 L6617.5 1084.0" fill="none" data-name="DatabaseSessionInterceptor"></path>
+<path d="M6360.5 1116.0 L6617.5 1116.0" fill="none" data-name="DatabaseSessionInterceptor"></path>
+</g>
+<g transform="translate(6360.5, 1052)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="DatabaseSessionInterceptor" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="DatabaseSessionInterceptor" data-compartment="0">
+<a id="src/auth/interceptors/database-session.interceptor.ts.DatabaseSessionInterceptor" xlink:href="src/auth/interceptors/database-session.interceptor.ts"><text x="120.5" y="14.1" stroke="none" text-anchor="middle" data-name="DatabaseSessionInterceptor" data-compartment="0">DatabaseSessionInterceptor</text></a>
+
+</g>
+</g>
+<g transform="translate(6360.5, 1084)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="DatabaseSessionInterceptor" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="DatabaseSessionInterceptor" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="DatabaseSessionInterceptor" data-compartment="1">-dataSource: DataSource</text>
+
+</g>
+</g>
+<g transform="translate(6360.5, 1116)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="DatabaseSessionInterceptor" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="DatabaseSessionInterceptor" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="DatabaseSessionInterceptor" data-compartment="2">+intercept(): Observable&lt;any&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="JwtPayload">
+<g fill="lightblue" stroke="#33322E" data-name="JwtPayload">
+<rect x="12098.0" y="449.5" height="72.0" width="106.0" data-name="JwtPayload"></rect>
+<path d="M12098.0 481.5 L12204.0 481.5" fill="none" data-name="JwtPayload"></path>
+<path d="M12098.0 513.5 L12204.0 513.5" fill="none" data-name="JwtPayload"></path>
+</g>
+<g transform="translate(12098, 449.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="JwtPayload" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="JwtPayload" data-compartment="0">
+<a id="src/auth/interfaces/jwt-payload.interface.ts.JwtPayload" xlink:href="src/auth/interfaces/jwt-payload.interface.ts"><text x="45.0" y="14.1" stroke="none" text-anchor="middle" data-name="JwtPayload" data-compartment="0">JwtPayload</text></a>
+
+</g>
+</g>
+<g transform="translate(12098, 481.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="JwtPayload" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="JwtPayload" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="JwtPayload" data-compartment="1">+id: string</text>
+
+</g>
+</g>
+<g transform="translate(12098, 513.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="JwtPayload" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="JwtPayload" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="ResponseRegisterUserAndCheckStatus">
+<g fill="#eee8d5" stroke="#33322E" data-name="ResponseRegisterUserAndCheckStatus">
+<rect x="12244.0" y="409.0" height="153.0" width="330.0" data-name="ResponseRegisterUserAndCheckStatus"></rect>
+<path d="M12244.0 441.0 L12574.0 441.0" fill="none" data-name="ResponseRegisterUserAndCheckStatus"></path>
+<path d="M12244.0 554.0 L12574.0 554.0" fill="none" data-name="ResponseRegisterUserAndCheckStatus"></path>
+</g>
+<g transform="translate(12244, 409)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="ResponseRegisterUserAndCheckStatus" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ResponseRegisterUserAndCheckStatus" data-compartment="0">
+<a id="src/auth/interfaces/Response.ts.ResponseRegisterUserAndCheckStatus" xlink:href="src/auth/interfaces/Response.ts"><text x="157.0" y="14.1" stroke="none" text-anchor="middle" data-name="ResponseRegisterUserAndCheckStatus" data-compartment="0">ResponseRegisterUserAndCheckStatus</text></a>
+
+</g>
+</g>
+<g transform="translate(12244, 441)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ResponseRegisterUserAndCheckStatus" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ResponseRegisterUserAndCheckStatus" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="ResponseRegisterUserAndCheckStatus" data-compartment="1">+email: string</text>
+<text x="0.0" y="30.3" stroke="none" data-name="ResponseRegisterUserAndCheckStatus" data-compartment="1">+fullname: string</text>
+<text x="0.0" y="46.5" stroke="none" data-name="ResponseRegisterUserAndCheckStatus" data-compartment="1">+id: string</text>
+<text x="0.0" y="62.7" stroke="none" data-name="ResponseRegisterUserAndCheckStatus" data-compartment="1">+IsActive: boolean</text>
+<text x="0.0" y="78.9" stroke="none" data-name="ResponseRegisterUserAndCheckStatus" data-compartment="1">+roles: string[]</text>
+<text x="0.0" y="95.1" stroke="none" data-name="ResponseRegisterUserAndCheckStatus" data-compartment="1">+token: string</text>
+
+</g>
+</g>
+<g transform="translate(12244, 554)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ResponseRegisterUserAndCheckStatus" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="ResponseRegisterUserAndCheckStatus" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="ResponseLoginUser">
+<g fill="#eee8d5" stroke="#33322E" data-name="ResponseLoginUser">
+<rect x="12614.0" y="425.0" height="121.0" width="177.0" data-name="ResponseLoginUser"></rect>
+<path d="M12614.0 457.0 L12791.0 457.0" fill="none" data-name="ResponseLoginUser"></path>
+<path d="M12614.0 538.0 L12791.0 538.0" fill="none" data-name="ResponseLoginUser"></path>
+</g>
+<g transform="translate(12614, 425)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="ResponseLoginUser" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ResponseLoginUser" data-compartment="0">
+<a id="src/auth/interfaces/Response.ts.ResponseLoginUser" xlink:href="src/auth/interfaces/Response.ts"><text x="80.5" y="14.1" stroke="none" text-anchor="middle" data-name="ResponseLoginUser" data-compartment="0">ResponseLoginUser</text></a>
+
+</g>
+</g>
+<g transform="translate(12614, 457)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ResponseLoginUser" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ResponseLoginUser" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="ResponseLoginUser" data-compartment="1">+id: string</text>
+<text x="0.0" y="30.3" stroke="none" data-name="ResponseLoginUser" data-compartment="1">+email: string</text>
+<text x="0.0" y="46.5" stroke="none" data-name="ResponseLoginUser" data-compartment="1">+password: string</text>
+<text x="0.0" y="62.7" stroke="none" data-name="ResponseLoginUser" data-compartment="1">+token: string</text>
+
+</g>
+</g>
+<g transform="translate(12614, 538)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ResponseLoginUser" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="ResponseLoginUser" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="ValidRoles">
+<g fill="lightgreen" stroke="#33322E" data-name="ValidRoles">
+<rect x="12831.0" y="437.0" height="97.0" width="100.0" data-name="ValidRoles"></rect>
+<path d="M12831.0 469.0 L12931.0 469.0" fill="none" data-name="ValidRoles"></path>
+</g>
+<g transform="translate(12831, 437)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ValidRoles" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ValidRoles" data-compartment="0">
+<a id="src/auth/interfaces/valid-roles.ts.ValidRoles" xlink:href="src/auth/interfaces/valid-roles.ts"><text x="42.0" y="14.1" stroke="none" text-anchor="middle" data-name="ValidRoles" data-compartment="0">ValidRoles</text></a>
+
+</g>
+</g>
+<g transform="translate(12831, 469)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ValidRoles" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ValidRoles" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="ValidRoles" data-compartment="1">admin</text>
+<text x="0.0" y="30.3" stroke="none" data-name="ValidRoles" data-compartment="1">superUser</text>
+<text x="0.0" y="46.5" stroke="none" data-name="ValidRoles" data-compartment="1">user</text>
+
+</g>
+</g>
+</g>
+<g data-name="JwtStrategy">
+<g fill="#eee8d5" stroke="#33322E" data-name="JwtStrategy">
+<rect x="12865.0" y="1052.0" height="96.0" width="294.0" data-name="JwtStrategy"></rect>
+<path d="M12865.0 1084.0 L13159.0 1084.0" fill="none" data-name="JwtStrategy"></path>
+<path d="M12865.0 1116.0 L13159.0 1116.0" fill="none" data-name="JwtStrategy"></path>
+</g>
+<g transform="translate(12865, 1052)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="JwtStrategy" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="JwtStrategy" data-compartment="0">
+<a id="src/auth/strategies/jwt.strategy.ts.JwtStrategy" xlink:href="src/auth/strategies/jwt.strategy.ts"><text x="139.0" y="14.1" stroke="none" text-anchor="middle" data-name="JwtStrategy" data-compartment="0">JwtStrategy</text></a>
+
+</g>
+</g>
+<g transform="translate(12865, 1084)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="JwtStrategy" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="JwtStrategy" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="JwtStrategy" data-compartment="1">-userRepository: Repository&lt;User&gt;</text>
+
+</g>
+</g>
+<g transform="translate(12865, 1116)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="JwtStrategy" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="JwtStrategy" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="JwtStrategy" data-compartment="2">+validate(): Promise&lt;User&gt;</text>
+
+</g>
+</g>
+</g>
+<g data-name="Strategy">
+<g fill="#eee8d5" stroke="#33322E" data-name="Strategy">
+<rect x="12971.0" y="469.5" height="32.0" width="82.0" data-name="Strategy"></rect>
+</g>
+<g transform="translate(12971, 469.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="Strategy" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="Strategy" data-compartment="0">
+<text x="33.0" y="14.1" stroke="none" text-anchor="middle" data-name="Strategy" data-compartment="0">Strategy</text>
+
+</g>
+</g>
+</g>
+<g data-name="CreateCityDto">
+<g fill="#eee8d5" stroke="#33322E" data-name="CreateCityDto">
+<rect x="13093.0" y="441.5" height="88.0" width="156.0" data-name="CreateCityDto"></rect>
+<path d="M13093.0 473.5 L13249.0 473.5" fill="none" data-name="CreateCityDto"></path>
+<path d="M13093.0 521.5 L13249.0 521.5" fill="none" data-name="CreateCityDto"></path>
+</g>
+<g transform="translate(13093, 441.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="CreateCityDto" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="CreateCityDto" data-compartment="0">
+<a id="src/cities/dto/create-city.dto.ts.CreateCityDto" xlink:href="src/cities/dto/create-city.dto.ts"><text x="70.0" y="14.1" stroke="none" text-anchor="middle" data-name="CreateCityDto" data-compartment="0">CreateCityDto</text></a>
+
+</g>
+</g>
+<g transform="translate(13093, 473.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CreateCityDto" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="CreateCityDto" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="CreateCityDto" data-compartment="1">+name: string</text>
+<text x="0.0" y="30.3" stroke="none" data-name="CreateCityDto" data-compartment="1">+nameDep: string</text>
+
+</g>
+</g>
+<g transform="translate(13093, 521.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CreateCityDto" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="CreateCityDto" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="UpdateCityDto">
+<g fill="#eee8d5" stroke="#33322E" data-name="UpdateCityDto">
+<rect x="13289.0" y="461.5" height="48.0" width="130.0" data-name="UpdateCityDto"></rect>
+<path d="M13289.0 493.5 L13419.0 493.5" fill="none" data-name="UpdateCityDto"></path>
+<path d="M13289.0 501.5 L13419.0 501.5" fill="none" data-name="UpdateCityDto"></path>
+</g>
+<g transform="translate(13289, 461.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="UpdateCityDto" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="UpdateCityDto" data-compartment="0">
+<a id="src/cities/dto/update-city.dto.ts.UpdateCityDto" xlink:href="src/cities/dto/update-city.dto.ts"><text x="57.0" y="14.1" stroke="none" text-anchor="middle" data-name="UpdateCityDto" data-compartment="0">UpdateCityDto</text></a>
+
+</g>
+</g>
+<g transform="translate(13289, 493.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="UpdateCityDto" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="UpdateCityDto" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(13289, 501.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="UpdateCityDto" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="UpdateCityDto" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="City">
+<g fill="#eee8d5" stroke="#33322E" data-name="City">
+<rect x="13459.0" y="433.0" height="105.0" width="156.0" data-name="City"></rect>
+<path d="M13459.0 465.0 L13615.0 465.0" fill="none" data-name="City"></path>
+<path d="M13459.0 530.0 L13615.0 530.0" fill="none" data-name="City"></path>
+</g>
+<g transform="translate(13459, 433)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="City" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="City" data-compartment="0">
+<a id="src/cities/entities/city.entity.ts.City" xlink:href="src/cities/entities/city.entity.ts"><text x="70.0" y="14.1" stroke="none" text-anchor="middle" data-name="City" data-compartment="0">City</text></a>
+
+</g>
+</g>
+<g transform="translate(13459, 465)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="City" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="City" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="City" data-compartment="1">+id: string</text>
+<text x="0.0" y="30.3" stroke="none" data-name="City" data-compartment="1">+name: string</text>
+<text x="0.0" y="46.5" stroke="none" data-name="City" data-compartment="1">+nameDep: string</text>
+
+</g>
+</g>
+<g transform="translate(13459, 530)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="City" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="City" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="CreateComcityDto">
+<g fill="#eee8d5" stroke="#33322E" data-name="CreateComcityDto">
+<rect x="13655.0" y="441.5" height="88.0" width="159.0" data-name="CreateComcityDto"></rect>
+<path d="M13655.0 473.5 L13814.0 473.5" fill="none" data-name="CreateComcityDto"></path>
+<path d="M13655.0 521.5 L13814.0 521.5" fill="none" data-name="CreateComcityDto"></path>
+</g>
+<g transform="translate(13655, 441.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="CreateComcityDto" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="CreateComcityDto" data-compartment="0">
+<a id="src/comcity/dto/create-comcity.dto.ts.CreateComcityDto" xlink:href="src/comcity/dto/create-comcity.dto.ts"><text x="71.5" y="14.1" stroke="none" text-anchor="middle" data-name="CreateComcityDto" data-compartment="0">CreateComcityDto</text></a>
+
+</g>
+</g>
+<g transform="translate(13655, 473.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CreateComcityDto" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="CreateComcityDto" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="CreateComcityDto" data-compartment="1">+city: string</text>
+<text x="0.0" y="30.3" stroke="none" data-name="CreateComcityDto" data-compartment="1">+company: string</text>
+
+</g>
+</g>
+<g transform="translate(13655, 521.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CreateComcityDto" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="CreateComcityDto" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="CreateWarehouseDto">
+<g fill="#eee8d5" stroke="#33322E" data-name="CreateWarehouseDto">
+<rect x="13854.0" y="425.0" height="121.0" width="187.0" data-name="CreateWarehouseDto"></rect>
+<path d="M13854.0 457.0 L14041.0 457.0" fill="none" data-name="CreateWarehouseDto"></path>
+<path d="M13854.0 538.0 L14041.0 538.0" fill="none" data-name="CreateWarehouseDto"></path>
+</g>
+<g transform="translate(13854, 425)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="CreateWarehouseDto" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="CreateWarehouseDto" data-compartment="0">
+<a id="src/comcity/dto/create-warehouse.dto.ts.CreateWarehouseDto" xlink:href="src/comcity/dto/create-warehouse.dto.ts"><text x="85.5" y="14.1" stroke="none" text-anchor="middle" data-name="CreateWarehouseDto" data-compartment="0">CreateWarehouseDto</text></a>
+
+</g>
+</g>
+<g transform="translate(13854, 457)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CreateWarehouseDto" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="CreateWarehouseDto" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="CreateWarehouseDto" data-compartment="1">+name: string</text>
+<text x="0.0" y="30.3" stroke="none" data-name="CreateWarehouseDto" data-compartment="1">+latitude: number</text>
+<text x="0.0" y="46.5" stroke="none" data-name="CreateWarehouseDto" data-compartment="1">+longitude: number</text>
+<text x="0.0" y="62.7" stroke="none" data-name="CreateWarehouseDto" data-compartment="1">+comcityId: string</text>
+
+</g>
+</g>
+<g transform="translate(13854, 538)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CreateWarehouseDto" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="CreateWarehouseDto" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="UpdateComcityDto">
+<g fill="#eee8d5" stroke="#33322E" data-name="UpdateComcityDto">
+<rect x="14081.0" y="461.5" height="48.0" width="163.0" data-name="UpdateComcityDto"></rect>
+<path d="M14081.0 493.5 L14244.0 493.5" fill="none" data-name="UpdateComcityDto"></path>
+<path d="M14081.0 501.5 L14244.0 501.5" fill="none" data-name="UpdateComcityDto"></path>
+</g>
+<g transform="translate(14081, 461.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="UpdateComcityDto" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="UpdateComcityDto" data-compartment="0">
+<a id="src/comcity/dto/update-comcity.dto.ts.UpdateComcityDto" xlink:href="src/comcity/dto/update-comcity.dto.ts"><text x="73.5" y="14.1" stroke="none" text-anchor="middle" data-name="UpdateComcityDto" data-compartment="0">UpdateComcityDto</text></a>
+
+</g>
+</g>
+<g transform="translate(14081, 493.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="UpdateComcityDto" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="UpdateComcityDto" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(14081, 501.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="UpdateComcityDto" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="UpdateComcityDto" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="UpdateWarehouseDto">
+<g fill="#eee8d5" stroke="#33322E" data-name="UpdateWarehouseDto">
+<rect x="14284.0" y="425.0" height="121.0" width="191.0" data-name="UpdateWarehouseDto"></rect>
+<path d="M14284.0 457.0 L14475.0 457.0" fill="none" data-name="UpdateWarehouseDto"></path>
+<path d="M14284.0 538.0 L14475.0 538.0" fill="none" data-name="UpdateWarehouseDto"></path>
+</g>
+<g transform="translate(14284, 425)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="UpdateWarehouseDto" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="UpdateWarehouseDto" data-compartment="0">
+<a id="src/comcity/dto/update-warehouse.dto.ts.UpdateWarehouseDto" xlink:href="src/comcity/dto/update-warehouse.dto.ts"><text x="87.5" y="14.1" stroke="none" text-anchor="middle" data-name="UpdateWarehouseDto" data-compartment="0">UpdateWarehouseDto</text></a>
+
+</g>
+</g>
+<g transform="translate(14284, 457)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="UpdateWarehouseDto" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="UpdateWarehouseDto" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="UpdateWarehouseDto" data-compartment="1">+name?: string</text>
+<text x="0.0" y="30.3" stroke="none" data-name="UpdateWarehouseDto" data-compartment="1">+latitude?: number</text>
+<text x="0.0" y="46.5" stroke="none" data-name="UpdateWarehouseDto" data-compartment="1">+longitude?: number</text>
+<text x="0.0" y="62.7" stroke="none" data-name="UpdateWarehouseDto" data-compartment="1">+comcityId?: string</text>
+
+</g>
+</g>
+<g transform="translate(14284, 538)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="UpdateWarehouseDto" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="UpdateWarehouseDto" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="Comcity">
+<g fill="#eee8d5" stroke="#33322E" data-name="Comcity">
+<rect x="14515.0" y="417.0" height="137.0" width="233.0" data-name="Comcity"></rect>
+<path d="M14515.0 449.0 L14748.0 449.0" fill="none" data-name="Comcity"></path>
+<path d="M14515.0 546.0 L14748.0 546.0" fill="none" data-name="Comcity"></path>
+</g>
+<g transform="translate(14515, 417)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="Comcity" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="Comcity" data-compartment="0">
+<a id="src/comcity/entities/comcity.entity.ts.Comcity" xlink:href="src/comcity/entities/comcity.entity.ts"><text x="108.5" y="14.1" stroke="none" text-anchor="middle" data-name="Comcity" data-compartment="0">Comcity</text></a>
+
+</g>
+</g>
+<g transform="translate(14515, 449)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Comcity" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="Comcity" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="Comcity" data-compartment="1">+id: string</text>
+<text x="0.0" y="30.3" stroke="none" data-name="Comcity" data-compartment="1">+city: City</text>
+<text x="0.0" y="46.5" stroke="none" data-name="Comcity" data-compartment="1">+company: Company</text>
+<text x="0.0" y="62.7" stroke="none" data-name="Comcity" data-compartment="1">+user: User</text>
+<text x="0.0" y="78.9" stroke="none" data-name="Comcity" data-compartment="1">+warehouses: Warehouse[]</text>
+
+</g>
+</g>
+<g transform="translate(14515, 546)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Comcity" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="Comcity" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="Warehouse">
+<g fill="#eee8d5" stroke="#33322E" data-name="Warehouse">
+<rect x="14788.0" y="417.0" height="137.0" width="169.0" data-name="Warehouse"></rect>
+<path d="M14788.0 449.0 L14957.0 449.0" fill="none" data-name="Warehouse"></path>
+<path d="M14788.0 546.0 L14957.0 546.0" fill="none" data-name="Warehouse"></path>
+</g>
+<g transform="translate(14788, 417)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="Warehouse" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="Warehouse" data-compartment="0">
+<a id="src/comcity/entities/warehouse.entity.ts.Warehouse" xlink:href="src/comcity/entities/warehouse.entity.ts"><text x="76.5" y="14.1" stroke="none" text-anchor="middle" data-name="Warehouse" data-compartment="0">Warehouse</text></a>
+
+</g>
+</g>
+<g transform="translate(14788, 449)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Warehouse" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="Warehouse" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="Warehouse" data-compartment="1">+id: string</text>
+<text x="0.0" y="30.3" stroke="none" data-name="Warehouse" data-compartment="1">+name: string</text>
+<text x="0.0" y="46.5" stroke="none" data-name="Warehouse" data-compartment="1">+latitude: number</text>
+<text x="0.0" y="62.7" stroke="none" data-name="Warehouse" data-compartment="1">+longitude: number</text>
+<text x="0.0" y="78.9" stroke="none" data-name="Warehouse" data-compartment="1">+comcity: Comcity</text>
+
+</g>
+</g>
+<g transform="translate(14788, 546)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Warehouse" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="Warehouse" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="PaginationDto">
+<g fill="#eee8d5" stroke="#33322E" data-name="PaginationDto">
+<rect x="14997.0" y="433.0" height="105.0" width="150.0" data-name="PaginationDto"></rect>
+<path d="M14997.0 465.0 L15147.0 465.0" fill="none" data-name="PaginationDto"></path>
+<path d="M14997.0 530.0 L15147.0 530.0" fill="none" data-name="PaginationDto"></path>
+</g>
+<g transform="translate(14997, 433)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="PaginationDto" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="PaginationDto" data-compartment="0">
+<a id="src/common/dtos/pagination.dto.ts.PaginationDto" xlink:href="src/common/dtos/pagination.dto.ts"><text x="67.0" y="14.1" stroke="none" text-anchor="middle" data-name="PaginationDto" data-compartment="0">PaginationDto</text></a>
+
+</g>
+</g>
+<g transform="translate(14997, 465)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="PaginationDto" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="PaginationDto" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="PaginationDto" data-compartment="1">+limit?: number</text>
+<text x="0.0" y="30.3" stroke="none" data-name="PaginationDto" data-compartment="1">+offset?: number</text>
+<text x="0.0" y="46.5" stroke="none" data-name="PaginationDto" data-compartment="1">+search?: string</text>
+
+</g>
+</g>
+<g transform="translate(14997, 530)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="PaginationDto" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="PaginationDto" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="CreateCompanyDto">
+<g fill="#eee8d5" stroke="#33322E" data-name="CreateCompanyDto">
+<rect x="15187.0" y="449.5" height="72.0" width="171.0" data-name="CreateCompanyDto"></rect>
+<path d="M15187.0 481.5 L15358.0 481.5" fill="none" data-name="CreateCompanyDto"></path>
+<path d="M15187.0 513.5 L15358.0 513.5" fill="none" data-name="CreateCompanyDto"></path>
+</g>
+<g transform="translate(15187, 449.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="CreateCompanyDto" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="CreateCompanyDto" data-compartment="0">
+<a id="src/companies/dto/create-company.dto.ts.CreateCompanyDto" xlink:href="src/companies/dto/create-company.dto.ts"><text x="77.5" y="14.1" stroke="none" text-anchor="middle" data-name="CreateCompanyDto" data-compartment="0">CreateCompanyDto</text></a>
+
+</g>
+</g>
+<g transform="translate(15187, 481.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CreateCompanyDto" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="CreateCompanyDto" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="CreateCompanyDto" data-compartment="1">+name: string</text>
+
+</g>
+</g>
+<g transform="translate(15187, 513.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CreateCompanyDto" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="CreateCompanyDto" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="UpdateCompanyDto">
+<g fill="#eee8d5" stroke="#33322E" data-name="UpdateCompanyDto">
+<rect x="15398.0" y="461.5" height="48.0" width="175.0" data-name="UpdateCompanyDto"></rect>
+<path d="M15398.0 493.5 L15573.0 493.5" fill="none" data-name="UpdateCompanyDto"></path>
+<path d="M15398.0 501.5 L15573.0 501.5" fill="none" data-name="UpdateCompanyDto"></path>
+</g>
+<g transform="translate(15398, 461.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="UpdateCompanyDto" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="UpdateCompanyDto" data-compartment="0">
+<a id="src/companies/dto/update-company.dto.ts.UpdateCompanyDto" xlink:href="src/companies/dto/update-company.dto.ts"><text x="79.5" y="14.1" stroke="none" text-anchor="middle" data-name="UpdateCompanyDto" data-compartment="0">UpdateCompanyDto</text></a>
+
+</g>
+</g>
+<g transform="translate(15398, 493.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="UpdateCompanyDto" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="UpdateCompanyDto" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(15398, 501.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="UpdateCompanyDto" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="UpdateCompanyDto" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="Company">
+<g fill="#eee8d5" stroke="#33322E" data-name="Company">
+<rect x="15613.0" y="441.5" height="88.0" width="124.0" data-name="Company"></rect>
+<path d="M15613.0 473.5 L15737.0 473.5" fill="none" data-name="Company"></path>
+<path d="M15613.0 521.5 L15737.0 521.5" fill="none" data-name="Company"></path>
+</g>
+<g transform="translate(15613, 441.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="Company" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="Company" data-compartment="0">
+<a id="src/companies/entities/company.entity.ts.Company" xlink:href="src/companies/entities/company.entity.ts"><text x="54.0" y="14.1" stroke="none" text-anchor="middle" data-name="Company" data-compartment="0">Company</text></a>
+
+</g>
+</g>
+<g transform="translate(15613, 473.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Company" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="Company" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="Company" data-compartment="1">+id: string</text>
+<text x="0.0" y="30.3" stroke="none" data-name="Company" data-compartment="1">+name: string</text>
+
+</g>
+</g>
+<g transform="translate(15613, 521.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Company" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="Company" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="FileUploadDto">
+<g fill="#eee8d5" stroke="#33322E" data-name="FileUploadDto">
+<rect x="15777.0" y="449.5" height="72.0" width="127.0" data-name="FileUploadDto"></rect>
+<path d="M15777.0 481.5 L15904.0 481.5" fill="none" data-name="FileUploadDto"></path>
+<path d="M15777.0 513.5 L15904.0 513.5" fill="none" data-name="FileUploadDto"></path>
+</g>
+<g transform="translate(15777, 449.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="FileUploadDto" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="FileUploadDto" data-compartment="0">
+<a id="src/files/dto/FileUpload.dto.ts.FileUploadDto" xlink:href="src/files/dto/FileUpload.dto.ts"><text x="55.5" y="14.1" stroke="none" text-anchor="middle" data-name="FileUploadDto" data-compartment="0">FileUploadDto</text></a>
+
+</g>
+</g>
+<g transform="translate(15777, 481.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="FileUploadDto" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="FileUploadDto" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="FileUploadDto" data-compartment="1">+file: any</text>
+
+</g>
+</g>
+<g transform="translate(15777, 513.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="FileUploadDto" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="FileUploadDto" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="CreateProdcomcityOcrDto">
+<g fill="#eee8d5" stroke="#33322E" data-name="CreateProdcomcityOcrDto">
+<rect x="15944.0" y="425.0" height="121.0" width="221.0" data-name="CreateProdcomcityOcrDto"></rect>
+<path d="M15944.0 457.0 L16165.0 457.0" fill="none" data-name="CreateProdcomcityOcrDto"></path>
+<path d="M15944.0 538.0 L16165.0 538.0" fill="none" data-name="CreateProdcomcityOcrDto"></path>
+</g>
+<g transform="translate(15944, 425)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="CreateProdcomcityOcrDto" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="CreateProdcomcityOcrDto" data-compartment="0">
+<a id="src/prodcomcity/dto/create-prodcomcity-ocr.dto.ts.CreateProdcomcityOcrDto" xlink:href="src/prodcomcity/dto/create-prodcomcity-ocr.dto.ts"><text x="102.5" y="14.1" stroke="none" text-anchor="middle" data-name="CreateProdcomcityOcrDto" data-compartment="0">CreateProdcomcityOcrDto</text></a>
+
+</g>
+</g>
+<g transform="translate(15944, 457)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CreateProdcomcityOcrDto" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="CreateProdcomcityOcrDto" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="CreateProdcomcityOcrDto" data-compartment="1">+comcity: string</text>
+<text x="0.0" y="30.3" stroke="none" data-name="CreateProdcomcityOcrDto" data-compartment="1">+product: string</text>
+<text x="0.0" y="46.5" stroke="none" data-name="CreateProdcomcityOcrDto" data-compartment="1">+date: Date</text>
+<text x="0.0" y="62.7" stroke="none" data-name="CreateProdcomcityOcrDto" data-compartment="1">+price?: number</text>
+
+</g>
+</g>
+<g transform="translate(15944, 538)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CreateProdcomcityOcrDto" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="CreateProdcomcityOcrDto" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="CityDto">
+<g fill="#eee8d5" stroke="#33322E" data-name="CityDto">
+<rect x="16205.0" y="441.5" height="88.0" width="156.0" data-name="CityDto"></rect>
+<path d="M16205.0 473.5 L16361.0 473.5" fill="none" data-name="CityDto"></path>
+<path d="M16205.0 521.5 L16361.0 521.5" fill="none" data-name="CityDto"></path>
+</g>
+<g transform="translate(16205, 441.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="CityDto" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="CityDto" data-compartment="0">
+<a id="src/prodcomcity/dto/create-prodcomcity.dto.ts.CityDto" xlink:href="src/prodcomcity/dto/create-prodcomcity.dto.ts"><text x="70.0" y="14.1" stroke="none" text-anchor="middle" data-name="CityDto" data-compartment="0">CityDto</text></a>
+
+</g>
+</g>
+<g transform="translate(16205, 473.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CityDto" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="CityDto" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="CityDto" data-compartment="1">+name: string</text>
+<text x="0.0" y="30.3" stroke="none" data-name="CityDto" data-compartment="1">+nameDep: string</text>
+
+</g>
+</g>
+<g transform="translate(16205, 521.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CityDto" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="CityDto" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="CompanyDto">
+<g fill="#eee8d5" stroke="#33322E" data-name="CompanyDto">
+<rect x="16401.0" y="449.5" height="72.0" width="124.0" data-name="CompanyDto"></rect>
+<path d="M16401.0 481.5 L16525.0 481.5" fill="none" data-name="CompanyDto"></path>
+<path d="M16401.0 513.5 L16525.0 513.5" fill="none" data-name="CompanyDto"></path>
+</g>
+<g transform="translate(16401, 449.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="CompanyDto" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="CompanyDto" data-compartment="0">
+<a id="src/prodcomcity/dto/create-prodcomcity.dto.ts.CompanyDto" xlink:href="src/prodcomcity/dto/create-prodcomcity.dto.ts"><text x="54.0" y="14.1" stroke="none" text-anchor="middle" data-name="CompanyDto" data-compartment="0">CompanyDto</text></a>
+
+</g>
+</g>
+<g transform="translate(16401, 481.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CompanyDto" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="CompanyDto" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="CompanyDto" data-compartment="1">+name: string</text>
+
+</g>
+</g>
+<g transform="translate(16401, 513.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CompanyDto" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="CompanyDto" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="ComcityDto">
+<g fill="#eee8d5" stroke="#33322E" data-name="ComcityDto">
+<rect x="16565.0" y="441.5" height="88.0" width="210.0" data-name="ComcityDto"></rect>
+<path d="M16565.0 473.5 L16775.0 473.5" fill="none" data-name="ComcityDto"></path>
+<path d="M16565.0 521.5 L16775.0 521.5" fill="none" data-name="ComcityDto"></path>
+</g>
+<g transform="translate(16565, 441.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="ComcityDto" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ComcityDto" data-compartment="0">
+<a id="src/prodcomcity/dto/create-prodcomcity.dto.ts.ComcityDto" xlink:href="src/prodcomcity/dto/create-prodcomcity.dto.ts"><text x="97.0" y="14.1" stroke="none" text-anchor="middle" data-name="ComcityDto" data-compartment="0">ComcityDto</text></a>
+
+</g>
+</g>
+<g transform="translate(16565, 473.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ComcityDto" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ComcityDto" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="ComcityDto" data-compartment="1">+city: CityDto</text>
+<text x="0.0" y="30.3" stroke="none" data-name="ComcityDto" data-compartment="1">+company: CompanyDto</text>
+
+</g>
+</g>
+<g transform="translate(16565, 521.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ComcityDto" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="ComcityDto" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="ProductDto">
+<g fill="#eee8d5" stroke="#33322E" data-name="ProductDto">
+<rect x="16815.0" y="425.0" height="121.0" width="157.0" data-name="ProductDto"></rect>
+<path d="M16815.0 457.0 L16972.0 457.0" fill="none" data-name="ProductDto"></path>
+<path d="M16815.0 538.0 L16972.0 538.0" fill="none" data-name="ProductDto"></path>
+</g>
+<g transform="translate(16815, 425)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="ProductDto" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ProductDto" data-compartment="0">
+<a id="src/prodcomcity/dto/create-prodcomcity.dto.ts.ProductDto" xlink:href="src/prodcomcity/dto/create-prodcomcity.dto.ts"><text x="70.5" y="14.1" stroke="none" text-anchor="middle" data-name="ProductDto" data-compartment="0">ProductDto</text></a>
+
+</g>
+</g>
+<g transform="translate(16815, 457)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ProductDto" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ProductDto" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="ProductDto" data-compartment="1">+title: string</text>
+<text x="0.0" y="30.3" stroke="none" data-name="ProductDto" data-compartment="1">+code: string</text>
+<text x="0.0" y="46.5" stroke="none" data-name="ProductDto" data-compartment="1">+tags: string[]</text>
+<text x="0.0" y="62.7" stroke="none" data-name="ProductDto" data-compartment="1">+images?: string[]</text>
+
+</g>
+</g>
+<g transform="translate(16815, 538)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ProductDto" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="ProductDto" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="CreateProdcomcityDto">
+<g fill="#eee8d5" stroke="#33322E" data-name="CreateProdcomcityDto">
+<rect x="17012.0" y="425.0" height="121.0" width="193.0" data-name="CreateProdcomcityDto"></rect>
+<path d="M17012.0 457.0 L17205.0 457.0" fill="none" data-name="CreateProdcomcityDto"></path>
+<path d="M17012.0 538.0 L17205.0 538.0" fill="none" data-name="CreateProdcomcityDto"></path>
+</g>
+<g transform="translate(17012, 425)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="CreateProdcomcityDto" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="CreateProdcomcityDto" data-compartment="0">
+<a id="src/prodcomcity/dto/create-prodcomcity.dto.ts.CreateProdcomcityDto" xlink:href="src/prodcomcity/dto/create-prodcomcity.dto.ts"><text x="88.5" y="14.1" stroke="none" text-anchor="middle" data-name="CreateProdcomcityDto" data-compartment="0">CreateProdcomcityDto</text></a>
+
+</g>
+</g>
+<g transform="translate(17012, 457)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CreateProdcomcityDto" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="CreateProdcomcityDto" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="CreateProdcomcityDto" data-compartment="1">+product: ProductDto</text>
+<text x="0.0" y="30.3" stroke="none" data-name="CreateProdcomcityDto" data-compartment="1">+comcity: ComcityDto</text>
+<text x="0.0" y="46.5" stroke="none" data-name="CreateProdcomcityDto" data-compartment="1">+date: Date</text>
+<text x="0.0" y="62.7" stroke="none" data-name="CreateProdcomcityDto" data-compartment="1">+price: number</text>
+
+</g>
+</g>
+<g transform="translate(17012, 538)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CreateProdcomcityDto" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="CreateProdcomcityDto" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="UpdateProdcomcityOcrDto">
+<g fill="#eee8d5" stroke="#33322E" data-name="UpdateProdcomcityOcrDto">
+<rect x="17245.0" y="461.5" height="48.0" width="225.0" data-name="UpdateProdcomcityOcrDto"></rect>
+<path d="M17245.0 493.5 L17470.0 493.5" fill="none" data-name="UpdateProdcomcityOcrDto"></path>
+<path d="M17245.0 501.5 L17470.0 501.5" fill="none" data-name="UpdateProdcomcityOcrDto"></path>
+</g>
+<g transform="translate(17245, 461.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="UpdateProdcomcityOcrDto" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="UpdateProdcomcityOcrDto" data-compartment="0">
+<a id="src/prodcomcity/dto/update-prodcomcity-ocr.dto.ts.UpdateProdcomcityOcrDto" xlink:href="src/prodcomcity/dto/update-prodcomcity-ocr.dto.ts"><text x="104.5" y="14.1" stroke="none" text-anchor="middle" data-name="UpdateProdcomcityOcrDto" data-compartment="0">UpdateProdcomcityOcrDto</text></a>
+
+</g>
+</g>
+<g transform="translate(17245, 493.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="UpdateProdcomcityOcrDto" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="UpdateProdcomcityOcrDto" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(17245, 501.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="UpdateProdcomcityOcrDto" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="UpdateProdcomcityOcrDto" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="ProductUpdateDto">
+<g fill="#eee8d5" stroke="#33322E" data-name="ProductUpdateDto">
+<rect x="17510.0" y="417.0" height="137.0" width="161.0" data-name="ProductUpdateDto"></rect>
+<path d="M17510.0 449.0 L17671.0 449.0" fill="none" data-name="ProductUpdateDto"></path>
+<path d="M17510.0 546.0 L17671.0 546.0" fill="none" data-name="ProductUpdateDto"></path>
+</g>
+<g transform="translate(17510, 417)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="ProductUpdateDto" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ProductUpdateDto" data-compartment="0">
+<a id="src/prodcomcity/dto/update-prodcomcity.dto.ts.ProductUpdateDto" xlink:href="src/prodcomcity/dto/update-prodcomcity.dto.ts"><text x="72.5" y="14.1" stroke="none" text-anchor="middle" data-name="ProductUpdateDto" data-compartment="0">ProductUpdateDto</text></a>
+
+</g>
+</g>
+<g transform="translate(17510, 449)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ProductUpdateDto" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ProductUpdateDto" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="ProductUpdateDto" data-compartment="1">+id: string</text>
+<text x="0.0" y="30.3" stroke="none" data-name="ProductUpdateDto" data-compartment="1">+title: string</text>
+<text x="0.0" y="46.5" stroke="none" data-name="ProductUpdateDto" data-compartment="1">+code: number</text>
+<text x="0.0" y="62.7" stroke="none" data-name="ProductUpdateDto" data-compartment="1">+tags: string[]</text>
+<text x="0.0" y="78.9" stroke="none" data-name="ProductUpdateDto" data-compartment="1">+images?: string[]</text>
+
+</g>
+</g>
+<g transform="translate(17510, 546)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ProductUpdateDto" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="ProductUpdateDto" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="UpdateProdcomcityDto">
+<g fill="#eee8d5" stroke="#33322E" data-name="UpdateProdcomcityDto">
+<rect x="17711.0" y="425.0" height="121.0" width="241.0" data-name="UpdateProdcomcityDto"></rect>
+<path d="M17711.0 457.0 L17952.0 457.0" fill="none" data-name="UpdateProdcomcityDto"></path>
+<path d="M17711.0 538.0 L17952.0 538.0" fill="none" data-name="UpdateProdcomcityDto"></path>
+</g>
+<g transform="translate(17711, 425)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="UpdateProdcomcityDto" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="UpdateProdcomcityDto" data-compartment="0">
+<a id="src/prodcomcity/dto/update-prodcomcity.dto.ts.UpdateProdcomcityDto" xlink:href="src/prodcomcity/dto/update-prodcomcity.dto.ts"><text x="112.5" y="14.1" stroke="none" text-anchor="middle" data-name="UpdateProdcomcityDto" data-compartment="0">UpdateProdcomcityDto</text></a>
+
+</g>
+</g>
+<g transform="translate(17711, 457)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="UpdateProdcomcityDto" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="UpdateProdcomcityDto" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="UpdateProdcomcityDto" data-compartment="1">+comcity: string</text>
+<text x="0.0" y="30.3" stroke="none" data-name="UpdateProdcomcityDto" data-compartment="1">+product: ProductUpdateDto</text>
+<text x="0.0" y="46.5" stroke="none" data-name="UpdateProdcomcityDto" data-compartment="1">+date: Date</text>
+<text x="0.0" y="62.7" stroke="none" data-name="UpdateProdcomcityDto" data-compartment="1">+price?: number</text>
+
+</g>
+</g>
+<g transform="translate(17711, 538)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="UpdateProdcomcityDto" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="UpdateProdcomcityDto" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="Prodcomcity">
+<g fill="#eee8d5" stroke="#33322E" data-name="Prodcomcity">
+<rect x="17992.0" y="409.0" height="153.0" width="167.0" data-name="Prodcomcity"></rect>
+<path d="M17992.0 441.0 L18159.0 441.0" fill="none" data-name="Prodcomcity"></path>
+<path d="M17992.0 554.0 L18159.0 554.0" fill="none" data-name="Prodcomcity"></path>
+</g>
+<g transform="translate(17992, 409)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="Prodcomcity" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="Prodcomcity" data-compartment="0">
+<a id="src/prodcomcity/entities/prodcomcity.entity.ts.Prodcomcity" xlink:href="src/prodcomcity/entities/prodcomcity.entity.ts"><text x="75.5" y="14.1" stroke="none" text-anchor="middle" data-name="Prodcomcity" data-compartment="0">Prodcomcity</text></a>
+
+</g>
+</g>
+<g transform="translate(17992, 441)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Prodcomcity" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="Prodcomcity" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="Prodcomcity" data-compartment="1">+id: string</text>
+<text x="0.0" y="30.3" stroke="none" data-name="Prodcomcity" data-compartment="1">+comcity: Comcity</text>
+<text x="0.0" y="46.5" stroke="none" data-name="Prodcomcity" data-compartment="1">+product?: Product</text>
+<text x="0.0" y="62.7" stroke="none" data-name="Prodcomcity" data-compartment="1">+price: number</text>
+<text x="0.0" y="78.9" stroke="none" data-name="Prodcomcity" data-compartment="1">+date: Date</text>
+<text x="0.0" y="95.1" stroke="none" data-name="Prodcomcity" data-compartment="1">+user: User</text>
+
+</g>
+</g>
+<g transform="translate(17992, 554)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Prodcomcity" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="Prodcomcity" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="CreateProductDto">
+<g fill="#eee8d5" stroke="#33322E" data-name="CreateProductDto">
+<rect x="18199.0" y="417.0" height="137.0" width="157.0" data-name="CreateProductDto"></rect>
+<path d="M18199.0 449.0 L18356.0 449.0" fill="none" data-name="CreateProductDto"></path>
+<path d="M18199.0 546.0 L18356.0 546.0" fill="none" data-name="CreateProductDto"></path>
+</g>
+<g transform="translate(18199, 417)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="CreateProductDto" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="CreateProductDto" data-compartment="0">
+<a id="src/products/dto/create-product.dto.ts.CreateProductDto" xlink:href="src/products/dto/create-product.dto.ts"><text x="70.5" y="14.1" stroke="none" text-anchor="middle" data-name="CreateProductDto" data-compartment="0">CreateProductDto</text></a>
+
+</g>
+</g>
+<g transform="translate(18199, 449)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CreateProductDto" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="CreateProductDto" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="CreateProductDto" data-compartment="1">+title: string</text>
+<text x="0.0" y="30.3" stroke="none" data-name="CreateProductDto" data-compartment="1">+slug?: string</text>
+<text x="0.0" y="46.5" stroke="none" data-name="CreateProductDto" data-compartment="1">+tags?: string[]</text>
+<text x="0.0" y="62.7" stroke="none" data-name="CreateProductDto" data-compartment="1">+images?: string[]</text>
+<text x="0.0" y="78.9" stroke="none" data-name="CreateProductDto" data-compartment="1">+code: number</text>
+
+</g>
+</g>
+<g transform="translate(18199, 546)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="CreateProductDto" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="CreateProductDto" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="UpdateProductDto">
+<g fill="#eee8d5" stroke="#33322E" data-name="UpdateProductDto">
+<rect x="18396.0" y="461.5" height="48.0" width="161.0" data-name="UpdateProductDto"></rect>
+<path d="M18396.0 493.5 L18557.0 493.5" fill="none" data-name="UpdateProductDto"></path>
+<path d="M18396.0 501.5 L18557.0 501.5" fill="none" data-name="UpdateProductDto"></path>
+</g>
+<g transform="translate(18396, 461.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="UpdateProductDto" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="UpdateProductDto" data-compartment="0">
+<a id="src/products/dto/update-product.dto.ts.UpdateProductDto" xlink:href="src/products/dto/update-product.dto.ts"><text x="72.5" y="14.1" stroke="none" text-anchor="middle" data-name="UpdateProductDto" data-compartment="0">UpdateProductDto</text></a>
+
+</g>
+</g>
+<g transform="translate(18396, 493.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="UpdateProductDto" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" data-name="UpdateProductDto" data-compartment="1">
+
+</g>
+</g>
+<g transform="translate(18396, 501.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="UpdateProductDto" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="UpdateProductDto" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="ProductImage">
+<g fill="#eee8d5" stroke="#33322E" data-name="ProductImage">
+<rect x="18597.0" y="433.0" height="105.0" width="157.0" data-name="ProductImage"></rect>
+<path d="M18597.0 465.0 L18754.0 465.0" fill="none" data-name="ProductImage"></path>
+<path d="M18597.0 530.0 L18754.0 530.0" fill="none" data-name="ProductImage"></path>
+</g>
+<g transform="translate(18597, 433)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="ProductImage" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="ProductImage" data-compartment="0">
+<a id="src/products/entities/product-image.entity.ts.ProductImage" xlink:href="src/products/entities/product-image.entity.ts"><text x="70.5" y="14.1" stroke="none" text-anchor="middle" data-name="ProductImage" data-compartment="0">ProductImage</text></a>
+
+</g>
+</g>
+<g transform="translate(18597, 465)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ProductImage" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="ProductImage" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="ProductImage" data-compartment="1">+id: number</text>
+<text x="0.0" y="30.3" stroke="none" data-name="ProductImage" data-compartment="1">+url: string</text>
+<text x="0.0" y="46.5" stroke="none" data-name="ProductImage" data-compartment="1">+product: Product</text>
+
+</g>
+</g>
+<g transform="translate(18597, 530)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="ProductImage" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="ProductImage" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="Product">
+<g fill="#eee8d5" stroke="#33322E" data-name="Product">
+<rect x="18794.0" y="389.0" height="193.0" width="223.0" data-name="Product"></rect>
+<path d="M18794.0 421.0 L19017.0 421.0" fill="none" data-name="Product"></path>
+<path d="M18794.0 550.0 L19017.0 550.0" fill="none" data-name="Product"></path>
+</g>
+<g transform="translate(18794, 389)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="Product" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="Product" data-compartment="0">
+<a id="src/products/entities/product.entity.ts.Product" xlink:href="src/products/entities/product.entity.ts"><text x="103.5" y="14.1" stroke="none" text-anchor="middle" data-name="Product" data-compartment="0">Product</text></a>
+
+</g>
+</g>
+<g transform="translate(18794, 421)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Product" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="Product" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="Product" data-compartment="1">+id: string</text>
+<text x="0.0" y="30.3" stroke="none" data-name="Product" data-compartment="1">+title: string</text>
+<text x="0.0" y="46.5" stroke="none" data-name="Product" data-compartment="1">+slug: string</text>
+<text x="0.0" y="62.7" stroke="none" data-name="Product" data-compartment="1">+tags: string[]</text>
+<text x="0.0" y="78.9" stroke="none" data-name="Product" data-compartment="1">+code: number</text>
+<text x="0.0" y="95.1" stroke="none" data-name="Product" data-compartment="1">+images?: ProductImage[]</text>
+<text x="0.0" y="111.3" stroke="none" data-name="Product" data-compartment="1">+user: User</text>
+
+</g>
+</g>
+<g transform="translate(18794, 550)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Product" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="Product" data-compartment="2">
+<text x="0.0" y="14.1" stroke="none" data-name="Product" data-compartment="2">+normalizeData(): void</text>
+
+</g>
+</g>
+</g>
+<g data-name="SeedProduct">
+<g fill="lightblue" stroke="#33322E" data-name="SeedProduct">
+<rect x="19057.0" y="417.0" height="137.0" width="147.0" data-name="SeedProduct"></rect>
+<path d="M19057.0 449.0 L19204.0 449.0" fill="none" data-name="SeedProduct"></path>
+<path d="M19057.0 546.0 L19204.0 546.0" fill="none" data-name="SeedProduct"></path>
+</g>
+<g transform="translate(19057, 417)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="SeedProduct" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="SeedProduct" data-compartment="0">
+<a id="src/seed/data/seed-data.ts.SeedProduct" xlink:href="src/seed/data/seed-data.ts"><text x="65.5" y="14.1" stroke="none" text-anchor="middle" data-name="SeedProduct" data-compartment="0">SeedProduct</text></a>
+
+</g>
+</g>
+<g transform="translate(19057, 449)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="SeedProduct" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="SeedProduct" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="SeedProduct" data-compartment="1">+images: string[]</text>
+<text x="0.0" y="30.3" stroke="none" data-name="SeedProduct" data-compartment="1">+slug: string</text>
+<text x="0.0" y="46.5" stroke="none" data-name="SeedProduct" data-compartment="1">+tags: string[]</text>
+<text x="0.0" y="62.7" stroke="none" data-name="SeedProduct" data-compartment="1">+title: string</text>
+<text x="0.0" y="78.9" stroke="none" data-name="SeedProduct" data-compartment="1">+code: number</text>
+
+</g>
+</g>
+<g transform="translate(19057, 546)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="SeedProduct" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="SeedProduct" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="SeedCity">
+<g fill="lightblue" stroke="#33322E" data-name="SeedCity">
+<rect x="19244.0" y="441.5" height="88.0" width="156.0" data-name="SeedCity"></rect>
+<path d="M19244.0 473.5 L19400.0 473.5" fill="none" data-name="SeedCity"></path>
+<path d="M19244.0 521.5 L19400.0 521.5" fill="none" data-name="SeedCity"></path>
+</g>
+<g transform="translate(19244, 441.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="SeedCity" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="SeedCity" data-compartment="0">
+<a id="src/seed/data/seed-data.ts.SeedCity" xlink:href="src/seed/data/seed-data.ts"><text x="70.0" y="14.1" stroke="none" text-anchor="middle" data-name="SeedCity" data-compartment="0">SeedCity</text></a>
+
+</g>
+</g>
+<g transform="translate(19244, 473.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="SeedCity" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="SeedCity" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="SeedCity" data-compartment="1">+name: string</text>
+<text x="0.0" y="30.3" stroke="none" data-name="SeedCity" data-compartment="1">+nameDep: string</text>
+
+</g>
+</g>
+<g transform="translate(19244, 521.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="SeedCity" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="SeedCity" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="SeedCompany">
+<g fill="lightblue" stroke="#33322E" data-name="SeedCompany">
+<rect x="19440.0" y="449.5" height="72.0" width="132.0" data-name="SeedCompany"></rect>
+<path d="M19440.0 481.5 L19572.0 481.5" fill="none" data-name="SeedCompany"></path>
+<path d="M19440.0 513.5 L19572.0 513.5" fill="none" data-name="SeedCompany"></path>
+</g>
+<g transform="translate(19440, 449.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="SeedCompany" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="SeedCompany" data-compartment="0">
+<a id="src/seed/data/seed-data.ts.SeedCompany" xlink:href="src/seed/data/seed-data.ts"><text x="58.0" y="14.1" stroke="none" text-anchor="middle" data-name="SeedCompany" data-compartment="0">SeedCompany</text></a>
+
+</g>
+</g>
+<g transform="translate(19440, 481.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="SeedCompany" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="SeedCompany" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="SeedCompany" data-compartment="1">+name: string</text>
+
+</g>
+</g>
+<g transform="translate(19440, 513.5)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="SeedCompany" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="SeedCompany" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="SeedUser">
+<g fill="lightblue" stroke="#33322E" data-name="SeedUser">
+<rect x="19612.0" y="425.0" height="121.0" width="156.0" data-name="SeedUser"></rect>
+<path d="M19612.0 457.0 L19768.0 457.0" fill="none" data-name="SeedUser"></path>
+<path d="M19612.0 538.0 L19768.0 538.0" fill="none" data-name="SeedUser"></path>
+</g>
+<g transform="translate(19612, 425)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="SeedUser" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="SeedUser" data-compartment="0">
+<a id="src/seed/data/seed-data.ts.SeedUser" xlink:href="src/seed/data/seed-data.ts"><text x="70.0" y="14.1" stroke="none" text-anchor="middle" data-name="SeedUser" data-compartment="0">SeedUser</text></a>
+
+</g>
+</g>
+<g transform="translate(19612, 457)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="SeedUser" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="SeedUser" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="SeedUser" data-compartment="1">+email: string</text>
+<text x="0.0" y="30.3" stroke="none" data-name="SeedUser" data-compartment="1">+fullName: string</text>
+<text x="0.0" y="46.5" stroke="none" data-name="SeedUser" data-compartment="1">+password: string</text>
+<text x="0.0" y="62.7" stroke="none" data-name="SeedUser" data-compartment="1">+roles: string[]</text>
+
+</g>
+</g>
+<g transform="translate(19612, 538)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="SeedUser" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="SeedUser" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="SeedWarehouse">
+<g fill="lightblue" stroke="#33322E" data-name="SeedWarehouse">
+<rect x="19808.0" y="401.0" height="169.0" width="279.0" data-name="SeedWarehouse"></rect>
+<path d="M19808.0 433.0 L20087.0 433.0" fill="none" data-name="SeedWarehouse"></path>
+<path d="M19808.0 562.0 L20087.0 562.0" fill="none" data-name="SeedWarehouse"></path>
+</g>
+<g transform="translate(19808, 401)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="SeedWarehouse" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="SeedWarehouse" data-compartment="0">
+<a id="src/seed/data/seed-data.ts.SeedWarehouse" xlink:href="src/seed/data/seed-data.ts"><text x="131.5" y="14.1" stroke="none" text-anchor="middle" data-name="SeedWarehouse" data-compartment="0">SeedWarehouse</text></a>
+
+</g>
+</g>
+<g transform="translate(19808, 433)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="SeedWarehouse" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="SeedWarehouse" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="SeedWarehouse" data-compartment="1">+name: string</text>
+<text x="0.0" y="30.3" stroke="none" data-name="SeedWarehouse" data-compartment="1">+latitude: number</text>
+<text x="0.0" y="46.5" stroke="none" data-name="SeedWarehouse" data-compartment="1">+longitude: number</text>
+<text x="0.0" y="62.7" stroke="none" data-name="SeedWarehouse" data-compartment="1">+comcity: { companyName: string</text>
+<text x="0.0" y="78.9" stroke="none" data-name="SeedWarehouse" data-compartment="1">cityName: string</text>
+<text x="0.0" y="95.1" stroke="none" data-name="SeedWarehouse" data-compartment="1">cityDep: string</text>
+<text x="0.0" y="111.3" stroke="none" data-name="SeedWarehouse" data-compartment="1">}</text>
+
+</g>
+</g>
+<g transform="translate(19808, 562)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="SeedWarehouse" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="SeedWarehouse" data-compartment="2">
+
+</g>
+</g>
+</g>
+<g data-name="SeedData">
+<g fill="lightblue" stroke="#33322E" data-name="SeedData">
+<rect x="20127.0" y="417.0" height="137.0" width="274.0" data-name="SeedData"></rect>
+<path d="M20127.0 449.0 L20401.0 449.0" fill="none" data-name="SeedData"></path>
+<path d="M20127.0 546.0 L20401.0 546.0" fill="none" data-name="SeedData"></path>
+</g>
+<g transform="translate(20127, 417)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="SeedData" data-compartment="0">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="SeedData" data-compartment="0">
+<a id="src/seed/data/seed-data.ts.SeedData" xlink:href="src/seed/data/seed-data.ts"><text x="129.0" y="14.1" stroke="none" text-anchor="middle" data-name="SeedData" data-compartment="0">SeedData</text></a>
+
+</g>
+</g>
+<g transform="translate(20127, 449)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="SeedData" data-compartment="1">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="SeedData" data-compartment="1">
+<text x="0.0" y="14.1" stroke="none" data-name="SeedData" data-compartment="1">+users: SeedUser[]</text>
+<text x="0.0" y="30.3" stroke="none" data-name="SeedData" data-compartment="1">+products: SeedProduct[]</text>
+<text x="0.0" y="46.5" stroke="none" data-name="SeedData" data-compartment="1">+cities: SeedCity[]</text>
+<text x="0.0" y="62.7" stroke="none" data-name="SeedData" data-compartment="1">+companies: SeedCompany[]</text>
+<text x="0.0" y="78.9" stroke="none" data-name="SeedData" data-compartment="1">+warehouses: SeedWarehouse[]</text>
+
+</g>
+</g>
+<g transform="translate(20127, 546)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="SeedData" data-compartment="2">
+<g transform="translate(8, 8)" fill="#33322E" data-name="SeedData" data-compartment="2">
+
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg>

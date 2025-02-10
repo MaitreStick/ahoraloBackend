@@ -25,7 +25,9 @@
     "test:city": "jest src/cities/cities.controller.spec.ts",
     "test:prodcomcity": "jest src/prodcomcity/dto/update-prodcomcity.dto.spec.ts",
     "test:createproduct": "jest src/products/dto/create-product.dto.spec.ts",
+    "test:ws": "jest src/cities/entities/city.entity.spec.ts",
     "test:createuser": "jest src/auth/dto/create-user.dto.spec.ts"
+
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
