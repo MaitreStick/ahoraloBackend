@@ -77,17 +77,7 @@ describe('CreateComcityDto', () => {
       const cityMetadata = Reflect.getMetadata('swagger/apiProperties', CreateComcityDto.prototype, 'city');
       const companyMetadata = Reflect.getMetadata('swagger/apiProperties', CreateComcityDto.prototype, 'company');
 
-//       expect(cityMetadata).toBeDefined();
-//       expect(cityMetadata.description).toBe('The ID of the city');
-//       expect(cityMetadata.example).toBe('bb3d7cbac2174dd30fe5e787131d951799abdd84');
-//       expect(cityMetadata.nullable).toBe(false);
-//       expect(cityMetadata.minLength).toBe(1);
 
-//       expect(companyMetadata).toBeDefined();
-//       expect(companyMetadata.description).toBe('The ID of the company');
-//       expect(companyMetadata.example).toBe('a1f3c93b-62d7-4a6f-a16b-5e2f8de5a75d');
-//       expect(companyMetadata.nullable).toBe(false);
-//       expect(companyMetadata.minLength).toBe(1);
     });
   });
 });
