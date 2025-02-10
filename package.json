@@ -20,7 +20,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "test:ac": "jest --config src/auth/auth.controller.test.ts",
     "test:ccdto": "jest src/cities/dto/create-city.dto.spec.ts",
-
+    "test:ce": "jest src/cities/entities/city.entity.spec.ts",
+    "test:create-comcity.dto": "jest src/comcity/dto/create-comcity.dto.spec.ts",
     "test:city": "jest src/cities/cities.controller.spec.ts"
   },
   "dependencies": {
