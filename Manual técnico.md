@@ -187,8 +187,7 @@ DELETE /api/companies/{id}
 ### 6.1 Esquemas PostgreSQL (Supabase)
 
 
-
-[![SGnFY.jpg](https://s7.gifyu.com/images/SGnFY.jpg)](https://gifyu.com/image/SGnFY)
+[![b25J8.png](https://s3.gifyu.com/images/b25J8.png)](https://gifyu.com/image/b25J8)
 
 ## 7. Seguridad
 
