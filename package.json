@@ -26,6 +26,8 @@
     "test:prodcomcity": "jest src/prodcomcity/dto/update-prodcomcity.dto.spec.ts",
     "test:createproduct": "jest src/products/dto/create-product.dto.spec.ts",
     "test:ws": "jest src/cities/entities/city.entity.spec.ts",
+    "test:ocr": "jest src/files/files.controller.spec.ts",
+    "test:audit": "jest src/audit-log/entities/audit-log.entity.spec.ts",
     "test:createuser": "jest src/auth/dto/create-user.dto.spec.ts"
 
   },
