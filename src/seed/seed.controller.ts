@@ -10,8 +10,8 @@ export class SeedController {
   constructor(private readonly seedService: SeedService) { }
 
   @Get()
-  // @ApiBearerAuth('JWT-auth')
-  // @Auth(ValidRoles.superUser, ValidRoles.admin)
+  @ApiBearerAuth('JWT-auth')
+  @Auth(ValidRoles.superUser, ValidRoles.admin)
   @ApiOperation({ summary: 'Execute the database seeding' })
   @ApiResponse({ status: 200, description: 'Database seeded successfully' })
   @ApiResponse({ status: 403, description: 'Forbidden. Token related' })
