@@ -1,13 +1,5 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ParseUUIDPipe, BadRequestException, NotFoundException } from '@nestjs/common';
-import { CitiesService } from './cities.service';
-import { CreateCityDto } from './dto/create-city.dto';
-import { UpdateCityDto } from './dto/update-city.dto';
-import { Auth } from 'src/auth/decorators';
-import { ValidRoles } from 'src/auth/interfaces';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { City } from './entities/city.entity';
-import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { CitiesController } from './cities.controller';
+import { CitiesService } from './cities.service';
 
 jest.mock('@nestjs/common');
 jest.mock('./cities.service');
@@ -20,10 +12,15 @@ jest.mock('./entities/city.entity');
 jest.mock('src/common/dtos/pagination.dto');
 
 describe('CitiesController', () => {
-  let instance;
+  let instance: CitiesController;
+
+  let mockCitiesService: Partial<CitiesService>;
 
   beforeEach(() => {
-    instance = new CitiesController();
+    mockCitiesService = {
+      // Add mock implementations of CitiesService methods if needed
+    };
+    instance = new CitiesController(mockCitiesService as CitiesService);
   });
 
   it('instance should be an instanceof CitiesController', () => {

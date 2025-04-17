@@ -1,6 +1,6 @@
-import AuthController  from  "./auth.controller";
+// Removed duplicate and incorrect import
 import { Test, TestingModule } from '@nestjs/testing';
-import { AuthController } from './auth.controller';
+import { AuthController } from './auth.controller'; // Correct named import
 import { AuthService } from './auth.service';
 import { CreateUserDto, LoginUserDto } from './dto';
 import { AuthGoogleLoginDto } from './dto/login-google-user.dto';
@@ -44,7 +44,7 @@ describe('AuthController', () => {
       } as CreateUserDto;
       const result = { id: 'user123', ...createUserDto, status: 'created' };
 
-      authService.create.mockResolvedValue(result);
+      (authService.create as jest.Mock).mockResolvedValue(result);
 
       await expect(controller.createUser(createUserDto)).resolves.toEqual(result);
       expect(authService.create).toHaveBeenCalledWith(createUserDto);
@@ -59,7 +59,7 @@ describe('AuthController', () => {
       } as LoginUserDto;
       const result = { token: 'jwt.token.here', user: { id: 'user123' } };
 
-      authService.login.mockResolvedValue(result);
+      (authService.login as jest.Mock).mockResolvedValue(result);
 
       await expect(controller.loginUser(loginUserDto)).resolves.toEqual(result);
       expect(authService.login).toHaveBeenCalledWith(loginUserDto);
@@ -74,7 +74,7 @@ describe('AuthController', () => {
       } as User;
       const result = { status: 'authenticated', user };
 
-      authService.checkAuthStatus.mockResolvedValue(result);
+      (authService.checkAuthStatus as jest.Mock).mockResolvedValue(result);
 
       await expect(controller.checkAuthStatus(user)).resolves.toEqual(result);
       expect(authService.checkAuthStatus).toHaveBeenCalledWith(user);
@@ -88,7 +88,7 @@ describe('AuthController', () => {
       } as AuthGoogleLoginDto;
       const result = { token: 'jwt.token.here', user: { id: 'user123' } };
 
-      authService.signInGoogle.mockResolvedValue(result);
+      (authService.signInGoogle as jest.Mock).mockResolvedValue(result);
 
       await expect(controller.googleLogin(googleLoginDto)).resolves.toEqual(result);
       expect(authService.signInGoogle).toHaveBeenCalledWith(googleLoginDto);
