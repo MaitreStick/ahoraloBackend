@@ -50,7 +50,7 @@ export class CompaniesService {
     const companies = await queryBuilder.getMany();
 
     if (!companies || companies.length === 0) {
-      return []; // Puedes devolver un arreglo vacío o lanzar una excepción
+      return []; 
     }
 
     return companies;
