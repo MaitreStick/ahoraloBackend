@@ -1,4 +1,10 @@
-import { BadRequestException, Injectable, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateProdcomcityDto } from './dto/create-prodcomcity.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Brackets, DataSource, EntityManager, In, Repository } from 'typeorm';
@@ -18,11 +24,9 @@ import { CreateProdcomcityOcrDto } from './dto/create-prodcomcity-ocr.dto';
 
 @Injectable()
 export class ProdcomcityService {
-
   private readonly logger = new Logger('ProdcomcityService');
 
   constructor(
-
     @InjectRepository(Prodcomcity)
     private readonly prodcomcityRepository: Repository<Prodcomcity>,
     @InjectRepository(Comcity)
@@ -36,13 +40,15 @@ export class ProdcomcityService {
     private readonly productService: ProductsService,
     private readonly comcityService: ComcityService,
     private readonly dataSource: DataSource,
+  ) {}
 
-  ) { }
-
-
-  async createSeed(createProdcomcityOcrDto: CreateProdcomcityOcrDto, user: User) {
+  async createSeed(
+    createProdcomcityOcrDto: CreateProdcomcityOcrDto,
+    user: User,
+  ) {
     try {
-      const { product, comcity, ...prodcomcityDetails } = createProdcomcityOcrDto;
+      const { product, comcity, ...prodcomcityDetails } =
+        createProdcomcityOcrDto;
 
       const productEntity = await this.productService.findOne(product);
       const comcityEntity = await this.comcityService.findOne(comcity);
@@ -56,7 +62,7 @@ export class ProdcomcityService {
         ...prodcomcityDetails,
         product: productEntity,
         comcity: comcityEntity,
-        user
+        user,
       });
 
       await this.prodcomcityRepository.save(prodcomcity);
@@ -66,27 +72,39 @@ export class ProdcomcityService {
     }
   }
 
-  async create(createProdcomcityDto: CreateProdcomcityDto, user: User): Promise<Prodcomcity> {
+  async create(
+    createProdcomcityDto: CreateProdcomcityDto,
+    user: User,
+  ): Promise<Prodcomcity> {
     try {
-      const { product: productDto, comcity: comcityDto, date, price } = createProdcomcityDto;
+      const {
+        product: productDto,
+        comcity: comcityDto,
+        date,
+        price,
+      } = createProdcomcityDto;
 
-      // Handle Company
-      let company = await this.companyRepository.findOne({ where: { name: comcityDto.company.name } });
+      let company = await this.companyRepository.findOne({
+        where: { name: comcityDto.company.name },
+      });
       if (!company) {
-        company = this.companyRepository.create({ name: comcityDto.company.name });
+        company = this.companyRepository.create({
+          name: comcityDto.company.name,
+        });
         await this.companyRepository.save(company);
       }
 
-      // Handle City
       let city = await this.cityRepository.findOne({
         where: { name: comcityDto.city.name, nameDep: comcityDto.city.nameDep },
       });
       if (!city) {
-        city = this.cityRepository.create({ name: comcityDto.city.name, nameDep: comcityDto.city.nameDep });
+        city = this.cityRepository.create({
+          name: comcityDto.city.name,
+          nameDep: comcityDto.city.nameDep,
+        });
         await this.cityRepository.save(city);
       }
 
-      // Handle Comcity
       let comcity = await this.comcityRepository.findOne({
         where: { company: { id: company.id }, city: { id: city.id } },
         relations: ['company', 'city'],
@@ -101,8 +119,9 @@ export class ProdcomcityService {
         throw new BadRequestException('Invalid code value');
       }
 
-      // Handle Product
-      let product = await this.productRepository.findOne({ where: { code: codeNumber } });
+      let product = await this.productRepository.findOne({
+        where: { code: codeNumber },
+      });
       if (!product) {
         product = this.productRepository.create({
           title: productDto.title,
@@ -116,7 +135,6 @@ export class ProdcomcityService {
 
       await this.productRepository.save(product);
 
-      // Create Prodcomcity
       const prodcomcity = this.prodcomcityRepository.create({
         product,
         comcity,
@@ -125,17 +143,16 @@ export class ProdcomcityService {
         user,
       });
 
-
       await this.prodcomcityRepository.save(prodcomcity);
 
       return prodcomcity;
     } catch (error) {
       this.handleDBException(error);
-      throw new InternalServerErrorException('An error occurred while creating Prodcomcity');
+      throw new InternalServerErrorException(
+        'An error occurred while creating Prodcomcity',
+      );
     }
   }
-
-
 
   async findAll(PaginationDto: PaginationDto) {
     const { limit = 10, offset = 0 } = PaginationDto;
@@ -143,7 +160,13 @@ export class ProdcomcityService {
     const prodcomcities = await this.prodcomcityRepository.find({
       skip: offset,
       take: limit,
-      relations: ['product', 'comcity', 'user', 'comcity.city', 'comcity.company'],
+      relations: [
+        'product',
+        'comcity',
+        'user',
+        'comcity.city',
+        'comcity.company',
+      ],
     });
 
     return prodcomcities;
@@ -154,7 +177,13 @@ export class ProdcomcityService {
     if (isUUID(term)) {
       ProdComcity = await this.prodcomcityRepository.findOne({
         where: { id: term },
-        relations: ['product', 'comcity', 'user', 'comcity.city', 'comcity.company']
+        relations: [
+          'product',
+          'comcity',
+          'user',
+          'comcity.city',
+          'comcity.company',
+        ],
       });
     }
     if (!ProdComcity)
@@ -175,23 +204,38 @@ export class ProdcomcityService {
     return prodcomcity;
   }
 
-  async findProdcomcityByComcityAndProduct(comcityId: string, productId: string): Promise<Prodcomcity | null> {
+  async findProdcomcityByComcityAndProduct(
+    comcityId: string,
+    productId: string,
+  ): Promise<Prodcomcity | null> {
     return await this.prodcomcityRepository.findOne({
       where: {
         comcity: { id: comcityId },
-        product: { id: productId }
+        product: { id: productId },
       },
-      relations: ['product', 'comcity', 'user', 'comcity.city', 'comcity.company']
+      relations: [
+        'product',
+        'comcity',
+        'user',
+        'comcity.city',
+        'comcity.company',
+      ],
     });
   }
 
-  private async executeInTransaction<T>(userId: string, operation: (manager: EntityManager) => Promise<T>): Promise<T> {
+  private async executeInTransaction<T>(
+    userId: string,
+    operation: (manager: EntityManager) => Promise<T>,
+  ): Promise<T> {
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
 
     try {
-      await queryRunner.query(`SELECT set_config('app.current_user_id', $1, true)`, [userId]);
+      await queryRunner.query(
+        `SELECT set_config('app.current_user_id', $1, true)`,
+        [userId],
+      );
 
       const result = await operation(queryRunner.manager);
 
@@ -206,18 +250,29 @@ export class ProdcomcityService {
     }
   }
 
-  async updateProdcomcityOcr(id: string, updateProdcomcityOcrDto: CreateProdcomcityOcrDto): Promise<Prodcomcity> {
+  async updateProdcomcityOcr(
+    id: string,
+    updateProdcomcityOcrDto: CreateProdcomcityOcrDto,
+  ): Promise<Prodcomcity> {
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
 
     try {
-      let prodcomcity = await queryRunner.manager.findOne(Prodcomcity, { where: { id }, relations: ['comcity', 'product'] });
+      let prodcomcity = await queryRunner.manager.findOne(Prodcomcity, {
+        where: { id },
+        relations: ['comcity', 'product'],
+      });
 
-      if (!prodcomcity) throw new NotFoundException(`Prodcomcity with id ${id} not found`);
+      if (!prodcomcity)
+        throw new NotFoundException(`Prodcomcity with id ${id} not found`);
 
-      const comcity = await this.comcityRepository.findOne({ where: { id: updateProdcomcityOcrDto.comcity } });
-      const product = await this.productRepository.findOne({ where: { id: updateProdcomcityOcrDto.product } });
+      const comcity = await this.comcityRepository.findOne({
+        where: { id: updateProdcomcityOcrDto.comcity },
+      });
+      const product = await this.productRepository.findOne({
+        where: { id: updateProdcomcityOcrDto.product },
+      });
 
       if (!comcity || !product) {
         throw new NotFoundException('Comcity or Product not found');
@@ -242,9 +297,6 @@ export class ProdcomcityService {
     }
   }
 
-
-
-
   async remove(id: string) {
     const prodcomCity = await this.findOneById(id);
     if (!prodcomCity) {
@@ -253,14 +305,17 @@ export class ProdcomcityService {
     await this.prodcomcityRepository.remove(prodcomCity);
   }
 
-
+  /**
+   * Actualiza un Prodcomcity, permitiendo también cambiar la ciudad y la empresa
+   * asociadas. Si no existen dichas entidades, las crea; si sí existen, las reutiliza.
+   */
   async updateProdcomcity(
     id: string,
     updateProdcomcityDto: UpdateProdcomcityDto,
     user: User,
   ): Promise<Prodcomcity> {
     return this.executeInTransaction(user.id.toString(), async (manager) => {
-      // Obtener el Prodcomcity existente
+      // 1. Buscar la entidad 'Prodcomcity' existente
       const prodcomcity = await manager.findOne(Prodcomcity, {
         where: { id },
         relations: ['comcity', 'product'],
@@ -270,18 +325,49 @@ export class ProdcomcityService {
         throw new NotFoundException(`Prodcomcity with id ${id} not found`);
       }
 
-      // Obtener comcity utilizando el mismo manager
-      const comcity = await manager.findOne(Comcity, {
-        where: { id: updateProdcomcityDto.comcity },
-      });
+      // 2. Lógica para actualizar (o crear) la ciudad y la empresa
+      //    a partir de los DTO que llegan en 'updateProdcomcityDto.comcity'.
+      const { city, company } = updateProdcomcityDto.comcity;
 
-      if (!comcity) {
-        throw new NotFoundException(`Comcity with id ${updateProdcomcityDto.comcity} not found`);
+      // Buscar o crear la Company
+      let companyEntity = await manager.findOne(Company, {
+        where: { name: company.name },
+      });
+      if (!companyEntity) {
+        companyEntity = manager.create(Company, { name: company.name });
+        await manager.save(companyEntity);
       }
 
-      // Obtener el producto y actualizar sus campos
-      const productData = updateProdcomcityDto.product;
+      // Buscar o crear la City
+      let cityEntity = await manager.findOne(City, {
+        where: { name: city.name, nameDep: city.nameDep },
+      });
+      if (!cityEntity) {
+        cityEntity = manager.create(City, {
+          name: city.name,
+          nameDep: city.nameDep,
+        });
+        await manager.save(cityEntity);
+      }
 
+      // Buscar o crear la Comcity (relación)
+      let comcityEntity = await manager.findOne(Comcity, {
+        where: {
+          company: { id: companyEntity.id },
+          city: { id: cityEntity.id },
+        },
+        relations: ['company', 'city'],
+      });
+      if (!comcityEntity) {
+        comcityEntity = manager.create(Comcity, {
+          company: companyEntity,
+          city: cityEntity,
+        });
+        await manager.save(comcityEntity);
+      }
+
+      // 3. Actualizar la información de producto
+      const productData = updateProdcomcityDto.product;
       if (!productData || !productData.id) {
         throw new NotFoundException('Product id is required in product data');
       }
@@ -292,32 +378,33 @@ export class ProdcomcityService {
       });
 
       if (!product) {
-        throw new NotFoundException(`Product with id ${productData.id} not found`);
+        throw new NotFoundException(
+          `Product with id ${productData.id} not found`,
+        );
       }
 
-      // Actualizar los campos obligatorios del producto
       product.title = productData.title;
       product.code = productData.code;
       product.user = user;
 
-      // Actualizar las imágenes del producto si se proporcionan
+      // 4. Manejo de imágenes (se eliminan las anteriores y se crean las nuevas)
       if (productData.images) {
-        // Eliminar las imágenes existentes
+        // Borrar las imágenes anteriores de la relación
         await manager.delete(ProductImage, { product: { id: product.id } });
 
-        // Crear y asignar nuevas imágenes
+        // Crear las nuevas
         product.images = productData.images.map((imageUrl) =>
           manager.create(ProductImage, { url: imageUrl, product }),
         );
       }
 
-      product.normalizeData();
+      product.normalizeData(); // Tu método personalizado de normalización
 
-      // Guardar el producto actualizado
+      // Guardar los cambios del producto
       await manager.save(product);
 
-      // Actualizar los campos de Prodcomcity
-      prodcomcity.comcity = comcity;
+      // 5. Actualizar 'prodcomcity' vinculado
+      prodcomcity.comcity = comcityEntity;
       prodcomcity.product = product;
       prodcomcity.date = updateProdcomcityDto.date || prodcomcity.date;
 
@@ -325,7 +412,7 @@ export class ProdcomcityService {
         prodcomcity.price = updateProdcomcityDto.price;
       }
 
-      // Guardar el Prodcomcity actualizado
+      // Guardar los cambios finales en la tabla 'Prodcomcity'
       await manager.save(prodcomcity);
 
       return prodcomcity;
@@ -422,7 +509,9 @@ export class ProdcomcityService {
     });
 
     if (products.length === 0) {
-      throw new NotFoundException(`No products found for the provided criteria.`);
+      throw new NotFoundException(
+        `No products found for the provided criteria.`,
+      );
     }
 
     return products;
@@ -451,9 +540,13 @@ export class ProdcomcityService {
         query.where(
           new Brackets((qb) => {
             terms.forEach((t) => {
-              qb.orWhere('LOWER(product.title) LIKE :titleTerm', { titleTerm: `%${t}%` })
+              qb.orWhere('LOWER(product.title) LIKE :titleTerm', {
+                titleTerm: `%${t}%`,
+              })
                 .orWhere(':tag = ANY(product.tags)', { tag: t })
-                .orWhere('product.code::text LIKE :codeTerm', { codeTerm: `%${t}%` });
+                .orWhere('product.code::text LIKE :codeTerm', {
+                  codeTerm: `%${t}%`,
+                });
             });
           }),
         );
@@ -476,13 +569,17 @@ export class ProdcomcityService {
       const prodcomcities = await query.getMany();
 
       if (prodcomcities.length === 0) {
-        throw new NotFoundException(`No products found for the provided criteria.`);
+        throw new NotFoundException(
+          `No products found for the provided criteria.`,
+        );
       }
 
       return prodcomcities;
     } catch (error) {
       this.handleDBException(error);
-      throw new InternalServerErrorException('An error occurred while searching Prodcomcity');
+      throw new InternalServerErrorException(
+        'An error occurred while searching Prodcomcity',
+      );
     }
   }
 
@@ -493,10 +590,9 @@ export class ProdcomcityService {
       .getMany();
   }
 
-
   async findLowestPricesByTags(tags: string[], cityId: string): Promise<any[]> {
     const products = await this.findProductsByTags(tags);
-    const productIds = products.map(product => product.id);
+    const productIds = products.map((product) => product.id);
 
     if (productIds.length === 0) {
       return [];
@@ -521,7 +617,7 @@ export class ProdcomcityService {
       .addGroupBy('product.title')
       .getRawMany();
 
-    return prices.map(price => ({
+    return prices.map((price) => ({
       companyId: price.companyId,
       companyName: price.companyName,
       productId: price.productId,
@@ -530,7 +626,10 @@ export class ProdcomcityService {
     }));
   }
 
-  async findLowestPricesByCodes(codes: number[], cityId: string): Promise<any[]> {
+  async findLowestPricesByCodes(
+    codes: number[],
+    cityId: string,
+  ): Promise<any[]> {
     if (codes.length === 0) {
       return [];
     }
@@ -554,7 +653,7 @@ export class ProdcomcityService {
       .addGroupBy('product.title')
       .getRawMany();
 
-    return prices.map(price => ({
+    return prices.map((price) => ({
       companyId: price.companyId,
       companyName: price.companyName,
       productCode: price.productCode,
@@ -563,67 +662,23 @@ export class ProdcomcityService {
     }));
   }
 
-
-
-
-
-  // async findLowestPricesByTags(tags: string[]): Promise<any[]> {
-  //   const products = await this.findProductsByTags(tags);
-  //   const productIds = products.map(product => product.id);
-
-  //   if (productIds.length === 0) {
-  //     return [];
-  //   }
-
-  //   const prices = await this.prodcomcityRepository
-  //     .createQueryBuilder('pcc')
-  //     .select('company.id', 'companyId')
-  //     .addSelect('company.name', 'companyName')
-  //     .addSelect('MIN(pcc.price)', 'lowestPrice')
-  //     .addSelect('product.title', 'productTitle')
-  //     .addSelect('product.id', 'productId')
-  //     .innerJoin('pcc.product', 'product')
-  //     .innerJoin('pcc.comcity', 'comcity')
-  //     .innerJoin('comcity.company', 'company')
-  //     .where('pcc.productId IN (:...productIds)', { productIds })
-  //     .groupBy('company.id')
-  //     .addGroupBy('company.name')
-  //     .addGroupBy('product.id')
-  //     .addGroupBy('product.title')
-  //     .getRawMany();
-
-  //   return prices.map(price => ({
-  //     companyId: price.companyId,
-  //     companyName: price.companyName,
-  //     productId: price.productId,
-  //     productTitle: price.productTitle,
-  //     lowestPrice: parseFloat(price.lowestPrice),
-  //   }));
-  // }
-
-
-
   async deleteAllProdComcity() {
     const query = this.prodcomcityRepository.createQueryBuilder('prodcomcity');
 
     try {
-      return await query
-        .delete()
-        .where({})
-        .execute();
-
+      return await query.delete().where({}).execute();
     } catch (error) {
       this.handleDBException(error);
     }
   }
 
   private handleDBException(error: any) {
-    if (error.code === '23505')
-      throw new BadRequestException(error.detail);
+    if (error.code === '23505') throw new BadRequestException(error.detail);
 
     this.logger.error(error);
 
-    throw new InternalServerErrorException('Unexpected error, please check the logs');
-
+    throw new InternalServerErrorException(
+      'Unexpected error, please check the logs',
+    );
   }
 }

@@ -1,6 +1,16 @@
-import { IsDateString, IsNumber, IsOptional, IsPositive, IsString, MinLength, ValidateNested } from 'class-validator';
+import {
+  IsDateString,
+  IsNumber,
+  IsOptional,
+  IsPositive,
+  IsString,
+  MinLength,
+  ValidateNested,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
+import { CreateCityDto } from 'src/cities/dto/create-city.dto';
+import { CreateCompanyDto } from 'src/companies/dto/create-company.dto';
 
 export class ProductUpdateDto {
   @ApiProperty({
@@ -37,12 +47,25 @@ export class ProductUpdateDto {
 
   @ApiProperty({
     description: 'Array of image URLs',
-    example: ['https://example.com/image1.jpg', 'https://example.com/image2.jpg'],
+    example: [
+      'https://example.com/image1.jpg',
+      'https://example.com/image2.jpg',
+    ],
     required: false,
   })
   @IsOptional()
   @IsString({ each: true })
   images?: string[];
+}
+
+class UpdateComcityDto {
+  @ValidateNested()
+  @Type(() => CreateCityDto)
+  city: CreateCityDto;
+
+  @ValidateNested()
+  @Type(() => CreateCompanyDto)
+  company: CreateCompanyDto;
 }
 
 export class UpdateProdcomcityDto {
@@ -52,7 +75,9 @@ export class UpdateProdcomcityDto {
   })
   @IsString()
   @MinLength(1)
-  comcity: string;
+  @ValidateNested()
+  @Type(() => UpdateComcityDto)
+  comcity: UpdateComcityDto;
 
   @ApiProperty({
     description: 'Product update information',
