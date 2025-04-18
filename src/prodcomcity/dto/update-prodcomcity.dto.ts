@@ -73,8 +73,6 @@ export class UpdateProdcomcityDto {
     description: 'The UUID of the comcity associated with the company and city',
     example: '1b965650-51c7-42e8-9642-a25ac46c0a4e',
   })
-  @IsString()
-  @MinLength(1)
   @ValidateNested()
   @Type(() => UpdateComcityDto)
   comcity: UpdateComcityDto;
