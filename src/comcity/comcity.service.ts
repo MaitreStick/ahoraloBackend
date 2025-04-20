@@ -150,6 +150,28 @@ export class ComcityService {
     return comcities;
   }
 
+  async findAllWarehouses(
+    paginationDto: PaginationDto,
+  ): Promise<Warehouse[]> {
+    const { limit = 10, offset = 0, search = '' } = paginationDto;
+  
+    const query = this.warehouseRepository
+      .createQueryBuilder('warehouse')
+      .leftJoinAndSelect('warehouse.comcity', 'comcity')
+      .leftJoinAndSelect('comcity.company', 'company')
+      .leftJoinAndSelect('comcity.city', 'city')
+      .skip(offset)
+      .take(limit);
+  
+    if (search) {
+      query.where('warehouse.name ILIKE :search', { search: `%${search}%` })
+           .orWhere('company.name  ILIKE :search', { search: `%${search}%` })
+           .orWhere('city.name     ILIKE :search', { search: `%${search}%` });
+    }
+  
+    return await query.getMany();
+  }
+
   async findOne(term: string) {
     let comCity: Comcity;
     if (isUUID(term)) {
