@@ -72,54 +72,39 @@ export class ComcityService {
     }
   }
 
-  async createWarehouse(createWarehouseDto: CreateWarehouseDto): Promise<Warehouse> {
-    const { name, latitude, longitude, comcityId } = createWarehouseDto;
+  async createWarehouse(dto: CreateWarehouseDto): Promise<Warehouse> {
+    const { comcityId } = dto;
 
-    const comcity = await this.comcityRepository.findOne({
-      where: { id: comcityId },
-    });
+    // 1. Verificar FK
+    const exists = await this.comcityRepository.exist({ where: { id: comcityId } });
+    if (!exists) throw new NotFoundException(`Comcity '${comcityId}' no existe`);
 
-    if (!comcity) {
-      throw new NotFoundException(`Comcity con ID "${comcityId}" no encontrado.`);
+    // 2. Crear y guardar
+    const warehouse = this.warehouseRepository.create(dto); // dto trae comcityId
+    try {
+      return await this.warehouseRepository.save(warehouse);
+    } catch (err: any) {
+      if (err.code === '23505')                    // UNIQUE violation
+        throw new BadRequestException('Registro duplicado');
+      throw new InternalServerErrorException('Error inesperado');
     }
-
-    const warehouse = this.warehouseRepository.create({
-      name,
-      latitude,
-      longitude,
-      comcity,
-    });
-
-    return this.warehouseRepository.save(warehouse);
   }
 
-  async updateWarehouse(id: string, updateWarehouseDto: UpdateWarehouseDto): Promise<Warehouse> {
-    const warehouse = await this.warehouseRepository.findOne({
-      where: { id },
-      relations: ['comcity'],
-    });
-
-    if (!warehouse) {
-      throw new NotFoundException(`Almacén con ID "${id}" no encontrado.`);
+  async updateWarehouse(id: string, dto: UpdateWarehouseDto): Promise<Warehouse> {
+    // FK opcional
+    if (dto.comcityId) {
+      const ok = await this.comcityRepository.exist({ where: { id: dto.comcityId } });
+      if (!ok) throw new NotFoundException(`Comcity '${dto.comcityId}' no existe`);
     }
 
-    if (updateWarehouseDto.comcityId) {
-      const comcity = await this.comcityRepository.findOne({
-        where: { id: updateWarehouseDto.comcityId },
-      });
+    await this.warehouseRepository.update({ id }, dto);
 
-      if (!comcity) {
-        throw new NotFoundException(`Comcity con ID "${updateWarehouseDto.comcityId}" no encontrado.`);
-      }
+    const updated = await this.warehouseRepository.findOneBy({ id });
+    if (!updated) throw new NotFoundException(`Warehouse '${id}' no encontrado`);
 
-      warehouse.comcity = comcity;
-    }
-
-    // Actualizar los campos proporcionados
-    Object.assign(warehouse, updateWarehouseDto);
-
-    return this.warehouseRepository.save(warehouse);
+    return updated;
   }
+
 
   async deleteWarehouse(id: string): Promise<void> {
     const result = await this.warehouseRepository.delete(id);
@@ -298,7 +283,6 @@ export class ComcityService {
   }
 
   async findNearestWarehouses(comcityId: string, userLatitude: number, userLongitude: number) {
-    // Obtener los almacenes asociados al comcity dado
     const warehouses = await this.dataSource
       .getRepository(Warehouse)
       .createQueryBuilder('warehouse')
@@ -310,7 +294,6 @@ export class ComcityService {
       return [];
     }
 
-    // Calcular la distancia de cada almacén a la ubicación del usuario
     const warehousesWithDistance = warehouses.map((warehouse) => {
       const distance = this.calculateDistance(
         userLatitude,
@@ -327,13 +310,11 @@ export class ComcityService {
       };
     });
 
-    // Ordenar los almacenes por distancia ascendente
     warehousesWithDistance.sort((a, b) => a.distance - b.distance);
 
     return warehousesWithDistance;
   }
 
-  // Método para calcular la distancia entre dos puntos (Haversine formula)
   calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number) {
     const toRadians = (degrees: number) => (degrees * Math.PI) / 180;
 
@@ -351,7 +332,7 @@ export class ComcityService {
 
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-    return earthRadiusKm * c * 1000; // Devuelve la distancia en metros
+    return earthRadiusKm * c * 1000; 
   }
 
 

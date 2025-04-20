@@ -1,43 +1,40 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
-import { Comcity } from '../../comcity/entities/comcity.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Comcity } from './comcity.entity';
 
-@Entity()
+@Entity({ name: 'warehouse' })
 export class Warehouse {
-
-  @ApiProperty({
-    description: 'Warehouse ID',
-    example: '1b965650-51c7-42e8-9642-a25ac46c0a4e',
-    uniqueItems: true,
-  })
+  @ApiProperty({ example: '1b965650-51c7-42e8-9642-a25ac46c0a4e' })
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ApiProperty({
-    description: 'The name of the warehouse',
-    example: 'Central Warehouse',
-  })
+  @ApiProperty({ example: 'Central Warehouse' })
   @Column()
   name: string;
 
-  @ApiProperty({
-    description: 'The latitude of the warehouse location',
-    example: 40.712776,
-  })
+  @ApiProperty({ example: 40.712776 })
   @Column('decimal', { precision: 10, scale: 6 })
   latitude: number;
 
-  @ApiProperty({
-    description: 'The longitude of the warehouse location',
-    example: -74.005974,
-  })
+  @ApiProperty({ example: -74.005974 })
   @Column('decimal', { precision: 10, scale: 6 })
   longitude: number;
 
+  /* ────── NUEVO: columna FK explícita ────── */
   @ApiProperty({
-    description: 'The comcity associated with the warehouse',
-    type: () => Comcity,
+    description: 'FK → comcity.id',
+    example: 'a1f3c93b-62d7-4a6f-a16b-5e2f8de5a75d',
   })
-  @ManyToOne(() => Comcity, (comcity) => comcity.warehouses)
+  @Column('uuid')
+  comcityId: string;
+
+  @ManyToOne(() => Comcity, (c) => c.warehouses, { eager: false })
+  @JoinColumn({ name: 'comcityId' })          // enlaza la FK
   comcity: Comcity;
 }
