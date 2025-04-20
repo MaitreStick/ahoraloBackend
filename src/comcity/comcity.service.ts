@@ -298,6 +298,23 @@ export class ComcityService {
     }
   }
 
+  async findWarehouseById(id: string): Promise<Warehouse> {
+    const warehouse = await this.warehouseRepository.findOne({
+      where: { id },
+      relations: [
+        'comcity',           
+        'comcity.city',      
+        'comcity.company',   
+      ],
+    });
+
+    if (!warehouse) {
+      throw new NotFoundException(`Warehouse '${id}' no encontrado`);
+    }
+
+    return warehouse;
+  }
+
   async findByCompanyIds(companyIds: string[]): Promise<any[]> {
     if (!companyIds || companyIds.length === 0) {
       return [];

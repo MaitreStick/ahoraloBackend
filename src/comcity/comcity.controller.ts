@@ -138,6 +138,21 @@ export class ComcityController {
     return this.comcityService.findOnePlain(term);
   }
 
+  @Get('warehouses/:id')
+  @ApiOperation({ summary: 'Buscar un almacén por ID' })
+  @ApiResponse({
+    status: 200,
+    description: 'Almacén encontrado',
+    type: Warehouse, 
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Almacén no encontrado',
+  })
+  findWarehouse(@Param('id') id: string) {
+    return this.comcityService.findWarehouseById(id);
+  }
+
   @Post('warehouses/by-company-ids')
   @ApiOperation({ summary: 'Get warehouses by company IDs' })
   @ApiResponse({ status: 200, description: 'List of warehouses found' })
