@@ -444,6 +444,15 @@ export class ProdcomcityService {
     return products;
   }
 
+  async findLatestByProduct(productId: string) {
+    return this.prodcomcityRepository.createQueryBuilder('pc')
+      .leftJoinAndSelect('pc.comcity', 'cc')
+      .leftJoinAndSelect('cc.company', 'comp')
+      .where('pc.productId = :pid', { pid: productId })
+      .orderBy('pc.date', 'DESC')
+      .getOne();
+  }
+
   async findAllByCompanyId(companyId: string): Promise<Prodcomcity[]> {
     const products = await this.prodcomcityRepository.find({
       where: {
