@@ -1,5 +1,7 @@
 import {
   BadRequestException,
+  forwardRef,
+  Inject,
   Injectable,
   InternalServerErrorException,
   Logger,
@@ -37,6 +39,7 @@ export class ProdcomcityService {
     private readonly cityRepository: Repository<City>,
     @InjectRepository(Company)
     private readonly companyRepository: Repository<Company>,
+    @Inject(forwardRef(() => ProductsService))
     private readonly productService: ProductsService,
     private readonly comcityService: ComcityService,
     private readonly dataSource: DataSource,
@@ -445,7 +448,8 @@ export class ProdcomcityService {
   }
 
   async findLatestByProduct(productId: string) {
-    return this.prodcomcityRepository.createQueryBuilder('pc')
+    return this.prodcomcityRepository
+      .createQueryBuilder('pc')
       .leftJoinAndSelect('pc.comcity', 'cc')
       .leftJoinAndSelect('cc.company', 'comp')
       .where('pc.productId = :pid', { pid: productId })

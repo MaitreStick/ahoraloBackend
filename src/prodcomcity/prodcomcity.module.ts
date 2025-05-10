@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { ProdcomcityService } from './prodcomcity.service';
 import { ProdcomcityController } from './prodcomcity.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -20,10 +20,10 @@ import { User } from 'src/auth/entities/user.entity';
   imports: [
     TypeOrmModule.forFeature([ Prodcomcity, Product, Comcity, Company, City, User ]),
     AuthModule,
-    ProductsModule,
+    forwardRef(() => ProductsModule), 
     ComcityModule,
     CitiesModule,
-    CompaniesModule
+    CompaniesModule,
   ],
   exports: [
     ProdcomcityService,

@@ -1,5 +1,7 @@
 import {
   BadRequestException,
+  forwardRef,
+  Inject,
   Injectable,
   InternalServerErrorException,
   Logger,
@@ -28,6 +30,7 @@ export class ProductsService {
 
     private readonly dataSource: DataSource,
 
+    @Inject(forwardRef(() => FilesService))
     private readonly filesService: FilesService,
   ) {}
 
@@ -182,7 +185,7 @@ export class ProductsService {
       await queryRunner.manager.save(product);
       await queryRunner.commitTransaction();
       await queryRunner.release();
-      await this.filesService.refreshCodes();
+      // await this.filesService.refreshCodes();
       return this.findOnePlain(id);
     } catch (error) {
       await queryRunner.rollbackTransaction();

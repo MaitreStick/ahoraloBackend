@@ -1,4 +1,6 @@
 import {
+  forwardRef,
+  Inject,
   Injectable,
   InternalServerErrorException,
   OnModuleInit,
@@ -18,6 +20,7 @@ export class FilesService implements OnModuleInit {
 
   constructor(
     private readonly prodcomcityService: ProdcomcityService,
+    @Inject(forwardRef(() => ProductsService))
     private readonly productsService: ProductsService,
   ) {}
 
@@ -106,20 +109,20 @@ export class FilesService implements OnModuleInit {
     comcityId: string,
   ): Promise<{ company: string; products: any[]; text: string }> {
     try {
-      // const imageBuffer = await fsPromises.readFile(filePath);
+      const imageBuffer = await fsPromises.readFile(filePath);
 
-      // await this.resizeSmallImage(imageBuffer);
+      await this.resizeSmallImage(imageBuffer);
 
-      // const correctedImageBuffer = await this.correctRotation(imageBuffer);
-      // const preprocessedImageBuffer =
-      //   await this.preprocessImage(correctedImageBuffer);
-      // const base64Image = await this.convertToBase64(preprocessedImageBuffer);
+      const correctedImageBuffer = await this.correctRotation(imageBuffer);
+      const preprocessedImageBuffer =
+        await this.preprocessImage(correctedImageBuffer);
+      const base64Image = await this.convertToBase64(preprocessedImageBuffer);
 
-      const originalBuffer = await fsPromises.readFile(filePath);
-      const resizedBuffer = await this.resizeSmallImage(originalBuffer);
-      const correctedBuffer = await this.correctRotation(resizedBuffer);
-      const preprocessedBuffer = await this.preprocessImage(correctedBuffer);
-      const base64Image = await this.convertToBase64(preprocessedBuffer);
+      // const originalBuffer = await fsPromises.readFile(filePath);
+      // const resizedBuffer = await this.resizeSmallImage(originalBuffer);
+      // const correctedBuffer = await this.correctRotation(resizedBuffer);
+      // const preprocessedBuffer = await this.preprocessImage(correctedBuffer);
+      // const base64Image = await this.convertToBase64(preprocessedBuffer);
 
       const worker = await createWorker('spa');
       await worker.setParameters({ tessedit_char_whitelist: '0123456789' });
@@ -196,9 +199,9 @@ export class FilesService implements OnModuleInit {
 
   /* ------------  EXTRACCIÓN DE CÓDIGOS ----------- */
 
-  private normalizeCode(raw: string): string {
-    return raw.replace(/^0+/, ''); // quita ceros delante
-  }
+  // private normalizeCode(raw: string): string {
+  //   return raw.replace(/^0+/, ''); // quita ceros delante
+  // }
 
   private extractProductsFromText(
     lines: string[],
@@ -209,8 +212,8 @@ export class FilesService implements OnModuleInit {
     for (const line of lines) {
       let match;
       while ((match = regex.exec(line)) !== null) {
-        const rawCode = match[1];
-        const code = this.normalizeCode(rawCode);
+        const code = match[1];
+        // const code = this.normalizeCode(rawCode);
         const rawPrice = match[2];
         if (this.isValidCode(code)) {
           const price = this.adjustPrice(rawPrice);
