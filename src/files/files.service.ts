@@ -25,9 +25,11 @@ export class FilesService implements OnModuleInit {
     await this.refreshCodes();
   }
 
-  private async refreshCodes() {
+  public async refreshCodes() {
     this.codeToProductId = await this.productsService.getCodesMap(); // nuevo método en ProductsService
-    console.log(`📦  Se cargaron ${this.codeToProductId.size} códigos de producto`);
+    console.log(
+      `📦  Se cargaron ${this.codeToProductId.size} códigos de producto`,
+    );
   }
 
   async uploadImage(
@@ -104,14 +106,20 @@ export class FilesService implements OnModuleInit {
     comcityId: string,
   ): Promise<{ company: string; products: any[]; text: string }> {
     try {
-      const imageBuffer = await fsPromises.readFile(filePath);
+      // const imageBuffer = await fsPromises.readFile(filePath);
 
-      await this.resizeSmallImage(imageBuffer);
+      // await this.resizeSmallImage(imageBuffer);
 
-      const correctedImageBuffer = await this.correctRotation(imageBuffer);
-      const preprocessedImageBuffer =
-        await this.preprocessImage(correctedImageBuffer);
-      const base64Image = await this.convertToBase64(preprocessedImageBuffer);
+      // const correctedImageBuffer = await this.correctRotation(imageBuffer);
+      // const preprocessedImageBuffer =
+      //   await this.preprocessImage(correctedImageBuffer);
+      // const base64Image = await this.convertToBase64(preprocessedImageBuffer);
+
+      const originalBuffer = await fsPromises.readFile(filePath);
+      const resizedBuffer = await this.resizeSmallImage(originalBuffer);
+      const correctedBuffer = await this.correctRotation(resizedBuffer);
+      const preprocessedBuffer = await this.preprocessImage(correctedBuffer);
+      const base64Image = await this.convertToBase64(preprocessedBuffer);
 
       const worker = await createWorker('spa');
       await worker.setParameters({ tessedit_char_whitelist: '0123456789' });
@@ -143,15 +151,12 @@ export class FilesService implements OnModuleInit {
             );
 
           if (prodcomcity) {
-            await this.prodcomcityService.updateProdcomcityOcr(
-              prodcomcity.id,
-              {
-                comcity: comcityId,
-                product: detailedProduct.id,
-                date: now,
-                price: parseFloat(product.price),
-              },
-            );
+            await this.prodcomcityService.updateProdcomcityOcr(prodcomcity.id, {
+              comcity: comcityId,
+              product: detailedProduct.id,
+              date: now,
+              price: parseFloat(product.price),
+            });
           }
 
           console.log(
@@ -190,6 +195,11 @@ export class FilesService implements OnModuleInit {
   }
 
   /* ------------  EXTRACCIÓN DE CÓDIGOS ----------- */
+
+  private normalizeCode(raw: string): string {
+    return raw.replace(/^0+/, ''); // quita ceros delante
+  }
+
   private extractProductsFromText(
     lines: string[],
   ): { code: string; price: string }[] {
@@ -199,7 +209,8 @@ export class FilesService implements OnModuleInit {
     for (const line of lines) {
       let match;
       while ((match = regex.exec(line)) !== null) {
-        const code = match[1];
+        const rawCode = match[1];
+        const code = this.normalizeCode(rawCode);
         const rawPrice = match[2];
         if (this.isValidCode(code)) {
           const price = this.adjustPrice(rawPrice);
@@ -240,8 +251,7 @@ export class FilesService implements OnModuleInit {
       if (!productId) continue;
 
       try {
-        const pc =
-          await this.prodcomcityService.findLatestByProduct(productId);
+        const pc = await this.prodcomcityService.findLatestByProduct(productId);
         const companyName = pc?.comcity?.company?.name;
         if (companyName) return companyName;
       } catch (_) {

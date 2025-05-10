@@ -13,6 +13,7 @@ import { PaginationDto } from '../common/dtos/pagination.dto';
 import { validate as isUUID } from 'uuid';
 import { ProductImage, Product } from './entities';
 import { User } from '../auth/entities/user.entity';
+import { FilesService } from 'src/files/files.service';
 
 @Injectable()
 export class ProductsService {
@@ -26,6 +27,8 @@ export class ProductsService {
     private readonly productImageRepository: Repository<ProductImage>,
 
     private readonly dataSource: DataSource,
+
+    private readonly filesService: FilesService,
   ) {}
 
   async create(createProductDto: CreateProductDto, user: User) {
@@ -38,7 +41,7 @@ export class ProductsService {
         user,
       });
       await this.productRepository.save(product);
-
+      await this.filesService.refreshCodes();
       return { ...product, images: product.images.map((img) => img.url) };
     } catch (error) {
       this.handleDBException(error);
@@ -91,26 +94,50 @@ export class ProductsService {
     };
   }
 
+  // async findProductsByCode(code: string) {
+  //   try {
+  //     const queryBuilder = this.productRepository.createQueryBuilder('prod');
+  //     const product = await queryBuilder
+  //       .where('prod.code = :code', { code })
+  //       .leftJoinAndSelect('prod.images', 'prodImages')
+  //       .getOne();
+
+  //     if (!product) {
+  //       throw new NotFoundException(`Product with code ${code} not found`);
+  //     }
+
+  //     return {
+  //       ...product,
+  //       images: product.images.map((img) => img.url),
+  //     };
+  //   } catch (error) {
+  //     this.handleDBException(error);
+  //   }
+  // }
+
   async findProductsByCode(code: string) {
-    try {
-      const queryBuilder = this.productRepository.createQueryBuilder('prod');
-      const product = await queryBuilder
-        .where('prod.code = :code', { code })
-        .leftJoinAndSelect('prod.images', 'prodImages')
-        .getOne();
+    const product = await this.productRepository
+      .createQueryBuilder('prod')
+      .where('prod.code::text = :code', { code })
+      .leftJoinAndSelect('prod.images', 'prodImages')
+      .getOne();
 
-      if (!product) {
-        throw new NotFoundException(`Product with code ${code} not found`);
-      }
+    if (!product)
+      throw new NotFoundException(`Product with code ${code} not found`);
 
-      return {
-        ...product,
-        images: product.images.map((img) => img.url),
-      };
-    } catch (error) {
-      this.handleDBException(error);
-    }
+    return { ...product, images: product.images.map((img) => img.url) };
   }
+
+  // async getCodesMap(): Promise<Map<string, string>> {
+  //   const raw = await this.productRepository
+  //     .createQueryBuilder('p')
+  //     .select(['p.id AS id', 'p.code AS code'])
+  //     .getRawMany<{ id: string; code: string }>();
+
+  //   const map = new Map<string, string>();
+  //   raw.forEach(({ code, id }) => map.set(String(code), id));
+  //   return map;
+  // }
 
   async getCodesMap(): Promise<Map<string, string>> {
     const raw = await this.productRepository
@@ -119,7 +146,15 @@ export class ProductsService {
       .getRawMany<{ id: string; code: string }>();
 
     const map = new Map<string, string>();
-    raw.forEach(({ code, id }) => map.set(String(code), id));
+
+    raw.forEach(({ code, id }) => {
+      const original = String(code).trim();
+      const noZeros = original.replace(/^0+/, '');
+
+      map.set(original, id); // 00 123 ↔ “00123”
+      map.set(noZeros, id); // 123    ↔ “123”
+    });
+
     return map;
   }
 
@@ -147,7 +182,7 @@ export class ProductsService {
       await queryRunner.manager.save(product);
       await queryRunner.commitTransaction();
       await queryRunner.release();
-
+      await this.filesService.refreshCodes();
       return this.findOnePlain(id);
     } catch (error) {
       await queryRunner.rollbackTransaction();
