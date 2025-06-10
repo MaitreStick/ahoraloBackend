@@ -120,8 +120,8 @@ export class FilesService implements OnModuleInit {
 
       const originalBuffer = await fsPromises.readFile(filePath);
       const resizedBuffer = await this.resizeSmallImage(originalBuffer);
-      const correctedBuffer = await this.correctRotation(resizedBuffer);
-      const preprocessedBuffer = await this.preprocessImage(correctedBuffer);
+      // const correctedBuffer = await this.correctRotation(resizedBuffer);
+      const preprocessedBuffer = await this.preprocessImage(resizedBuffer);
       const base64Image = await this.convertToBase64(preprocessedBuffer);
 
       const worker = await createWorker('spa');
